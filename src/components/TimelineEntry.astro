@@ -15,6 +15,9 @@ const { Content } = await render(entry);
 
 const panelId = `panel-${entry.id}`;
 const headerId = `header-${entry.id}`;
+const titleId = `title-${entry.id}`;
+const metaId = `meta-${entry.id}`;
+const summaryId = `summary-${entry.id}`;
 
 const categoryLabel: Record<typeof data.category, string> = {
   work: 'Work',
@@ -55,15 +58,8 @@ const gradeSr = grade
   <span class="entry-dot" aria-hidden="true"></span>
 
   <div class="entry-card">
-    <h3 class="entry-heading">
-      <button
-        class="entry-header"
-        id={headerId}
-        type="button"
-        aria-expanded="false"
-        aria-controls={panelId}
-      >
-        <span class="entry-meta">
+    <div class="entry-header">
+        <span class="entry-meta" id={metaId}>
           <time class="entry-date mono" datetime={isoDate(data.startDate)}>
             {dateText}
           </time>
@@ -93,20 +89,30 @@ const gradeSr = grade
           }
         </span>
 
-        <span class="entry-title">
-          {data.title}
-          {data.org && <span class="entry-org">{data.org}</span>}
-        </span>
+        <h3 class="entry-heading" id={titleId}>
+          <button
+            class="entry-toggle"
+            id={headerId}
+            type="button"
+            aria-expanded="false"
+            aria-controls={panelId}
+            aria-describedby={`${metaId} ${summaryId}`}
+          >
+            <span class="entry-title">
+              {data.title}
+              {data.org && <span class="entry-org">{data.org}</span>}
+            </span>
 
-        <span class="entry-summary">{data.summary}</span>
+            <span class="entry-chevron" aria-hidden="true">
+              <Icon name="lucide:chevron-down" width="17" height="17" />
+            </span>
+          </button>
+        </h3>
 
-        <span class="entry-chevron" aria-hidden="true">
-          <Icon name="lucide:chevron-down" width="17" height="17" />
-        </span>
-      </button>
-    </h3>
+        <span class="entry-summary" id={summaryId}>{data.summary}</span>
+    </div>
 
-    <div class="entry-panel" id={panelId} role="region" aria-labelledby={headerId}>
+    <div class="entry-panel" id={panelId} role="region" aria-labelledby={titleId}>
       <div class="entry-panel-inner">
         <div class="entry-body">
           <Content />
@@ -235,6 +241,7 @@ const gradeSr = grade
   }
 
   .entry-heading {
+    grid-column: 1 / -1;
     margin: 0;
     font: inherit;
     letter-spacing: normal;
@@ -246,6 +253,15 @@ const gradeSr = grade
     gap: var(--space-2) var(--space-4);
     width: 100%;
     padding: var(--space-5);
+    text-align: left;
+  }
+
+  .entry-toggle {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: start;
+    gap: var(--space-4);
+    width: 100%;
     text-align: left;
   }
 
@@ -366,9 +382,7 @@ const gradeSr = grade
   }
 
   .entry-title {
-    grid-column: 1;
     display: block;
-    margin-top: var(--space-1);
     font-size: var(--text-lg);
     font-weight: 620;
     letter-spacing: var(--tracking-tight);
@@ -397,8 +411,6 @@ const gradeSr = grade
   }
 
   .entry-chevron {
-    grid-column: 2;
-    grid-row: 1 / span 3;
     align-self: start;
     display: grid;
     place-items: center;

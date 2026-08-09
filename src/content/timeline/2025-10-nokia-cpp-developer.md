@@ -14,7 +14,8 @@ infrastructure telecom systems.
 
 - Developed and optimised C++ components in the radio access network stack
 - Focused on power efficiency — reducing energy draw without giving up throughput or latency guarantees
-- Profiled and debugged with GDB and Valgrind; covered work with GoogleTest
+- Profiled and debugged with GDB and Valgrind, then validated production changes
+  with GoogleTest against throughput and latency constraints
 
 Energy efficiency in RAN is a genuinely hard constraint problem rather than
 straightforward optimisation. Radio hardware can be idled to save power, but every

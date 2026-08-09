@@ -4,8 +4,14 @@ import { Icon } from 'astro-icon/components';
 import TimelineEntry from './TimelineEntry.astro';
 import TimelineEnd from './TimelineEnd.astro';
 
-const entries = (await getCollection('timeline')).sort(
-  (a, b) => b.data.startDate.getTime() - a.data.startDate.getTime(),
+const unsortedEntries = await getCollection('timeline');
+const recency = (entry: (typeof unsortedEntries)[number]) =>
+  entry.data.ongoing
+    ? Number.POSITIVE_INFINITY
+    : (entry.data.endDate ?? entry.data.startDate).getTime();
+
+const entries = unsortedEntries.sort(
+  (a, b) => recency(b) - recency(a) || b.data.startDate.getTime() - a.data.startDate.getTime(),
 );
 
 const count = (category: string) =>
@@ -28,8 +34,8 @@ const filters = [
 
     <h1 class="timeline-heading">Timeline: Experience, Education &amp; Projects</h1>
     <p class="timeline-lede">
-      Recent work first, followed by education, projects and awards. Open any entry
-      for the supporting detail.
+      Production work is shown first. Switch to All for education, projects and awards,
+      ordered by each entry's most recent active date.
     </p>
 
     <div class="controls">
@@ -40,7 +46,7 @@ const filters = [
               class="filter"
               type="button"
               data-filter={filter.id}
-              aria-pressed={filter.id === 'all' ? 'true' : 'false'}
+              aria-pressed={filter.id === 'work' ? 'true' : 'false'}
             >
               {filter.label}
               <span class="filter-count mono">{count(filter.id)}</span>
@@ -256,7 +262,7 @@ const filters = [
   /* ---------- Accordion ---------- */
 
   for (const entry of entries) {
-    const header = entry.querySelector<HTMLButtonElement>('.entry-header');
+    const header = entry.querySelector<HTMLButtonElement>('.entry-toggle');
     if (!header) continue;
 
     header.addEventListener('click', () => {
@@ -285,7 +291,7 @@ const filters = [
       // Collapse anything being filtered out, so it does not reappear expanded.
       if (!matches && entry.classList.contains('is-open')) {
         entry.classList.remove('is-open');
-        entry.querySelector('.entry-header')?.setAttribute('aria-expanded', 'false');
+        entry.querySelector('.entry-toggle')?.setAttribute('aria-expanded', 'false');
       }
     }
 
@@ -360,6 +366,7 @@ const filters = [
   });
 
   applyOrder(true);
+  applyFilter('work');
 
   /* ---------- Entry reveals ----------
      Plain IntersectionObserver toggling a class; the movement itself is a CSS
@@ -420,12 +427,12 @@ const filters = [
   /* Applied at first paint (.js is set by a blocking inline script), so entries
      never flash in at full opacity before the observer runs. */
   .js .entry {
-    opacity: 0;
-    transform: translateY(18px);
+    opacity: 0.55;
+    transform: translateY(10px);
     transition:
-      opacity 0.55s var(--ease),
-      transform 0.55s var(--ease);
-    transition-delay: calc(min(var(--stagger, 0), 3) * 60ms);
+      opacity 0.38s var(--ease),
+      transform 0.38s var(--ease);
+    transition-delay: calc(min(var(--stagger, 0), 3) * 25ms);
   }
 
   .js .entry.is-visible {

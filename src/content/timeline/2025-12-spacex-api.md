@@ -8,7 +8,6 @@ links:
   - label: Repository
     url: https://github.com/FerrisOfficial/dotnet-public-api-weaver
 featured: false
-dateApproximate: true
 ---
 
 A .NET 10 Minimal API that integrates SpaceX public launch data and persists it

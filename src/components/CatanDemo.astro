@@ -88,8 +88,15 @@ const fallbackBots = [
     </dl>
   </div>
 
-  {/* Replay of game 1 of whichever tournament just ran. */}
-  <div class="replay" data-replay hidden>
+  {/* Replay of game 1 of whichever tournament just ran. Collapsed by default
+      on small screens so the results remain the primary mobile evidence. */}
+  <details class="replay-disclosure" data-replay-disclosure hidden>
+    <summary class="replay-summary">
+      Inspect a sample game
+      <Icon name="lucide:chevron-down" width="16" height="16" aria-hidden="true" />
+    </summary>
+
+    <div class="replay" data-replay>
     <div class="replay-head">
       <h4 class="replay-title mono">Game 1, move by move</h4>
       <p class="replay-sub" data-replay-sub></p>
@@ -132,7 +139,8 @@ const fallbackBots = [
         </select>
       </label>
     </div>
-  </div>
+    </div>
+  </details>
 
   <p class="demo-status visually-hidden" role="status" aria-live="polite" data-live></p>
 
@@ -340,6 +348,10 @@ const fallbackBots = [
 
   /* --- Replay --- */
 
+  .replay-summary {
+    display: none;
+  }
+
   .replay {
     margin-top: var(--space-4);
     padding-top: var(--space-4);
@@ -483,6 +495,46 @@ const fallbackBots = [
   }
 
   @media (max-width: 34rem) {
+    .replay-disclosure {
+      margin-top: var(--space-4);
+      padding-top: var(--space-4);
+      border-top: 1px solid var(--border);
+    }
+
+    .replay-summary {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-3);
+      padding: 0.65rem 0.8rem;
+      border: 1px solid var(--border);
+      border-radius: var(--r-sm);
+      background: var(--surface);
+      color: var(--text-muted);
+      font-size: var(--text-sm);
+      font-weight: 560;
+      cursor: pointer;
+      list-style: none;
+    }
+
+    .replay-summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .replay-summary [data-icon] {
+      transition: transform var(--dur-fast) var(--ease);
+    }
+
+    .replay-disclosure[open] .replay-summary [data-icon] {
+      transform: rotate(180deg);
+    }
+
+    .replay {
+      margin-top: var(--space-3);
+      padding-top: 0;
+      border-top: 0;
+    }
+
     .replay-controls {
       flex-wrap: wrap;
     }
@@ -548,7 +600,7 @@ const fallbackBots = [
     /* ---------- Replay of game 1 ---------- */
 
     const rp = {
-      wrap: $('[data-replay]'),
+      disclosure: $<HTMLDetailsElement>('[data-replay-disclosure]'),
       base: $('[data-board-base]'),
       state: $('[data-board-state]'),
       svg: $<SVGSVGElement>('[data-board]'),
@@ -631,7 +683,8 @@ const fallbackBots = [
       $('[data-replay-sub]').textContent =
         `${data.frames.length - 1} moves over ${data.turns} turns, ${outcome}. Seed ${data.seed}.`;
 
-      rp.wrap.hidden = false;
+      rp.disclosure.hidden = false;
+      rp.disclosure.open = !window.matchMedia('(max-width: 34rem)').matches;
       drawFrame(0);
     }
 
@@ -746,7 +799,8 @@ const fallbackBots = [
       running = true;
       results.hidden = false;
       stopPlayback();
-      rp.wrap.hidden = true;
+      rp.disclosure.hidden = true;
+      rp.disclosure.open = false;
       runLabel.textContent = 'Stop';
       live.textContent = 'Running tournament…';
       render({ games: 0, winsA: 0, winsB: 0, draws: 0, turns: 0 }, 0, false);

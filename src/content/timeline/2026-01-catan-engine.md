@@ -27,6 +27,6 @@ Catan is a deceptively good testbed for game AI. It has hidden information, rand
 from dice, and negotiation between players — which rules out the search techniques
 that solve chess outright. Agents have to reason under uncertainty instead.
 
-Engine throughput is what makes the research possible at all: drawing statistically
-meaningful conclusions about which strategy dominates requires tens of thousands of
-simulated games, so the performance work and the AI work are the same problem.
+The fixed-seed benchmark suite runs **1,530 games across six matchups**, reporting
+throughput and win rate for each one. That repeatability makes engine performance
+and agent behaviour directly comparable between changes.

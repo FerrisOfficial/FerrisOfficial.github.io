@@ -15,7 +15,8 @@ featured: true
 Backend developer on Symfonia's team building software for **KSeF** (Krajowy System
 e-Faktur) — Poland's national, soon-to-be-mandatory e-invoicing platform.
 
-- Develop backend services in C# and ASP.NET Core that integrate with KSeF
+- Deliver C# and ASP.NET Core services for KSeF document processing, including
+  validation and failure-handling paths for regulated production workflows
 - Work through the compliance and data-integrity constraints of a national tax
   system, where correctness matters more than almost anywhere else in commercial software
 - Deployed with Docker and Kubernetes on Azure
