@@ -33,19 +33,19 @@ const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" 
   <circle cx="97.5" cy="486" r="5" fill="#8b7bf7" opacity="0.55"/>
 
   <text x="152" y="200" font-family="Consolas, 'Courier New', monospace" font-size="21"
-        letter-spacing="3" fill="#8d8d9b">C++ · SYSTEMS · APPLIED ML</text>
+        letter-spacing="3" fill="#8d8d9b">C++ · PYTHON · BACKEND · ML</text>
 
   <text x="150" y="300" font-family="'Segoe UI Semibold', 'Segoe UI', Arial, sans-serif"
         font-size="82" font-weight="600" letter-spacing="-2" fill="#f1f1f3">Maciej Stempniak</text>
 
   <text x="152" y="362" font-family="Consolas, 'Courier New', monospace" font-size="30"
-        fill="#2dd4bf">C++ &amp; Systems Engineer</text>
+        fill="#2dd4bf">Systems &amp; Backend Engineer</text>
 
   <text x="152" y="437" font-family="'Segoe UI', Arial, sans-serif" font-size="25" fill="#9d9daa">
-    5G RAN energy efficiency at Nokia · high-performance
+    5G RAN energy efficiency at Nokia · production backend
   </text>
   <text x="152" y="474" font-family="'Segoe UI', Arial, sans-serif" font-size="25" fill="#9d9daa">
-    simulation · machine learning for medical imaging
+    systems · machine learning for medical imaging
   </text>
 
   <text x="152" y="546" font-family="Consolas, 'Courier New', monospace" font-size="21" fill="#6b6b78">
