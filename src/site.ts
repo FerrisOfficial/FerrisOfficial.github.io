@@ -1,11 +1,11 @@
 /** Single source of truth for personal details, reused by the layout, hero and contact. */
 export const site = {
   name: 'Maciej Stempniak',
-  role: 'C++ & Systems Engineer',
+  role: 'Systems & Backend Engineer',
   url: 'https://ferrisofficial.github.io',
   location: 'Poland',
   description:
-    'C++ and systems engineer. 5G RAN energy efficiency at Nokia, high-performance simulation, and applied machine learning for medical imaging.',
+    'Systems and backend engineer working in C++ and Python. 5G RAN energy efficiency at Nokia, production backend systems since, and applied machine learning for medical imaging.',
   email: 'maciek.m.stempniak@gmail.com',
   github: 'https://github.com/FerrisOfficial',
   githubHandle: 'FerrisOfficial',
