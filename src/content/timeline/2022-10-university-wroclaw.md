@@ -24,3 +24,5 @@ Core coursework:
 
 Alongside a substantial mathematics component — probability and statistics, discrete
 mathematics, time series analysis, numerical analysis and logic.
+
+Maintaining a 4.6 average, on the same five-point scale where 5 is the maximum.

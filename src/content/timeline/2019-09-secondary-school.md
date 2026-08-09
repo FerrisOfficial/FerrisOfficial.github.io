@@ -14,3 +14,5 @@ maths and programming load that comes with it.
 
 This is where competitive programming started, and where the habit of caring about
 how a solution performs rather than merely whether it runs came from.
+
+Graduated with a 4.8 average, on the Polish five-point scale where 5 is the maximum.
