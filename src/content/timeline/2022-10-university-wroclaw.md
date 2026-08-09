@@ -8,7 +8,9 @@ summary: Bachelor's degree specialising in C++20, Python and machine learning.
 tech:
   ['C++20', 'Python', 'Java', 'Machine Learning', 'Concurrency', 'Numerical Analysis']
 featured: true
-grade: 4.6/5 avg
+grade:
+  value: 4.6
+  label: avg
 ---
 
 Bachelor of Computer Science at the University of Wrocław, specialising in C++20,

@@ -33,8 +33,20 @@ const timeline = defineCollection({
       .default([]),
     /** Featured entries get a brighter marker on the spine. */
     featured: z.boolean().default(false),
-    /** Optional grade/GPA badge shown on the collapsed entry, e.g. "4.8 avg" or "5/5". */
-    grade: z.string().optional(),
+    /**
+     * Optional grade shown as a filled meter on the collapsed entry. Structured
+     * rather than a string so the bar can be drawn from the number: a reader who
+     * has never seen Polish grading still sees "nearly full" and understands it.
+     */
+    grade: z
+      .object({
+        value: z.number(),
+        /** Top of the scale. Poland marks out of 5. */
+        of: z.number().default(5),
+        /** Distinguishes a running average from a single mark, e.g. "avg". */
+        label: z.string().optional(),
+      })
+      .optional(),
     /** Embeds an interactive demo in the expanded entry. */
     demo: z.enum(['catan']).optional(),
     /**
