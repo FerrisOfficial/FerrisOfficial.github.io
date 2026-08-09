@@ -1,0 +1,173 @@
+---
+import { getCollection } from 'astro:content';
+import { Icon } from 'astro-icon/components';
+import CatanDemo from './CatanDemo.astro';
+
+const entries = await getCollection('timeline');
+const project = entries.find((entry) => entry.id === '2026-01-catan-engine');
+if (!project) throw new Error('Featured project entry not found: 2026-01-catan-engine');
+
+const github = project.data.links.find((link) => /github/i.test(link.label));
+const thesis = project.data.links.find((link) => /thesis/i.test(link.label));
+
+const tags = ['11 AI agents', 'C++20', 'WebAssembly', 'Benchmarking'];
+---
+
+<section
+  class="section featured"
+  id="featured-work"
+  style="--cat: var(--cat-project); --cat-soft: var(--cat-project-soft);"
+>
+  <div class="container">
+    <p class="section-label">Featured work</p>
+
+    <div class="featured-card">
+      <div class="featured-intro">
+        <h2 class="featured-title">{project.data.title.replace(' Simulation Platform', '')}</h2>
+        <p class="featured-subtitle">
+          High-performance C++20 simulation engine + AI framework
+        </p>
+        <p class="featured-desc">
+          A complete Catan implementation built from scratch, with a pluggable AI framework
+          and 11 autonomous agents benchmarked across tens of thousands of simulations.
+        </p>
+
+        <ul class="featured-tags" role="list">
+          {tags.map((tag) => <li class="tag">{tag}</li>)}
+        </ul>
+
+        <div class="featured-actions">
+          <a class="featured-link featured-link-primary" href="#catan-demo">
+            <Icon name="lucide:play" width="15" height="15" aria-hidden="true" />
+            Live Demo
+          </a>
+          {
+            github && (
+              <a class="featured-link" href={github.url} target="_blank" rel="noopener noreferrer">
+                <Icon name="lucide:github" width="15" height="15" aria-hidden="true" />
+                GitHub
+              </a>
+            )
+          }
+          {
+            thesis && (
+              <a class="featured-link" href={thesis.url} target="_blank" rel="noopener noreferrer">
+                <Icon name="lucide:book-open" width="15" height="15" aria-hidden="true" />
+                Read Thesis
+              </a>
+            )
+          }
+        </div>
+      </div>
+
+      <div id="catan-demo">
+        <CatanDemo />
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .featured-card {
+    padding: var(--space-6);
+    border: 1px solid var(--border);
+    border-radius: var(--r-lg);
+    background: var(--surface);
+    box-shadow: var(--shadow-lg);
+  }
+
+  .featured-title {
+    font-size: var(--text-2xl);
+  }
+
+  .featured-subtitle {
+    margin-top: var(--space-2);
+    font-size: var(--text-lg);
+    font-weight: 500;
+    color: var(--cat);
+  }
+
+  .featured-desc {
+    max-width: var(--measure);
+    margin-top: var(--space-4);
+    font-size: var(--text-base);
+    line-height: var(--leading-relaxed);
+    color: var(--text-muted);
+  }
+
+  .featured-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    margin: var(--space-5) 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .featured-tags .tag {
+    border-color: color-mix(in srgb, var(--cat) 35%, var(--border));
+    color: var(--cat);
+  }
+
+  .featured-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    margin-top: var(--space-6);
+  }
+
+  .featured-link {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: 0.55rem 1.05rem;
+    border: 1px solid var(--border);
+    border-radius: var(--r-md);
+    background: var(--bg-subtle);
+    color: var(--text-muted);
+    font-size: var(--text-sm);
+    font-weight: 550;
+    transition:
+      color var(--dur-fast) var(--ease),
+      border-color var(--dur-fast) var(--ease),
+      background-color var(--dur-fast) var(--ease),
+      transform var(--dur-fast) var(--ease);
+  }
+
+  .featured-link:hover {
+    color: var(--cat);
+    border-color: var(--cat);
+    background: var(--cat-soft);
+    transform: translateY(-2px);
+  }
+
+  .featured-link-primary {
+    border-color: var(--cat);
+    background: var(--cat);
+    color: var(--bg);
+  }
+
+  .featured-link-primary:hover {
+    color: var(--bg);
+    background: var(--cat);
+    opacity: 0.9;
+  }
+
+  #catan-demo {
+    margin-top: var(--space-6);
+    padding-top: var(--space-6);
+    border-top: 1px solid var(--border);
+  }
+
+  /* CatanDemo's own margins assume it's nested inside a narrower timeline
+     entry panel; here it already sits inside .featured-card's padding. */
+  #catan-demo :global(.demo) {
+    margin: 0;
+  }
+
+  @media (max-width: 34rem) {
+    .featured-card {
+      padding: var(--space-4);
+    }
+  }
+</style>

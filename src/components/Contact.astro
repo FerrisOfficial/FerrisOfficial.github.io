@@ -1,54 +1,33 @@
 ---
 import { Icon } from 'astro-icon/components';
-import { site, contactLinks } from '../site';
+import { site } from '../site';
 ---
 
 <section class="section contact" id="contact">
   <div class="container">
     <p class="section-label">Contact</p>
 
-    <div class="contact-layout">
-      <div class="contact-intro">
-        <h2 class="contact-heading">Let's talk</h2>
-        <p class="contact-text">
-          Open to backend and systems roles — C++, Python, or otherwise — and to work
-          that leans into applied machine learning and AI. Happy to hear about anything
-          interesting.
-        </p>
-      </div>
+    <h2 class="contact-heading">Have an interesting problem?</h2>
+    <p class="contact-text">
+      I'm interested in backend and systems engineering roles where performance,
+      correctness and scale matter.
+    </p>
 
-      <ul class="contact-list" role="list">
-        {
-          contactLinks.map((link) => {
-            const external = !link.href.startsWith('mailto:');
-            return (
-              <li>
-                <a
-                  class="contact-item"
-                  href={link.href}
-                  target={external ? '_blank' : undefined}
-                  rel={external ? 'noopener noreferrer' : undefined}
-                >
-                  <span class="contact-icon">
-                    <Icon name={link.icon} width="18" height="18" aria-hidden="true" />
-                  </span>
-                  <span class="contact-detail">
-                    <span class="contact-label mono">{link.label}</span>
-                    <span class="contact-value">{link.value}</span>
-                  </span>
-                  <Icon
-                    class="contact-arrow"
-                    name="lucide:arrow-up-right"
-                    width="16"
-                    height="16"
-                    aria-hidden="true"
-                  />
-                </a>
-              </li>
-            );
-          })
-        }
-      </ul>
+    <div class="contact-actions">
+      <a class="contact-primary" href={`mailto:${site.email}`}>
+        <Icon name="lucide:mail" width="17" height="17" aria-hidden="true" />
+        Email me
+      </a>
+
+      <a class="contact-secondary" href={site.linkedin} target="_blank" rel="noopener noreferrer">
+        <Icon name="lucide:linkedin" width="16" height="16" aria-hidden="true" />
+        LinkedIn
+      </a>
+
+      <a class="contact-secondary" href={site.github} target="_blank" rel="noopener noreferrer">
+        <Icon name="lucide:github" width="16" height="16" aria-hidden="true" />
+        GitHub
+      </a>
     </div>
   </div>
 </section>
@@ -66,95 +45,67 @@ import { site, contactLinks } from '../site';
     background: var(--bg-subtle);
   }
 
-  .contact-layout {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-    gap: var(--space-7);
-    align-items: start;
-  }
-
   .contact-heading {
+    max-width: 30ch;
     font-size: var(--text-2xl);
   }
 
   .contact-text {
-    max-width: 40ch;
+    max-width: 44ch;
     margin-top: var(--space-4);
     color: var(--text-muted);
     line-height: var(--leading-relaxed);
   }
 
-  .contact-list {
-    display: grid;
+  .contact-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
     gap: var(--space-3);
-    margin: 0;
-    padding: 0;
-    list-style: none;
+    margin-top: var(--space-6);
   }
 
-  .contact-item {
-    display: flex;
+  .contact-primary {
+    display: inline-flex;
     align-items: center;
-    gap: var(--space-4);
-    padding: var(--space-4);
-    border: 1px solid var(--border);
+    gap: var(--space-2);
+    padding: 0.7rem 1.3rem;
     border-radius: var(--r-md);
-    background: var(--surface);
+    background: var(--accent);
+    color: var(--accent-contrast);
+    font-weight: 560;
     transition:
-      border-color var(--dur-fast) var(--ease),
       transform var(--dur-fast) var(--ease),
       box-shadow var(--dur-fast) var(--ease);
   }
 
-  .contact-item:hover {
-    border-color: var(--accent);
-    transform: translateY(-2px);
+  .contact-primary:hover {
     box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
   }
 
-  .contact-icon {
-    display: grid;
-    place-items: center;
-    width: 2.25rem;
-    height: 2.25rem;
-    flex-shrink: 0;
-    border-radius: var(--r-sm);
-    background: var(--accent-soft);
-    color: var(--accent);
-  }
-
-  .contact-detail {
-    display: flex;
-    flex-direction: column;
-    gap: 0.1rem;
-    min-width: 0;
-  }
-
-  .contact-label {
-    font-size: var(--text-2xs);
-    letter-spacing: var(--tracking-wide);
-    text-transform: uppercase;
-    color: var(--text-faint);
-  }
-
-  .contact-value {
-    font-size: var(--text-sm);
+  .contact-secondary {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: 0.7rem 1.1rem;
+    border: 1px solid var(--border);
+    border-radius: var(--r-md);
+    background: var(--surface);
+    color: var(--text-muted);
     font-weight: 520;
-    overflow-wrap: anywhere;
-  }
-
-  .contact-arrow {
-    margin-left: auto;
-    flex-shrink: 0;
-    color: var(--text-faint);
     transition:
-      transform var(--dur) var(--ease),
-      color var(--dur-fast) var(--ease);
+      color var(--dur-fast) var(--ease),
+      border-color var(--dur-fast) var(--ease),
+      background-color var(--dur-fast) var(--ease),
+      transform var(--dur-fast) var(--ease);
   }
 
-  .contact-item:hover .contact-arrow {
+  .contact-secondary:hover {
     color: var(--accent);
-    transform: translate(2px, -2px);
+    border-color: var(--accent);
+    background: var(--accent-soft);
+    transform: translateY(-2px);
   }
 
   /* --- Footer --- */
@@ -172,12 +123,5 @@ import { site, contactLinks } from '../site';
     gap: var(--space-3);
     font-size: var(--text-2xs);
     color: var(--text-faint);
-  }
-
-  @media (max-width: 48rem) {
-    .contact-layout {
-      grid-template-columns: 1fr;
-      gap: var(--space-6);
-    }
   }
 </style>

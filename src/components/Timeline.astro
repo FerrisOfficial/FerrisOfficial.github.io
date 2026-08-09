@@ -22,7 +22,7 @@ const filters = [
 ] as const;
 ---
 
-<section class="section" id="timeline">
+<section class="section timeline-section is-collapsed" id="timeline">
   <div class="container">
     <p class="section-label">Timeline</p>
 
@@ -79,6 +79,13 @@ const filters = [
 </section>
 
 <style>
+  /* Collapsed until "Roll out full timeline" is clicked, from Highlights.astro.
+     Gated on .js so a no-JS visitor — who has no way to trigger that click —
+     always gets the full timeline instead of a dead end. */
+  :global(html.js) .timeline-section.is-collapsed {
+    display: none;
+  }
+
   .timeline-heading {
     font-size: var(--text-2xl);
   }
@@ -254,6 +261,27 @@ const filters = [
   const progress = document.querySelector<HTMLElement>('[data-spine-progress]');
   const filters = Array.from(document.querySelectorAll<HTMLButtonElement>('[data-filter]'));
   const status = document.querySelector<HTMLElement>('[data-filter-status]');
+
+  /* ---------- Reveal ----------
+     The section starts collapsed (see .timeline-section.is-collapsed); any link
+     pointing at it — the nav item, Highlights' "Roll out" link — should reveal
+     it rather than jump to a hidden, zero-height target. */
+
+  const timelineSection = document.querySelector<HTMLElement>('.timeline-section');
+
+  if (timelineSection) {
+    const revealLinks = document.querySelectorAll<HTMLAnchorElement>('a[href="#timeline"]');
+    for (const link of revealLinks) {
+      link.addEventListener('click', (event) => {
+        event.preventDefault();
+        timelineSection.classList.remove('is-collapsed');
+        timelineSection.scrollIntoView({
+          behavior: reduceMotion.matches ? 'auto' : 'smooth',
+          block: 'start',
+        });
+      });
+    }
+  }
 
   /* ---------- Accordion ---------- */
 

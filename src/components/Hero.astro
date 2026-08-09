@@ -1,6 +1,13 @@
 ---
 import { Icon } from 'astro-icon/components';
-import { site, contactLinks } from '../site';
+import { site } from '../site';
+
+const heroLinks = [
+  { label: 'View my work', href: '#experience', icon: 'lucide:arrow-right' },
+  { label: 'GitHub', href: site.github, icon: 'lucide:github', external: true },
+  { label: 'LinkedIn', href: site.linkedin, icon: 'lucide:linkedin', external: true },
+  { label: 'Download CV', href: '/cv.pdf', icon: 'lucide:download', download: true },
+] as const;
 ---
 
 <section class="hero" id="top">
@@ -20,22 +27,22 @@ import { site, contactLinks } from '../site';
       <span class="typing" style={`--chars: ${site.role.length}`}>{site.role}</span>
     </p>
 
-    <p class="hero-blurb" style="--i: 3">
-      I build backend and systems software — <strong>C++20</strong> on 5G radio infrastructure
-      at Nokia, production backend services since, and a growing pull toward{' '}
-      <strong>applied machine learning</strong>. Along the way: a high-performance simulation
-      engine for my thesis, and ML models for medical imaging.
+    <p class="hero-blurb" style="--i: 3">{site.tagline}</p>
+
+    <p class="hero-stack mono" style="--i: 4">
+      {site.stack.join(' · ')}
     </p>
 
-    <ul class="hero-links" role="list" style="--i: 4">
+    <ul class="hero-links" role="list" style="--i: 5">
       {
-        contactLinks.map((link) => (
+        heroLinks.map((link) => (
           <li>
             <a
               class="hero-link"
               href={link.href}
-              rel={link.href.startsWith('mailto:') ? undefined : 'noopener noreferrer'}
-              target={link.href.startsWith('mailto:') ? undefined : '_blank'}
+              rel={link.external ? 'noopener noreferrer' : undefined}
+              target={link.external ? '_blank' : undefined}
+              download={link.download ? true : undefined}
             >
               <Icon name={link.icon} width="16" height="16" aria-hidden="true" />
               <span>{link.label}</span>
@@ -45,7 +52,7 @@ import { site, contactLinks } from '../site';
       }
     </ul>
 
-    <a class="hero-cue" href="#timeline" style="--i: 5">
+    <a class="hero-cue" href="#experience" style="--i: 6">
       <span>The story, in order</span>
       <Icon name="lucide:arrow-down" width="15" height="15" aria-hidden="true" />
     </a>
@@ -96,6 +103,7 @@ import { site, contactLinks } from '../site';
   .hero-name,
   .hero-role,
   .hero-blurb,
+  .hero-stack,
   .hero-links,
   .hero-cue {
     animation: rise 0.75s var(--ease) backwards;
@@ -228,9 +236,11 @@ import { site, contactLinks } from '../site';
     color: var(--text-muted);
   }
 
-  .hero-blurb strong {
-    color: var(--text);
-    font-weight: 600;
+  .hero-stack {
+    margin-top: var(--space-3);
+    font-size: var(--text-sm);
+    letter-spacing: var(--tracking-wide);
+    color: var(--text-faint);
   }
 
   .hero-links {

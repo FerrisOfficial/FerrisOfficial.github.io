@@ -12,7 +12,6 @@ links:
   - label: Read the thesis
     url: https://github.com/FerrisOfficial/CatanAPI/blob/main/Thesis.pdf
 featured: true
-demo: catan
 grade:
   value: 5
 ---
