@@ -25,7 +25,10 @@ const heroLinks = [
       <h1 class="hero-name" style="--i: 1">{site.name}</h1>
 
       <p class="hero-role mono" style="--i: 2">
-        {site.role}
+        <span class="visually-hidden">{site.role}</span>
+        <span class="typing" style={`--chars: ${site.role.length}`} aria-hidden="true">
+          {site.role}
+        </span>
       </p>
 
       <p class="hero-blurb" style="--i: 3">{site.tagline}</p>
@@ -179,6 +182,43 @@ const heroLinks = [
     letter-spacing: -0.01em;
   }
 
+  .typing {
+    display: inline-block;
+    box-sizing: content-box;
+    max-width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+    vertical-align: bottom;
+    border-right: 0.5em solid currentColor;
+    width: calc(var(--chars) * 1ch);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .typing {
+      animation:
+        type 1.45s steps(var(--chars), end) 0.15s backwards,
+        caret 1s steps(1, end) 1.65s infinite;
+    }
+  }
+
+  @keyframes type {
+    from {
+      width: 0;
+    }
+  }
+
+  @keyframes caret {
+    50% {
+      border-right-color: transparent;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .typing {
+      border-right: 0;
+    }
+  }
+
   .hero-blurb {
     max-width: 46ch;
     margin-top: var(--space-5);
@@ -308,6 +348,10 @@ const heroLinks = [
   @media (max-width: 34rem) {
     .hero {
       padding-top: var(--space-6);
+    }
+
+    .hero-role {
+      font-size: 0.875rem;
     }
 
     .hero-blurb {
