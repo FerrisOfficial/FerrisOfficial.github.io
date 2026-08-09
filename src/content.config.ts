@@ -33,6 +33,8 @@ const timeline = defineCollection({
       .default([]),
     /** Featured entries get a brighter marker on the spine. */
     featured: z.boolean().default(false),
+    /** Optional grade/GPA badge shown on the collapsed entry, e.g. "4.8 avg" or "5/5". */
+    grade: z.string().optional(),
     /** Embeds an interactive demo in the expanded entry. */
     demo: z.enum(['catan']).optional(),
     /**

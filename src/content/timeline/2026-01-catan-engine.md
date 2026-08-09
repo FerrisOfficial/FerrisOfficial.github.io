@@ -13,6 +13,7 @@ links:
     url: https://github.com/FerrisOfficial/CatanAPI/blob/main/Thesis.pdf
 featured: true
 demo: catan
+grade: 5/5
 ---
 
 Bachelor thesis: a high-performance game engine written in C++ with a custom AI
@@ -29,5 +30,3 @@ that solve chess outright. Agents have to reason under uncertainty instead.
 Engine throughput is what makes the research possible at all: drawing statistically
 meaningful conclusions about which strategy dominates requires tens of thousands of
 simulated games, so the performance work and the AI work are the same problem.
-
-Graded 5 — the maximum mark in the Polish system.

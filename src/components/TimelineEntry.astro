@@ -51,6 +51,7 @@ const dateText = formatRange(data.startDate, data.endDate, data.ongoing);
             {dateText}
           </time>
           <span class="entry-chip">{categoryLabel[data.category]}</span>
+          {data.grade && <span class="entry-grade mono">{data.grade}</span>}
         </span>
 
         <span class="entry-title">
@@ -241,6 +242,18 @@ const dateText = formatRange(data.startDate, data.endDate, data.ongoing);
     font-weight: 600;
     letter-spacing: 0.04em;
     text-transform: uppercase;
+  }
+
+  /* Neutral, not tied to category colour, so it reads as a fact rather than
+     competing with the category chip for attention. */
+  .entry-grade {
+    padding: 0.15em 0.55em;
+    border: 1px solid var(--border);
+    border-radius: var(--r-sm);
+    color: var(--text-muted);
+    font-size: var(--text-2xs);
+    font-weight: 600;
+    letter-spacing: 0.02em;
   }
 
   .entry-title {
