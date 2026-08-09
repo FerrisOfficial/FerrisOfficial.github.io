@@ -1,0 +1,73 @@
+---
+import { Image } from 'astro:assets';
+import portrait from '../assets/portrait.png';
+---
+
+<section class="section about" id="about">
+  <div class="container about-inner">
+    <div class="about-portrait">
+      <Image class="about-portrait-img" src={portrait} alt="Portrait of Maciej Stempniak" width={300} height={450} />
+    </div>
+
+    <div class="about-text">
+      <p class="section-label">About</p>
+
+      <h2 class="about-heading">Off the clock</h2>
+
+      <p class="about-body">
+        I like systems where the constraints are real — memory, latency, correctness —
+        and I like the discipline that comes with getting them right. That mindset carries
+        over outside of work too: sailing and cooking both reward the same patience and
+        attention to detail, and I'm a sucker for a good board game, Catan especially
+        (which is, in part, why I ended up building an AI to play it).
+      </p>
+    </div>
+  </div>
+</section>
+
+<style>
+  .about-inner {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    align-items: center;
+    gap: var(--space-7);
+  }
+
+  .about-portrait {
+    width: min(15rem, 40vw);
+  }
+
+  .about-portrait-img {
+    width: 100%;
+    height: auto;
+    filter: drop-shadow(0 16px 32px rgb(16 16 24 / 0.18));
+  }
+
+  .about-text {
+    min-width: 0;
+  }
+
+  .about-heading {
+    font-size: var(--text-2xl);
+  }
+
+  .about-body {
+    max-width: var(--measure);
+    margin-top: var(--space-4);
+    font-size: var(--text-base);
+    line-height: var(--leading-relaxed);
+    color: var(--text-muted);
+  }
+
+  @media (max-width: 48rem) {
+    .about-inner {
+      grid-template-columns: 1fr;
+      justify-items: center;
+      text-align: center;
+    }
+
+    .about-portrait {
+      width: min(13rem, 55vw);
+    }
+  }
+</style>

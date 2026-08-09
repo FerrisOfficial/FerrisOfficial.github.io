@@ -9,6 +9,7 @@ const isHome = Astro.url.pathname === '/';
 const homeAnchor = (hash: string) => (isHome ? hash : `/${hash}`);
 
 const links = [
+  { label: 'About', href: homeAnchor('#about') },
   { label: 'Experience', href: homeAnchor('#experience') },
   { label: 'Projects', href: homeAnchor('#featured-work') },
   { label: 'Timeline', href: '/timeline' },

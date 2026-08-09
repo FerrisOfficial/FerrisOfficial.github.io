@@ -1,6 +1,8 @@
 ---
+import { Image } from 'astro:assets';
 import { Icon } from 'astro-icon/components';
 import { site } from '../site';
+import portrait from '../assets/portrait.png';
 
 const heroLinks = [
   { label: 'View my work', href: '#experience', icon: 'lucide:arrow-right' },
@@ -14,48 +16,54 @@ const heroLinks = [
   <div class="hero-glow" aria-hidden="true"></div>
 
   <div class="container hero-inner">
-    <p class="hero-status" style="--i: 0">
-      <span class="status-dot" aria-hidden="true"></span>
-      Open to opportunities · {site.location}
-    </p>
+    <div class="hero-text">
+      <p class="hero-status" style="--i: 0">
+        <span class="status-dot" aria-hidden="true"></span>
+        Open to opportunities · {site.location}
+      </p>
 
-    <h1 class="hero-name" style="--i: 1">{site.name}</h1>
+      <h1 class="hero-name" style="--i: 1">{site.name}</h1>
 
-    {/* The full string is always in the DOM — only its reveal is animated — so
-        screen readers and crawlers get the role immediately. */}
-    <p class="hero-role mono" style="--i: 2">
-      <span class="typing" style={`--chars: ${site.role.length}`}>{site.role}</span>
-    </p>
+      {/* The full string is always in the DOM — only its reveal is animated — so
+          screen readers and crawlers get the role immediately. */}
+      <p class="hero-role mono" style="--i: 2">
+        <span class="typing" style={`--chars: ${site.role.length}`}>{site.role}</span>
+      </p>
 
-    <p class="hero-blurb" style="--i: 3">{site.tagline}</p>
+      <p class="hero-blurb" style="--i: 3">{site.tagline}</p>
 
-    <p class="hero-stack mono" style="--i: 4">
-      {site.stack.join(' · ')}
-    </p>
+      <p class="hero-stack mono" style="--i: 4">
+        {site.stack.join(' · ')}
+      </p>
 
-    <ul class="hero-links" role="list" style="--i: 5">
-      {
-        heroLinks.map((link) => (
-          <li>
-            <a
-              class="hero-link"
-              href={link.href}
-              rel={link.external ? 'noopener noreferrer' : undefined}
-              target={link.external ? '_blank' : undefined}
-              download={link.download ? true : undefined}
-            >
-              <Icon name={link.icon} width="16" height="16" aria-hidden="true" />
-              <span>{link.label}</span>
-            </a>
-          </li>
-        ))
-      }
-    </ul>
+      <ul class="hero-links" role="list" style="--i: 5">
+        {
+          heroLinks.map((link) => (
+            <li>
+              <a
+                class="hero-link"
+                href={link.href}
+                rel={link.external ? 'noopener noreferrer' : undefined}
+                target={link.external ? '_blank' : undefined}
+                download={link.download ? true : undefined}
+              >
+                <Icon name={link.icon} width="16" height="16" aria-hidden="true" />
+                <span>{link.label}</span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
 
-    <a class="hero-cue" href="#experience" style="--i: 6">
-      <span>The story, in order</span>
-      <Icon name="lucide:arrow-down" width="15" height="15" aria-hidden="true" />
-    </a>
+      <a class="hero-cue" href="#experience" style="--i: 6">
+        <span>The story, in order</span>
+        <Icon name="lucide:arrow-down" width="15" height="15" aria-hidden="true" />
+      </a>
+    </div>
+
+    <div class="hero-portrait" style="--i: 1" aria-hidden="true">
+      <Image class="hero-portrait-img" src={portrait} alt="" width={300} height={450} priority />
+    </div>
   </div>
 </section>
 
@@ -96,6 +104,27 @@ const heroLinks = [
 
   .hero-inner {
     position: relative;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: var(--space-7);
+  }
+
+  .hero-text {
+    min-width: 0;
+  }
+
+  .hero-portrait {
+    justify-self: end;
+    width: min(19rem, 42vw);
+    animation: rise 0.9s var(--ease) backwards;
+    animation-delay: calc(var(--i) * 90ms + 60ms);
+  }
+
+  .hero-portrait-img {
+    width: 100%;
+    height: auto;
+    filter: drop-shadow(0 20px 40px rgb(16 16 24 / 0.22));
   }
 
   /* Shared entrance: each child sets --i for its place in the stagger. */
@@ -304,6 +333,18 @@ const heroLinks = [
     }
     50% {
       transform: translateY(4px);
+    }
+  }
+
+  @media (max-width: 48rem) {
+    .hero-inner {
+      grid-template-columns: 1fr;
+    }
+
+    .hero-portrait {
+      justify-self: center;
+      order: -1;
+      width: min(13rem, 55vw);
     }
   }
 </style>
