@@ -2,7 +2,6 @@
 import type { CollectionEntry } from 'astro:content';
 import { render } from 'astro:content';
 import { Icon } from 'astro-icon/components';
-import CatanDemo from './CatanDemo.astro';
 import { formatRange, isoDate } from '../utils/date';
 
 interface Props {
@@ -111,8 +110,6 @@ const gradeSr = grade
         <div class="entry-body">
           <Content />
         </div>
-
-        {data.demo === 'catan' && <CatanDemo />}
 
         {
           data.tech.length > 0 && (

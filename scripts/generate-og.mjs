@@ -39,7 +39,7 @@ const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" 
         font-size="82" font-weight="600" letter-spacing="-2" fill="#f1f1f3">Maciej Stempniak</text>
 
   <text x="152" y="362" font-family="Consolas, 'Courier New', monospace" font-size="30"
-        fill="#2dd4bf">Systems &amp; Backend Engineer</text>
+        fill="#2dd4bf">Backend &amp; Systems Engineer</text>
 
   <text x="152" y="437" font-family="'Segoe UI', Arial, sans-serif" font-size="25" fill="#9d9daa">
     5G RAN energy efficiency at Nokia · production backend

@@ -47,8 +47,6 @@ const timeline = defineCollection({
         label: z.string().optional(),
       })
       .optional(),
-    /** Embeds an interactive demo in the expanded entry. */
-    demo: z.enum(['catan']).optional(),
     /**
      * Set when the date is a placeholder rather than a confirmed fact, so the
      * unverified ones stay visible instead of quietly becoming canon.
