@@ -10,20 +10,16 @@ import { Icon } from 'astro-icon/components';
  * `tone` reuses the timeline's category colours so the two sections read as one
  * system rather than two unrelated designs.
  */
-type Card =
-  | {
-      kind: 'group';
-      label: string;
-      icon: string;
-      tone: 'work' | 'education' | 'project' | 'award';
-      span: 2 | 3;
-      items: { name: string; core?: boolean }[];
-    }
-  | { kind: 'spoken'; span: 2; tone: 'work' | 'education' | 'project' | 'award' };
+type Card = {
+  label: string;
+  icon: string;
+  tone: 'work' | 'education' | 'project' | 'award';
+  span: 3;
+  items: { name: string; core?: boolean }[];
+};
 
 const cards: Card[] = [
   {
-    kind: 'group',
     label: 'Languages',
     icon: 'lucide:braces',
     tone: 'work',
@@ -37,7 +33,6 @@ const cards: Card[] = [
     ],
   },
   {
-    kind: 'group',
     label: 'Machine Learning',
     icon: 'lucide:brain-circuit',
     tone: 'project',
@@ -50,60 +45,33 @@ const cards: Card[] = [
     ],
   },
   {
-    kind: 'group',
-    label: 'Backend & Cloud',
+    label: 'Backend & Tooling',
     icon: 'lucide:server',
     tone: 'education',
-    span: 2,
+    span: 3,
     items: [
       { name: 'Docker', core: true },
       { name: 'SQL Server', core: true },
-      { name: 'Kubernetes' },
-      { name: 'Azure' },
-      { name: 'Git' },
       { name: 'CMake' },
-    ],
-  },
-  {
-    kind: 'group',
-    label: 'Debugging & Testing',
-    icon: 'lucide:bug',
-    tone: 'award',
-    span: 2,
-    items: [
-      { name: 'GDB', core: true },
-      { name: 'Valgrind', core: true },
+      { name: 'Git' },
       { name: 'GoogleTest' },
       { name: 'pytest' },
-      { name: 'Profiling' },
+      { name: 'Azure' },
+      { name: 'Kubernetes' },
     ],
   },
-  { kind: 'spoken', span: 2, tone: 'project' },
   {
-    kind: 'group',
-    label: 'Core Concepts',
+    label: 'Systems & Foundations',
     icon: 'lucide:cpu',
     tone: 'work',
     span: 3,
     items: [
-      { name: 'Data Structures & Algorithms', core: true },
       { name: 'Multithreading & Concurrency', core: true },
-      { name: 'Performance Optimisation' },
+      { name: 'Performance Optimisation', core: true },
       { name: 'Memory Management' },
-    ],
-  },
-  {
-    kind: 'group',
-    label: 'Mathematics',
-    icon: 'lucide:sigma',
-    tone: 'education',
-    span: 3,
-    items: [
-      { name: 'Probability & Statistics', core: true },
+      { name: 'Data Structures & Algorithms' },
+      { name: 'Probability & Statistics' },
       { name: 'Discrete Mathematics' },
-      { name: 'Time Series Analysis' },
-      { name: 'Numerical Analysis' },
-      { name: 'Logic' },
     ],
   },
 ];
@@ -120,67 +88,50 @@ const spoken = [
 
     <h2 class="skills-heading">What I work with</h2>
     <p class="skills-lede">
-      Grouped by what I reach for. The highlighted items are the ones I actually specialise
-      in, rather than have simply used.
+      The tools and foundations I use most. Highlighted items are my current specialisms.
     </p>
 
     <div class="skills-grid">
       {
-        cards.map((card, index) =>
-          card.kind === 'spoken' ? (
-            <div
-              class="skill-group"
-              data-span={card.span}
-              data-tone={card.tone}
-              style={`--i: ${index}`}
-            >
-              <div class="skill-head">
-                <span class="skill-icon">
-                  <Icon name="lucide:languages" width="17" height="17" aria-hidden="true" />
-                </span>
-                <h3 class="skill-label mono">Spoken</h3>
-              </div>
-
-              <ul class="spoken-list" role="list">
-                {spoken.map((entry) => (
-                  <li class="spoken-row">
-                    <span class="spoken-language">{entry.language}</span>
-                    <span class="spoken-badges">
-                      <span class="chip" data-core>
-                        {entry.level}
-                      </span>
-                      {entry.note && <span class="spoken-note mono">{entry.note}</span>}
-                    </span>
-                  </li>
-                ))}
-              </ul>
+        cards.map((card, index) => (
+          <div
+            class="skill-group"
+            data-span={card.span}
+            data-tone={card.tone}
+            style={`--i: ${index}`}
+          >
+            <div class="skill-head">
+              <span class="skill-icon">
+                <Icon name={card.icon} width="17" height="17" aria-hidden="true" />
+              </span>
+              <h3 class="skill-label mono">{card.label}</h3>
             </div>
-          ) : (
-            <div
-              class="skill-group"
-              data-span={card.span}
-              data-tone={card.tone}
-              style={`--i: ${index}`}
-            >
-              <div class="skill-head">
-                <span class="skill-icon">
-                  <Icon name={card.icon} width="17" height="17" aria-hidden="true" />
-                </span>
-                <h3 class="skill-label mono">{card.label}</h3>
-                <span class="skill-count mono">{card.items.length}</span>
-              </div>
 
-              <ul class="skill-items" role="list">
-                {card.items.map((item) => (
-                  <li class="chip" data-core={item.core ? '' : undefined}>
-                    {item.name}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ),
-        )
+            <ul class="skill-items" role="list">
+              {card.items.map((item) => (
+                <li class="chip" data-core={item.core ? '' : undefined}>
+                  {item.name}
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))
       }
+    </div>
+
+    <div class="spoken-inline">
+      <span class="spoken-title mono">
+        <Icon name="lucide:languages" width="16" height="16" aria-hidden="true" />
+        Languages
+      </span>
+      <ul class="spoken-list" role="list">
+        {spoken.map((entry) => (
+          <li>
+            <strong>{entry.language}</strong>
+            <span>{entry.level}{entry.note && ` · ${entry.note}`}</span>
+          </li>
+        ))}
+      </ul>
     </div>
   </div>
 </section>
@@ -197,9 +148,8 @@ const spoken = [
     color: var(--text-muted);
   }
 
-  /* --- Bento grid ---
-     Six columns divide cleanly into the 3+3 / 2+2+2 / 3+3 rhythm below, which
-     keeps the block from reading as a uniform wall of identical boxes. */
+  /* Four focused groups keep the section useful without turning it into an
+     exhaustive technology inventory. */
   .skills-grid {
     display: grid;
     grid-template-columns: repeat(6, 1fr);
@@ -305,11 +255,6 @@ const spoken = [
     color: var(--text);
   }
 
-  .skill-count {
-    font-size: var(--text-2xs);
-    color: var(--text-faint);
-  }
-
   /* --- Chips --- */
 
   .skill-items {
@@ -352,38 +297,49 @@ const spoken = [
     transform: translateY(-2px);
   }
 
-  /* --- Spoken --- */
+  /* --- Spoken languages --- */
 
-  /* Deliberately quiet: two facts, presented in the same chip language as every
-     other card. An earlier version used CEFR progress bars, which made the
-     least important card the loudest thing in the section. */
+  .spoken-inline {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-5);
+    margin-top: var(--space-4);
+    padding: var(--space-4) var(--space-5);
+    border: 1px solid var(--border);
+    border-radius: var(--r-lg);
+    background: var(--surface);
+  }
+
+  .spoken-title {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    color: var(--text-muted);
+    font-size: var(--text-xs);
+    font-weight: 600;
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+  }
+
   .spoken-list {
-    display: grid;
-    gap: var(--space-3);
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-5);
     margin: 0;
     padding: 0;
     list-style: none;
   }
 
-  .spoken-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: var(--space-3);
-  }
-
-  .spoken-language {
-    font-size: var(--text-sm);
-    font-weight: 580;
-  }
-
-  .spoken-badges {
+  .spoken-list li {
     display: flex;
     align-items: center;
     gap: var(--space-2);
+    font-size: var(--text-sm);
   }
 
-  .spoken-note {
+  .spoken-list span {
+    font-family: var(--font-mono);
     font-size: var(--text-2xs);
     color: var(--text-faint);
   }
@@ -414,6 +370,18 @@ const spoken = [
 
     .skill-group {
       padding: var(--space-4);
+    }
+
+    .spoken-inline {
+      align-items: flex-start;
+      flex-direction: column;
+      gap: var(--space-3);
+      padding: var(--space-4);
+    }
+
+    .spoken-list {
+      display: grid;
+      gap: var(--space-2);
     }
   }
 </style>

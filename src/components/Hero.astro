@@ -38,10 +38,11 @@ const heroLinks = [
 
       <ul class="hero-links" role="list" style="--i: 5">
         {
-          heroLinks.map((link) => (
+          heroLinks.map((link, index) => (
             <li>
               <a
                 class="hero-link"
+                data-primary={index === 0 ? '' : undefined}
                 href={link.href}
                 rel={link.external ? 'noopener noreferrer' : undefined}
                 target={link.external ? '_blank' : undefined}
@@ -306,6 +307,20 @@ const heroLinks = [
     transform: translateY(-2px);
   }
 
+  .hero-link[data-primary] {
+    border-color: var(--accent);
+    background: var(--accent);
+    color: var(--accent-contrast);
+    font-weight: 600;
+  }
+
+  .hero-link[data-primary]:hover {
+    border-color: var(--accent-hover);
+    background: var(--accent-hover);
+    color: var(--accent-contrast);
+    box-shadow: var(--shadow-md);
+  }
+
   .hero-cue {
     display: inline-flex;
     align-items: center;
@@ -337,14 +352,39 @@ const heroLinks = [
   }
 
   @media (max-width: 48rem) {
+    .hero {
+      min-height: auto;
+      padding-block: var(--space-7) var(--space-8);
+    }
+
     .hero-inner {
       grid-template-columns: 1fr;
+      gap: var(--space-6);
     }
 
     .hero-portrait {
-      justify-self: center;
-      order: -1;
-      width: min(13rem, 55vw);
+      justify-self: end;
+      width: min(10rem, 42vw);
+      margin-top: calc(-1 * var(--space-4));
+    }
+
+    .hero-cue {
+      display: none;
+    }
+  }
+
+  @media (max-width: 34rem) {
+    .hero {
+      padding-top: var(--space-6);
+    }
+
+    .hero-blurb {
+      margin-top: var(--space-4);
+      line-height: var(--leading-normal);
+    }
+
+    .hero-links {
+      margin-top: var(--space-5);
     }
   }
 </style>

@@ -5,14 +5,16 @@ import Footer from './Footer.astro';
 ---
 
 <section class="section contact" id="contact">
-  <div class="container">
+  <div class="container contact-inner">
     <p class="section-label">Contact</p>
 
-    <h2 class="contact-heading">Have an interesting problem?</h2>
-    <p class="contact-text">
-      I'm interested in backend and systems engineering roles where performance,
-      correctness and scale matter.
-    </p>
+    <div class="contact-copy">
+      <h2 class="contact-heading">Have an interesting problem?</h2>
+      <p class="contact-text">
+        I'm interested in backend and systems engineering roles where performance,
+        correctness and scale matter.
+      </p>
+    </div>
 
     <div class="contact-actions">
       <a class="contact-primary" href={`mailto:${site.email}`}>
@@ -46,6 +48,18 @@ import Footer from './Footer.astro';
     font-size: var(--text-2xl);
   }
 
+  .contact-inner {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: end;
+    gap: var(--space-6) var(--space-8);
+  }
+
+  .contact-inner .section-label {
+    grid-column: 1 / -1;
+    margin-bottom: 0;
+  }
+
   .contact-text {
     max-width: 44ch;
     margin-top: var(--space-4);
@@ -57,8 +71,8 @@ import Footer from './Footer.astro';
     display: flex;
     flex-wrap: wrap;
     align-items: center;
+    justify-content: flex-end;
     gap: var(--space-3);
-    margin-top: var(--space-6);
   }
 
   .contact-primary {
@@ -102,5 +116,21 @@ import Footer from './Footer.astro';
     border-color: var(--accent);
     background: var(--accent-soft);
     transform: translateY(-2px);
+  }
+
+  @media (max-width: 48rem) {
+    .contact-inner {
+      grid-template-columns: 1fr;
+      align-items: start;
+      gap: var(--space-5);
+    }
+
+    .contact-inner .section-label {
+      grid-column: auto;
+    }
+
+    .contact-actions {
+      justify-content: flex-start;
+    }
   }
 </style>

@@ -1,5 +1,6 @@
 ---
 import ThemeToggle from './ThemeToggle.astro';
+import { Icon } from 'astro-icon/components';
 import { site } from '../site';
 
 // Timeline now lives on its own page; everything else is a section of the
@@ -32,7 +33,7 @@ const initials = site.name
       <span class="brand-name">{site.name}</span>
     </a>
 
-    <nav class="nav-links" aria-label="Sections">
+    <nav class="nav-links" id="primary-navigation" aria-label="Sections">
       {
         links.map((link) => {
           // Only same-page anchors get scroll-spied; a plain route like
@@ -52,6 +53,17 @@ const initials = site.name
         })
       }
     </nav>
+
+    <button
+      class="nav-menu-toggle"
+      type="button"
+      aria-label="Open navigation"
+      aria-controls="primary-navigation"
+      aria-expanded="false"
+    >
+      <Icon class="menu-icon menu-icon-open" name="lucide:menu" width="19" height="19" aria-hidden="true" />
+      <Icon class="menu-icon menu-icon-close" name="lucide:x" width="19" height="19" aria-hidden="true" />
+    </button>
 
     <ThemeToggle />
   </div>
@@ -123,6 +135,22 @@ const initials = site.name
     gap: var(--space-2);
   }
 
+  .nav-menu-toggle {
+    display: none;
+    place-items: center;
+    width: 2.25rem;
+    height: 2.25rem;
+    flex-shrink: 0;
+    border: 1px solid var(--border);
+    border-radius: var(--r-md);
+    background: var(--surface);
+    color: var(--text-muted);
+  }
+
+  .menu-icon-close {
+    display: none;
+  }
+
   .nav-link {
     position: relative;
     padding: var(--space-2) var(--space-3);
@@ -177,6 +205,65 @@ const initials = site.name
     will-change: transform;
   }
 
+  @media (max-width: 48rem) {
+    .nav-inner {
+      position: relative;
+    }
+
+    .nav-menu-toggle {
+      display: grid;
+    }
+
+    .nav-links {
+      position: absolute;
+      top: calc(100% + var(--space-2));
+      left: var(--space-5);
+      right: var(--space-5);
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: var(--space-1);
+      padding: var(--space-2);
+      border: 1px solid var(--border);
+      border-radius: var(--r-lg);
+      background: var(--surface);
+      box-shadow: var(--shadow-lg);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(-0.5rem) scale(0.98);
+      transform-origin: top;
+      transition:
+        opacity var(--dur-fast) var(--ease),
+        visibility var(--dur-fast) var(--ease),
+        transform var(--dur-fast) var(--ease);
+    }
+
+    .nav-link {
+      padding: var(--space-3);
+    }
+
+    .nav-link::after {
+      left: var(--space-3);
+      right: auto;
+      width: 1.5rem;
+    }
+
+    .nav.menu-open .nav-links {
+      opacity: 1;
+      visibility: visible;
+      transform: none;
+    }
+
+    .nav.menu-open .menu-icon-open {
+      display: none;
+    }
+
+    .nav.menu-open .menu-icon-close {
+      display: block;
+    }
+  }
+
   @media (max-width: 34rem) {
     .brand-name {
       display: none;
@@ -195,6 +282,7 @@ const initials = site.name
 <script>
   const nav = document.getElementById('nav');
   const bar = document.getElementById('scroll-progress-bar');
+  const menuToggle = document.querySelector<HTMLButtonElement>('.nav-menu-toggle');
   const navLinks = Array.from(
     document.querySelectorAll<HTMLAnchorElement>('[data-nav-link]'),
   );
@@ -217,6 +305,29 @@ const initials = site.name
 
   window.addEventListener('scroll', onScroll, { passive: true });
   onScroll();
+
+  function closeMenu() {
+    nav?.classList.remove('menu-open');
+    menuToggle?.setAttribute('aria-expanded', 'false');
+    menuToggle?.setAttribute('aria-label', 'Open navigation');
+  }
+
+  menuToggle?.addEventListener('click', () => {
+    const open = !nav?.classList.contains('menu-open');
+    nav?.classList.toggle('menu-open', open);
+    menuToggle.setAttribute('aria-expanded', String(open));
+    menuToggle.setAttribute('aria-label', open ? 'Close navigation' : 'Open navigation');
+  });
+
+  for (const link of navLinks) link.addEventListener('click', closeMenu);
+
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') closeMenu();
+  });
+
+  document.addEventListener('click', (event) => {
+    if (nav?.classList.contains('menu-open') && !nav.contains(event.target as Node)) closeMenu();
+  });
 
   // --- Scroll spy ---
   // Sections are tall, so track which one occupies the middle band of the

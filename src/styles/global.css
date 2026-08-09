@@ -174,7 +174,13 @@ body::after {
 }
 
 .section {
-  padding-block: var(--space-9);
+  padding-block: clamp(4rem, 7vw, 5rem);
+}
+
+@media (max-width: 40rem) {
+  .section {
+    padding-block: 3.5rem;
+  }
 }
 
 .section-label {
