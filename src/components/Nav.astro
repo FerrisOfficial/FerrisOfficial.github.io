@@ -2,13 +2,21 @@
 import ThemeToggle from './ThemeToggle.astro';
 import { site } from '../site';
 
+// Timeline now lives on its own page; everything else is a section of the
+// homepage. On any page other than the homepage, a same-page anchor needs a
+// leading "/" so it navigates back there instead of pointing at nothing.
+const isHome = Astro.url.pathname === '/';
+const homeAnchor = (hash: string) => (isHome ? hash : `/${hash}`);
+
 const links = [
-  { label: 'Experience', href: '#experience' },
-  { label: 'Projects', href: '#featured-work' },
-  { label: 'Timeline', href: '#timeline' },
-  { label: 'Skills', href: '#skills' },
-  { label: 'Contact', href: '#contact' },
+  { label: 'Experience', href: homeAnchor('#experience') },
+  { label: 'Projects', href: homeAnchor('#featured-work') },
+  { label: 'Timeline', href: '/timeline' },
+  { label: 'Skills', href: homeAnchor('#skills') },
+  { label: 'Contact', href: homeAnchor('#contact') },
 ];
+
+const brandHref = isHome ? '#top' : '/';
 
 const initials = site.name
   .split(' ')
@@ -18,18 +26,29 @@ const initials = site.name
 
 <header class="nav" id="nav">
   <div class="nav-inner container">
-    <a class="brand" href="#top">
+    <a class="brand" href={brandHref}>
       <span class="brand-mark mono" aria-hidden="true">{initials}</span>
       <span class="brand-name">{site.name}</span>
     </a>
 
     <nav class="nav-links" aria-label="Sections">
       {
-        links.map((link) => (
-          <a class="nav-link" href={link.href} data-nav-link={link.href}>
-            {link.label}
-          </a>
-        ))
+        links.map((link) => {
+          // Only same-page anchors get scroll-spied; a plain route like
+          // "/timeline" has no in-page section to observe — it's just current
+          // or not, decided once at build time from the URL.
+          const hash = link.href.includes('#') ? link.href.slice(link.href.indexOf('#')) : undefined;
+          const isCurrentPage = !hash && Astro.url.pathname === link.href;
+          return (
+            <a
+              class={`nav-link${isCurrentPage ? ' is-active' : ''}`}
+              href={link.href}
+              data-nav-link={hash}
+            >
+              {link.label}
+            </a>
+          );
+        })
       }
     </nav>
 

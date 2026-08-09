@@ -6,6 +6,10 @@ import { Icon } from 'astro-icon/components';
  * progressively fainter dots into a single pulsing marker. The point is that
  * the timeline is unfinished, not that it ended.
  */
+
+// Contact lives on the homepage; from anywhere else, "#contact" alone would
+// just be a dead anchor on the current page.
+const contactHref = Astro.url.pathname === '/' ? '#contact' : '/#contact';
 ---
 
 <div class="terminus" data-terminus>
@@ -30,7 +34,7 @@ import { Icon } from 'astro-icon/components';
         Looking for the next problem worth solving — ideally one where performance,
         correctness and constraints all actually matter.
       </p>
-      <a class="terminus-cta" href="#contact">
+      <a class="terminus-cta" href={contactHref}>
         Get in touch
         <Icon name="lucide:arrow-right" width="15" height="15" aria-hidden="true" />
       </a>
