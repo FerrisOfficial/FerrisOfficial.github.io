@@ -7,7 +7,7 @@ const entries = await getCollection('timeline');
 const project = entries.find((entry) => entry.id === '2026-01-catan-engine');
 if (!project) throw new Error('Featured project entry not found: 2026-01-catan-engine');
 
-const github = project.data.links.find((link) => /github/i.test(link.label));
+const github = project.data.links.find((link) => /github\.com/i.test(link.url));
 const thesis = project.data.links.find((link) => /thesis/i.test(link.label));
 
 const tags = ['11 AI agents', 'C++20', 'WebAssembly', 'Benchmarking'];
@@ -32,6 +32,25 @@ const tags = ['11 AI agents', 'C++20', 'WebAssembly', 'Benchmarking'];
           and 11 autonomous agents benchmarked across tens of thousands of simulations.
         </p>
 
+        <dl class="case-study">
+          <div>
+            <dt>Problem</dt>
+            <dd>Simulate and compare Catan strategies efficiently and repeatably.</dd>
+          </div>
+          <div>
+            <dt>My role</dt>
+            <dd>Designed and implemented the C++20 engine and pluggable AI framework.</dd>
+          </div>
+          <div>
+            <dt>Engineering</dt>
+            <dd>11 autonomous agents, deterministic benchmarking and browser-native WebAssembly.</dd>
+          </div>
+          <div>
+            <dt>Measured result</dt>
+            <dd>Benchmarked agent behaviour across tens of thousands of simulations.</dd>
+          </div>
+        </dl>
+
         <ul class="featured-tags" role="list">
           {tags.map((tag) => <li class="tag">{tag}</li>)}
         </ul>
@@ -45,7 +64,7 @@ const tags = ['11 AI agents', 'C++20', 'WebAssembly', 'Benchmarking'];
             github && (
               <a class="featured-link" href={github.url} target="_blank" rel="noopener noreferrer">
                 <Icon name="lucide:github" width="15" height="15" aria-hidden="true" />
-                GitHub
+                Repository
               </a>
             )
           }
@@ -53,7 +72,7 @@ const tags = ['11 AI agents', 'C++20', 'WebAssembly', 'Benchmarking'];
             thesis && (
               <a class="featured-link" href={thesis.url} target="_blank" rel="noopener noreferrer">
                 <Icon name="lucide:book-open" width="15" height="15" aria-hidden="true" />
-                Read Thesis
+                Thesis
               </a>
             )
           }
@@ -93,6 +112,36 @@ const tags = ['11 AI agents', 'C++20', 'WebAssembly', 'Benchmarking'];
     font-size: var(--text-base);
     line-height: var(--leading-relaxed);
     color: var(--text-muted);
+  }
+
+  .case-study {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-3);
+    margin-top: var(--space-5);
+  }
+
+  .case-study > div {
+    padding: var(--space-4);
+    border: 1px solid var(--border);
+    border-radius: var(--r-md);
+    background: var(--bg-subtle);
+  }
+
+  .case-study dt {
+    color: var(--cat);
+    font-family: var(--font-mono);
+    font-size: var(--text-2xs);
+    font-weight: 650;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+
+  .case-study dd {
+    margin: var(--space-2) 0 0;
+    color: var(--text-muted);
+    font-size: var(--text-sm);
+    line-height: var(--leading-normal);
   }
 
   .featured-tags {
@@ -178,6 +227,11 @@ const tags = ['11 AI agents', 'C++20', 'WebAssembly', 'Benchmarking'];
     .featured-desc {
       margin-top: var(--space-3);
       line-height: var(--leading-normal);
+    }
+
+    .case-study {
+      grid-template-columns: 1fr;
+      margin-top: var(--space-4);
     }
 
     .featured-tags {

@@ -7,9 +7,9 @@ endDate: 2026-06-30
 summary: A high-performance C++ game engine with a custom AI framework, benchmarking 11 autonomous agents.
 tech: ['C++20', 'CMake', 'GoogleTest', 'Game AI', 'Benchmarking']
 links:
-  - label: Source on GitHub
+  - label: Repository
     url: https://github.com/FerrisOfficial/CatanAPI
-  - label: Read the thesis
+  - label: Thesis
     url: https://github.com/FerrisOfficial/CatanAPI/blob/main/Thesis.pdf
 featured: true
 grade:

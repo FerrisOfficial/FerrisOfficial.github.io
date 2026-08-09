@@ -4,7 +4,7 @@ org: Nokia
 category: work
 startDate: 2025-10-01
 endDate: 2026-04-30
-summary: Optimised power efficiency in 5G RAN — critical telecom infrastructure, in modern C++.
+summary: Optimised energy-efficiency logic in production C++ for 5G RAN software, profiling performance-sensitive code and validating changes with automated tests and telecom simulations.
 tech: ['C++20', 'Linux', 'GDB', 'Valgrind', 'GoogleTest', 'CMake', 'Git', 'Jira']
 featured: true
 ---

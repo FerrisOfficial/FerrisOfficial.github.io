@@ -10,11 +10,11 @@ const isHome = Astro.url.pathname === '/';
 const homeAnchor = (hash: string) => (isHome ? hash : `/${hash}`);
 
 const links = [
-  { label: 'About', href: homeAnchor('#about') },
   { label: 'Experience', href: homeAnchor('#experience') },
   { label: 'Projects', href: homeAnchor('#featured-work') },
-  { label: 'Timeline', href: '/timeline' },
   { label: 'Skills', href: homeAnchor('#skills') },
+  { label: 'About', href: homeAnchor('#about') },
+  { label: 'Timeline', href: '/timeline' },
   { label: 'Contact', href: homeAnchor('#contact') },
 ];
 
@@ -138,8 +138,8 @@ const initials = site.name
   .nav-menu-toggle {
     display: none;
     place-items: center;
-    width: 2.25rem;
-    height: 2.25rem;
+    width: 2.75rem;
+    height: 2.75rem;
     flex-shrink: 0;
     border: 1px solid var(--border);
     border-radius: var(--r-md);

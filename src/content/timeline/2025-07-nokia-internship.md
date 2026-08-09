@@ -4,7 +4,7 @@ org: Nokia
 category: work
 startDate: 2025-07-01
 endDate: 2025-10-31
-summary: Joined the 5G RAN energy efficiency effort as a summer intern, working in production C++.
+summary: Contributed production C++ to 5G RAN energy-efficiency software, working through professional review, build and test pipelines before converting to a developer role.
 tech: ['C++', 'Linux', 'Git', 'Jira']
 featured: true
 ---

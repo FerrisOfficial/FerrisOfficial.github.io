@@ -9,17 +9,18 @@ import Footer from './Footer.astro';
     <p class="section-label">Contact</p>
 
     <div class="contact-copy">
-      <h2 class="contact-heading">Have an interesting problem?</h2>
+      <h2 class="contact-heading">Hiring for a backend or systems role?</h2>
       <p class="contact-text">
-        I'm interested in backend and systems engineering roles where performance,
-        correctness and scale matter.
+        I'm especially interested in performance-sensitive systems, reliable backend
+        platforms and engineering work where correctness matters.
       </p>
+      <a class="contact-email mono" href={`mailto:${site.email}`}>{site.email}</a>
     </div>
 
     <div class="contact-actions">
       <a class="contact-primary" href={`mailto:${site.email}`}>
         <Icon name="lucide:mail" width="17" height="17" aria-hidden="true" />
-        Email me
+        Email Maciej
       </a>
 
       <a class="contact-secondary" href={site.linkedin} target="_blank" rel="noopener noreferrer">
@@ -65,6 +66,18 @@ import Footer from './Footer.astro';
     margin-top: var(--space-4);
     color: var(--text-muted);
     line-height: var(--leading-relaxed);
+  }
+
+  .contact-email {
+    display: inline-block;
+    margin-top: var(--space-3);
+    color: var(--text-muted);
+    font-size: var(--text-sm);
+    overflow-wrap: anywhere;
+  }
+
+  .contact-email:hover {
+    color: var(--accent);
   }
 
   .contact-actions {

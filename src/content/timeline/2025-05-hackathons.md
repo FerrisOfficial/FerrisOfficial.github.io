@@ -1,7 +1,7 @@
 ---
 title: HackNation 2025 & AI × Science Hackathon
 org: Google × BeeARD
-category: award
+category: project
 startDate: 2025-05-01
 summary: Participant in HackNation 2025 and the Google × BeeARD AI × Science hackathon.
 tech: ['Python', 'Machine Learning']

@@ -4,7 +4,7 @@ org: Symfonia
 category: work
 startDate: 2026-05-01
 ongoing: true
-summary: Building backend services for KSeF, Poland's national e-invoicing system, in C# and .NET.
+summary: Developing and maintaining .NET services for KSeF integration, focusing on reliable document processing, validation and failure handling in a regulated production environment.
 tech: ['C#', '.NET', 'ASP.NET Core', 'EF Core', 'SQL Server', 'Azure', 'Docker', 'Kubernetes']
 links:
   - label: Symfonia

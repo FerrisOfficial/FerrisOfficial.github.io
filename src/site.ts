@@ -1,9 +1,10 @@
 /** Single source of truth for personal details, reused by the layout, hero and contact. */
 export const site = {
   name: 'Maciej Stempniak',
-  role: 'Backend & Systems Engineer',
-  tagline: 'Building high-performance software in C++ and modern .NET.',
-  stack: ['C++20', '.NET', 'Python', 'Distributed Systems', 'Machine Learning'],
+  role: 'Backend & Systems Engineer — C++ and .NET',
+  tagline:
+    "I build performance-sensitive software and reliable backend services, with production experience in 5G RAN and Poland's national e-invoicing ecosystem.",
+  stack: ['C++20', '.NET', 'Python', 'Distributed Systems'],
   url: 'https://ferrisofficial.github.io',
   location: 'Poland',
   description:

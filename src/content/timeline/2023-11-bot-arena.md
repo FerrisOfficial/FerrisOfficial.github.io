@@ -7,7 +7,7 @@ endDate: 2024-06-30
 summary: A team-built arena for pitting user-written bots against each other and measuring how they perform.
 tech: ['Python', 'pygame', 'Simulation', 'Team Project']
 links:
-  - label: Source on GitHub
+  - label: Repository
     url: https://github.com/BartoszKruszewski/bot-arena
 featured: false
 dateApproximate: true

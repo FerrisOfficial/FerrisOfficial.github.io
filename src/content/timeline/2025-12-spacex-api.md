@@ -5,7 +5,7 @@ startDate: 2025-12-01
 summary: A .NET 10 Minimal API that ingests SpaceX launch data and ranks launches by a custom WatchScore.
 tech: ['C#', '.NET 10', 'Minimal API', 'SQLite', 'REST']
 links:
-  - label: Source on GitHub
+  - label: Repository
     url: https://github.com/FerrisOfficial/dotnet-public-api-weaver
 featured: false
 dateApproximate: true

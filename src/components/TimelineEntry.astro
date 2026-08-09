@@ -23,7 +23,9 @@ const categoryLabel: Record<typeof data.category, string> = {
   award: 'Award',
 };
 
-const dateText = formatRange(data.startDate, data.endDate, data.ongoing);
+const dateText = data.dateApproximate
+  ? String(data.startDate.getFullYear())
+  : formatRange(data.startDate, data.endDate, data.ongoing);
 
 /* The meter is the point: one segment per mark on the scale, each filled by
    however much of that mark was earned, so 4.6/5 draws four full bars and a
@@ -63,7 +65,6 @@ const gradeSr = grade
       >
         <span class="entry-meta">
           <time class="entry-date mono" datetime={isoDate(data.startDate)}>
-            {data.dateApproximate && <span class="approx" title="Approximate date">~</span>}
             {dateText}
           </time>
           <span class="entry-chip">{categoryLabel[data.category]}</span>
