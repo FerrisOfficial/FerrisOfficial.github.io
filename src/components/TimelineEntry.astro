@@ -51,7 +51,16 @@ const dateText = formatRange(data.startDate, data.endDate, data.ongoing);
             {dateText}
           </time>
           <span class="entry-chip">{categoryLabel[data.category]}</span>
-          {data.grade && <span class="entry-grade mono">{data.grade}</span>}
+          {
+            data.grade && (
+              <span
+                class="entry-grade mono"
+                title="Poland grades on a 2–5 scale, 5 being the maximum — reads like a GPA out of 5."
+              >
+                {data.grade}
+              </span>
+            )
+          }
         </span>
 
         <span class="entry-title">
@@ -254,6 +263,10 @@ const dateText = formatRange(data.startDate, data.endDate, data.ongoing);
     font-size: var(--text-2xs);
     font-weight: 600;
     letter-spacing: 0.02em;
+    text-decoration: underline dotted;
+    text-decoration-color: var(--text-faint);
+    text-underline-offset: 0.2em;
+    cursor: help;
   }
 
   .entry-title {

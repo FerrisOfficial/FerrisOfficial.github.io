@@ -7,7 +7,7 @@ endDate: 2022-06-30
 summary: Specialised maths and computer science track, where competitive programming took hold.
 tech: ['C++', 'Algorithms']
 featured: false
-grade: 4.8 avg
+grade: 4.8/5 avg
 ---
 
 A mathematics and computer science profile — the extended track, with the heavier
