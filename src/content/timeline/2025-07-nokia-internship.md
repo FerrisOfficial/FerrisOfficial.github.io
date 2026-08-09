@@ -6,7 +6,7 @@ startDate: 2025-07-01
 endDate: 2025-10-31
 summary: Joined the 5G RAN energy efficiency effort as a summer intern, working in production C++.
 tech: ['C++', 'Linux', 'Git', 'Jira']
-featured: false
+featured: true
 ---
 
 A summer internship at Nokia working on energy saving in 5G RAN — the radio access
