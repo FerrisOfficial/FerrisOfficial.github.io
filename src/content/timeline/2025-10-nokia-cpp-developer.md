@@ -16,9 +16,3 @@ infrastructure telecom systems.
 - Focused on power efficiency — reducing energy draw without giving up throughput or latency guarantees
 - Profiled and debugged with GDB and Valgrind, then validated production changes
   with GoogleTest against throughput and latency constraints
-
-Energy efficiency in RAN is a genuinely hard constraint problem rather than
-straightforward optimisation. Radio hardware can be idled to save power, but every
-watt saved has to be weighed against latency and coverage obligations that carriers
-are contractually bound to. The interesting work sits in that trade-off, not in
-micro-optimising hot loops.

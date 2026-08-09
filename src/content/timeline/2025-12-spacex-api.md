@@ -2,25 +2,27 @@
 title: SpaceX Launch Data & Recommendation API
 category: project
 startDate: 2025-12-01
-summary: A .NET 10 Minimal API that ingests SpaceX launch data and ranks launches by a custom WatchScore.
-tech: ['C#', '.NET 10', 'Minimal API', 'SQLite', 'REST']
+summary: A small .NET 10 integration API with idempotent SpaceX imports, EF Core/SQLite persistence, bounded parameters and automated tests.
+tech: ['C#', '.NET 10', 'ASP.NET Core Minimal API', 'EF Core', 'SQLite', 'xUnit']
 links:
   - label: Repository
     url: https://github.com/FerrisOfficial/dotnet-public-api-weaver
 featured: false
 ---
 
-A .NET 10 Minimal API that integrates SpaceX public launch data and persists it
-in SQLite.
+A small .NET 10 Minimal API that imports upcoming SpaceX launches and persists
+them through EF Core and SQLite.
 
-- Built the ingestion layer against the public SpaceX API, persisting launches locally
-- Designed a **WatchScore** engine that ranks and prioritises launches by how worth watching they are
-- Exposed the result through a REST dashboard and recommendation endpoints
+- Implemented an idempotent import: existing `ExternalId` records are updated and
+  new launches are inserted instead of duplicated
+- Clamped import and recommendation query parameters to documented bounds, with
+  cancellation propagated through HTTP and EF Core operations
+- Configured a 20-second upstream timeout and exposed aggregation and recommendation
+  data through JSON endpoints
+- Covered the service with **nine unit tests** and one hosted end-to-end test using
+  a test SQLite database
 
-The interesting design question was the scoring itself. "Worth watching" is not a
-field in any dataset — it has to be composed from things that are, like payload
-type, whether a booster landing is attempted, mission novelty and launch site.
-WatchScore turns that judgement into something explicit and tunable.
-
-A deliberate break from C++: the aim was to see how a modern managed stack handles
-API work, and .NET 10's Minimal API is a genuinely light way to do it.
+The bounded 0–100 `WatchScore` uses implemented inputs only: webcast availability,
+time until launch, mission-name categories (`Crew`, `Transporter`, `Starlink`) and
+missing launchpad/date penalties. This is an API integration and persistence project,
+not a full recommendation platform or visual dashboard.

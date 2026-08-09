@@ -3,16 +3,10 @@ import { getCollection } from 'astro:content';
 import { Icon } from 'astro-icon/components';
 import TimelineEntry from './TimelineEntry.astro';
 import TimelineEnd from './TimelineEnd.astro';
+import { compareTimelineNewest } from '../utils/timeline-sort';
 
 const unsortedEntries = await getCollection('timeline');
-const recency = (entry: (typeof unsortedEntries)[number]) =>
-  entry.data.ongoing
-    ? Number.POSITIVE_INFINITY
-    : (entry.data.endDate ?? entry.data.startDate).getTime();
-
-const entries = unsortedEntries.sort(
-  (a, b) => recency(b) - recency(a) || b.data.startDate.getTime() - a.data.startDate.getTime(),
-);
+const entries = unsortedEntries.sort(compareTimelineNewest);
 
 const count = (category: string) =>
   category === 'all'
@@ -35,7 +29,7 @@ const filters = [
     <h1 class="timeline-heading">Timeline: Experience, Education &amp; Projects</h1>
     <p class="timeline-lede">
       Production work is shown first. Switch to All for education, projects and awards,
-      ordered by each entry's most recent active date.
+      ordered by start date.
     </p>
 
     <div class="controls">

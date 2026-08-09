@@ -9,8 +9,9 @@ if (!project) throw new Error('Featured project entry not found: 2026-01-catan-e
 
 const github = project.data.links.find((link) => /github\.com/i.test(link.url));
 const thesis = project.data.links.find((link) => /thesis/i.test(link.label));
+const deepDive = github ? `${github.url}#design` : undefined;
 
-const tags = ['11 AI agents', 'C++20', 'WebAssembly', 'Benchmarking'];
+const tags = ['13 full-engine agents', '11 browser agents', 'C++20', 'WebAssembly'];
 ---
 
 <section
@@ -25,29 +26,38 @@ const tags = ['11 AI agents', 'C++20', 'WebAssembly', 'Benchmarking'];
       <div class="featured-intro">
         <h2 class="featured-title">{project.data.title.replace(' Simulation Platform', '')}</h2>
         <p class="featured-subtitle">
-          High-performance C++20 simulation engine + AI framework
+          Two-player Catan research engine + multi-agent benchmark platform
         </p>
         <p class="featured-desc">
-          A complete Catan implementation built from scratch, with a pluggable AI framework
-          and 11 autonomous agents evaluated with a fixed-seed, 1,530-game benchmark suite.
+          A deliberately modified 1v1 research variant: two players race to 15 victory points,
+          with bank and port trading but no player-to-player negotiation. The full native engine
+          contains 13 agents; 11 are available in the browser demo below.
         </p>
 
         <dl class="case-study">
           <div>
-            <dt>Problem</dt>
-            <dd>Simulate and compare Catan strategies efficiently and repeatably.</dd>
+            <dt>Authorship</dt>
+            <dd>Co-authored as a BSc thesis with Yaryna Rachkevych at the University of Wrocław.</dd>
           </div>
           <div>
-            <dt>My role</dt>
-            <dd>Designed and implemented the C++20 engine and pluggable AI framework.</dd>
+            <dt>State model</dt>
+            <dd>Bit-packed objects keep the fixed board state under 800 bytes, with deterministic seeds and replay logs.</dd>
           </div>
           <div>
             <dt>Engineering</dt>
-            <dd>11 autonomous agents, deterministic benchmarking and browser-native WebAssembly.</dd>
+            <dd>C++20 was chosen for allocation control, profiling and fast apply/undo evaluation without copying boards.</dd>
           </div>
           <div>
             <dt>Measured result</dt>
-            <dd>1,530 games across six repeatable matchups, with throughput and win rate reported per run.</dd>
+            <dd>Profiling cut per-game cost by 59%; Clang 22 -O3 reaches 250–300 games/s for random vs random.</dd>
+          </div>
+          <div>
+            <dt>Agents</dt>
+            <dd>Random, iterative and specialised heuristics, chance-aware alpha-beta, and an evolutionarily tuned agent.</dd>
+          </div>
+          <div>
+            <dt>Verification</dt>
+            <dd>111 test definitions expand to 242 cases across six binaries, with GCC, MSVC, Clang and ASan CI.</dd>
           </div>
         </dl>
 
@@ -76,6 +86,14 @@ const tags = ['11 AI agents', 'C++20', 'WebAssembly', 'Benchmarking'];
               </a>
             )
           }
+          {
+            deepDive && (
+              <a class="featured-link" href={deepDive} target="_blank" rel="noopener noreferrer">
+                <Icon name="lucide:code-xml" width="15" height="15" aria-hidden="true" />
+                Engineering deep dive
+              </a>
+            )
+          }
         </div>
       </div>
 
@@ -87,6 +105,10 @@ const tags = ['11 AI agents', 'C++20', 'WebAssembly', 'Benchmarking'];
 </section>
 
 <style>
+  .featured {
+    padding-bottom: var(--space-7);
+  }
+
   .featured-card {
     padding: var(--space-6);
     border: 1px solid var(--border);
@@ -215,6 +237,10 @@ const tags = ['11 AI agents', 'C++20', 'WebAssembly', 'Benchmarking'];
   }
 
   @media (max-width: 34rem) {
+    .featured {
+      padding-bottom: var(--space-6);
+    }
+
     .featured-card {
       padding: var(--space-4);
     }

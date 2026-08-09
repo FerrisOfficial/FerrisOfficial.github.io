@@ -1,6 +1,6 @@
 ---
 import { getCollection } from 'astro:content';
-import { formatYear } from '../utils/date';
+import { formatRange, formatYear } from '../utils/date';
 
 const featured = (await getCollection('timeline'))
   .filter((entry) => entry.data.featured)
@@ -8,6 +8,9 @@ const featured = (await getCollection('timeline'))
 
 const experience = featured.filter((entry) => entry.data.category === 'work');
 const education = featured.filter((entry) => entry.data.category === 'education');
+const homepageExperience = experience.filter((entry) => entry.data.org !== 'Nokia');
+const nokiaInternship = experience.find((entry) => entry.id === '2025-07-nokia-internship');
+const nokiaDeveloper = experience.find((entry) => entry.id === '2025-10-nokia-cpp-developer');
 
 function yearRange({ startDate, endDate, ongoing }: { startDate: Date; endDate?: Date; ongoing: boolean }) {
   const from = formatYear(startDate);
@@ -33,7 +36,7 @@ function yearRange({ startDate, endDate, ongoing }: { startDate: Date; endDate?:
         <h3 class="group-heading">Experience</h3>
         <ul class="highlight-list" role="list">
           {
-            experience.map((entry) => (
+            homepageExperience.map((entry) => (
               <li class="highlight-card" data-category="work">
                 <span class="highlight-date mono">{yearRange(entry.data)}</span>
                 <span class="highlight-title">
@@ -43,6 +46,22 @@ function yearRange({ startDate, endDate, ongoing }: { startDate: Date; endDate?:
                 <span class="highlight-summary">{entry.data.summary}</span>
               </li>
             ))
+          }
+          {
+            nokiaInternship && nokiaDeveloper && (
+              <li class="highlight-card" data-category="work">
+                <span class="highlight-date mono">
+                  {formatRange(nokiaInternship.data.startDate, nokiaDeveloper.data.endDate)}
+                </span>
+                <span class="highlight-title">
+                  Nokia <span class="highlight-transition">— Summer Intern → C++ Software Developer</span>
+                </span>
+                <span class="highlight-summary">
+                  Developed and profiled production C++20 for 5G RAN energy-efficiency software
+                  on Linux, validating changes with GDB, Valgrind, GoogleTest, CMake and telecom simulations.
+                </span>
+              </li>
+            )
           }
         </ul>
 
@@ -75,7 +94,9 @@ function yearRange({ startDate, endDate, ongoing }: { startDate: Date; endDate?:
         </ul>
 
         <aside class="timeline-cta" aria-labelledby="timeline-cta-heading">
-          <h4 class="timeline-cta-heading" id="timeline-cta-heading">Want the full story?</h4>
+          <h4 class="timeline-cta-heading" id="timeline-cta-heading">
+            View detailed experience and project history.
+          </h4>
           <p class="timeline-cta-text">
             Explore my complete timeline of work, education, projects and achievements.
           </p>
@@ -162,6 +183,11 @@ function yearRange({ startDate, endDate, ongoing }: { startDate: Date; endDate?:
   }
 
   .highlight-org {
+    color: var(--text-muted);
+    font-weight: 500;
+  }
+
+  .highlight-transition {
     color: var(--text-muted);
     font-weight: 500;
   }

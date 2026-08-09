@@ -196,8 +196,9 @@ const heroLinks = [
   @media (prefers-reduced-motion: no-preference) {
     .typing {
       animation:
-        type 1.45s steps(var(--chars), end) 0.15s backwards,
-        caret 1s steps(1, end) 1.65s infinite;
+        type 0.95s steps(var(--chars), end) backwards,
+        caret 0.7s steps(1, end) 0.95s 4,
+        cursor-hide 0s linear 3.75s forwards;
     }
   }
 
@@ -209,6 +210,12 @@ const heroLinks = [
 
   @keyframes caret {
     50% {
+      border-right-color: transparent;
+    }
+  }
+
+  @keyframes cursor-hide {
+    to {
       border-right-color: transparent;
     }
   }
@@ -336,7 +343,7 @@ const heroLinks = [
 
     .hero-portrait {
       justify-self: end;
-      width: min(10rem, 42vw);
+      width: min(8rem, 34vw);
       margin-top: calc(-1 * var(--space-4));
     }
 
@@ -351,7 +358,9 @@ const heroLinks = [
     }
 
     .hero-role {
-      font-size: 0.875rem;
+      font-size: 0.9rem;
+      font-weight: 600;
+      letter-spacing: -0.035em;
     }
 
     .hero-blurb {

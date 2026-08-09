@@ -9,9 +9,6 @@ featured: true
 dateApproximate: true
 ---
 
-An honorable mention in the Polish Olympiad in Informatics (Olimpiada Informatyczna),
-the country's main algorithmic competition for secondary school students.
-
-The olympiad rewards exactly the things that carried into everything afterwards:
-picking the right data structure, reasoning about complexity before writing code,
-and getting it correct under time pressure.
+An honorable mention in Poland's principal national algorithmic competition for
+secondary-school students, evaluated through data structures, algorithms, complexity
+analysis and implementation correctness under contest constraints.

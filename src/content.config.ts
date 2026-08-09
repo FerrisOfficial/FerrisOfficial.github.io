@@ -5,7 +5,7 @@ import { glob } from 'astro/loaders';
  * The timeline is the whole site, and it is meant to grow: adding a new job,
  * paper or project later should be creating one Markdown file here, nothing more.
  *
- * Timeline views sort entries by their most recent active date.
+ * Timeline views sort entries by start date, newest first.
  */
 const timeline = defineCollection({
   loader: glob({ pattern: '**/*.md', base: './src/content/timeline' }),

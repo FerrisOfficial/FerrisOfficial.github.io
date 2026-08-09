@@ -13,14 +13,10 @@ featured: true
 ---
 
 Backend developer on Symfonia's team building software for **KSeF** (Krajowy System
-e-Faktur) — Poland's national, soon-to-be-mandatory e-invoicing platform.
+e-Faktur), Poland's national e-invoicing platform.
 
 - Deliver C# and ASP.NET Core services for KSeF document processing, including
   validation and failure-handling paths for regulated production workflows
-- Work through the compliance and data-integrity constraints of a national tax
-  system, where correctness matters more than almost anywhere else in commercial software
-- Deployed with Docker and Kubernetes on Azure
-
-A shift from the C++ and embedded-systems work at Nokia into a managed, API-driven
-stack — trading closeness to the metal for closeness to the domain: tax law,
-invoicing semantics and a system every business in Poland will eventually depend on.
+- Work within compliance and data-integrity constraints where invalid document state
+  must be detected before external submission
+- Develop in an existing Docker, Kubernetes and Azure delivery environment

@@ -1,77 +1,57 @@
 ---
 import { Icon } from 'astro-icon/components';
 
-/**
- * `core` marks the handful of things Maciej actually specialises in, drawn from
- * the CV's own wording ("specialising in C++20, Python and ML") plus the tools
- * that recur across the timeline entries. Keeping it to one or two per group is
- * the point — mark everything and the emphasis stops meaning anything.
- *
- * `tone` reuses the timeline's category colours so the two sections read as one
- * system rather than two unrelated designs.
- */
 type Card = {
   label: string;
   icon: string;
   tone: 'work' | 'education' | 'project' | 'award';
   span: 3;
-  items: { name: string; core?: boolean }[];
+  items: { name: string; evidence: string }[];
 };
 
 const cards: Card[] = [
   {
-    label: 'Languages',
+    label: 'Core engineering',
     icon: 'lucide:braces',
     tone: 'work',
     span: 3,
     items: [
-      { name: 'C++20', core: true },
-      { name: 'Python', core: true },
-      { name: 'C' },
-      { name: 'Java' },
-      { name: 'C#' },
+      { name: 'C++20', evidence: 'Nokia 5G RAN; Catan research engine' },
+      { name: 'C#/.NET', evidence: 'KSeF services; SpaceX integration API' },
+      { name: 'Python', evidence: 'ML experiments; simulation, tuning and replay tooling' },
     ],
   },
   {
-    label: 'Machine Learning',
-    icon: 'lucide:brain-circuit',
+    label: 'Backend & systems',
+    icon: 'lucide:server',
     tone: 'project',
     span: 3,
     items: [
-      { name: 'PyTorch', core: true },
-      { name: 'YOLOv8', core: true },
-      { name: 'TensorFlow' },
-      { name: 'scikit-learn' },
+      { name: 'ASP.NET Core & EF Core', evidence: 'KSeF services; SpaceX API' },
+      { name: 'Linux, GDB & Valgrind', evidence: 'Production C++ at Nokia' },
+      { name: 'CMake & GoogleTest', evidence: 'Catan engine; Nokia validation' },
     ],
   },
   {
-    label: 'Backend & Tooling',
-    icon: 'lucide:server',
+    label: 'Applied ML',
+    icon: 'lucide:brain-circuit',
     tone: 'education',
     span: 3,
     items: [
-      { name: 'Docker', core: true },
-      { name: 'SQL Server', core: true },
-      { name: 'CMake' },
-      { name: 'Git' },
-      { name: 'GoogleTest' },
-      { name: 'pytest' },
-      { name: 'Azure' },
-      { name: 'Kubernetes' },
+      { name: 'PyTorch & YOLOv8', evidence: 'Medical-imaging experiments' },
+      { name: 'Experiment tooling', evidence: 'Evolutionary tuning, plotting and analysis' },
+      { name: 'Reproducible simulation', evidence: 'Deterministic seeds and benchmark automation' },
     ],
   },
   {
-    label: 'Systems & Foundations',
-    icon: 'lucide:cpu',
+    label: 'Delivery & infrastructure',
+    icon: 'lucide:git-branch',
     tone: 'work',
     span: 3,
     items: [
-      { name: 'Multithreading & Concurrency', core: true },
-      { name: 'Performance Optimisation', core: true },
-      { name: 'Memory Management' },
-      { name: 'Data Structures & Algorithms' },
-      { name: 'Probability & Statistics' },
-      { name: 'Discrete Mathematics' },
+      { name: 'Git & multi-compiler CI', evidence: 'GCC, MSVC, Clang and ASan' },
+      { name: 'Docker & SQL Server', evidence: '.NET production environment' },
+      { name: 'SQLite & xUnit', evidence: 'SpaceX persistence and 10 automated tests' },
     ],
   },
 ];
@@ -87,9 +67,7 @@ const spoken = [
     <p class="section-label">Toolkit</p>
 
     <h2 class="skills-heading">Technical strengths</h2>
-    <p class="skills-lede">
-      The tools and foundations I use most. Highlighted items are my current specialisms.
-    </p>
+    <p class="skills-lede">Core technologies paired with the work that demonstrates them.</p>
 
     <div class="skills-grid">
       {
@@ -109,8 +87,9 @@ const spoken = [
 
             <ul class="skill-items" role="list">
               {card.items.map((item) => (
-                <li class="chip" data-core={item.core ? '' : undefined}>
-                  {item.name}
+                <li class="skill-evidence">
+                  <strong>{item.name}</strong>
+                  <span>{item.evidence}</span>
                 </li>
               ))}
             </ul>
@@ -122,7 +101,7 @@ const spoken = [
     <div class="spoken-inline">
       <span class="spoken-title mono">
         <Icon name="lucide:languages" width="16" height="16" aria-hidden="true" />
-        Languages
+        Spoken languages
       </span>
       <ul class="spoken-list" role="list">
         {spoken.map((entry) => (
@@ -255,46 +234,38 @@ const spoken = [
     color: var(--text);
   }
 
-  /* --- Chips --- */
+  /* --- Evidence rows --- */
 
   .skill-items {
-    display: flex;
-    flex-wrap: wrap;
-    align-content: flex-start;
-    gap: var(--space-2);
+    display: grid;
+    gap: var(--space-3);
     margin: 0;
     padding: 0;
     list-style: none;
   }
 
-  .chip {
-    padding: 0.32em 0.7em;
-    border: 1px solid var(--border);
-    border-radius: var(--r-sm);
-    background: var(--bg-subtle);
+  .skill-evidence {
+    display: grid;
+    gap: var(--space-1);
+    padding-top: var(--space-3);
+    border-top: 1px solid var(--border);
+  }
+
+  .skill-evidence:first-child {
+    padding-top: 0;
+    border-top: 0;
+  }
+
+  .skill-evidence strong {
+    color: var(--cat);
+    font-size: var(--text-sm);
+    font-weight: 600;
+  }
+
+  .skill-evidence span {
     color: var(--text-muted);
-    font-family: var(--font-mono);
-    font-size: var(--text-2xs);
-    font-weight: 500;
-    line-height: 1.5;
-    transition:
-      color var(--dur-fast) var(--ease),
-      border-color var(--dur-fast) var(--ease),
-      transform var(--dur-fast) var(--ease);
-  }
-
-  /* The specialisms. Without this tier, C++20 looked exactly like Jira. */
-  .chip[data-core] {
-    border-color: color-mix(in srgb, var(--cat) 42%, transparent);
-    background: var(--cat-soft);
-    color: var(--cat);
-    font-weight: 620;
-  }
-
-  .chip:hover {
-    border-color: var(--cat);
-    color: var(--cat);
-    transform: translateY(-2px);
+    font-size: var(--text-xs);
+    line-height: var(--leading-normal);
   }
 
   /* --- Spoken languages --- */
