@@ -1,0 +1,27 @@
+---
+import { site } from '../site';
+---
+
+<footer class="footer">
+  <div class="container footer-inner">
+    <p class="mono">© {new Date().getFullYear()} {site.name}</p>
+    <p class="mono footer-built">Built with Astro · no trackers, no cookies</p>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    border-top: 1px solid var(--border);
+    background: var(--bg-subtle);
+    padding-block: var(--space-5);
+  }
+
+  .footer-inner {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: var(--space-3);
+    font-size: var(--text-2xs);
+    color: var(--text-faint);
+  }
+</style>

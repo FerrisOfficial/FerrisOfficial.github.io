@@ -1,6 +1,7 @@
 ---
 import { Icon } from 'astro-icon/components';
 import { site } from '../site';
+import Footer from './Footer.astro';
 ---
 
 <section class="section contact" id="contact">
@@ -32,12 +33,7 @@ import { site } from '../site';
   </div>
 </section>
 
-<footer class="footer">
-  <div class="container footer-inner">
-    <p class="mono">© {new Date().getFullYear()} {site.name}</p>
-    <p class="mono footer-built">Built with Astro · no trackers, no cookies</p>
-  </div>
-</footer>
+<Footer />
 
 <style>
   .contact {
@@ -106,22 +102,5 @@ import { site } from '../site';
     border-color: var(--accent);
     background: var(--accent-soft);
     transform: translateY(-2px);
-  }
-
-  /* --- Footer --- */
-
-  .footer {
-    border-top: 1px solid var(--border);
-    background: var(--bg-subtle);
-    padding-block: var(--space-5);
-  }
-
-  .footer-inner {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    gap: var(--space-3);
-    font-size: var(--text-2xs);
-    color: var(--text-faint);
   }
 </style>
