@@ -1,0 +1,769 @@
+---
+import { Icon } from 'astro-icon/components';
+
+/**
+ * The thesis engine, compiled to WebAssembly and run in the page.
+ *
+ * The bot list is rendered server-side purely as a no-JS fallback; once the
+ * worker reports in, it is replaced by the roster the engine itself exposes,
+ * so the two can never drift apart.
+ */
+const fallbackBots = [
+  ['it5', 'Iterative 5'],
+  ['cr', 'City Rush'],
+  ['dev', 'Dev Cards'],
+  ['it1', 'Iterative 1'],
+  ['rp', 'Random'],
+];
+---
+
+<div class="demo" data-catan-demo>
+  <div class="demo-head">
+    <span class="demo-badge mono">
+      <Icon name="lucide:cpu" width="13" height="13" aria-hidden="true" />
+      Live · C++ via WebAssembly
+    </span>
+    <p class="demo-intro">
+      The engine below is the thesis code itself, compiled to WebAssembly and running in
+      your browser — not a recording. Pick two bots and watch the win rate converge.
+    </p>
+  </div>
+
+  <div class="demo-controls">
+    <label class="field">
+      <span class="field-label mono">Bot A</span>
+      <select data-bot-a>
+        {fallbackBots.map(([flag, name]) => <option value={flag} selected={flag === 'it5'}>{name}</option>)}
+      </select>
+    </label>
+
+    <span class="versus mono" aria-hidden="true">vs</span>
+
+    <label class="field">
+      <span class="field-label mono">Bot B</span>
+      <select data-bot-b>
+        {fallbackBots.map(([flag, name]) => <option value={flag} selected={flag === 'cr'}>{name}</option>)}
+      </select>
+    </label>
+
+    <label class="field field-narrow">
+      <span class="field-label mono">Games</span>
+      <select data-games>
+        <option value="100">100</option>
+        <option value="500" selected>500</option>
+        <option value="2000">2000</option>
+      </select>
+    </label>
+
+    <button class="demo-run" type="button" data-run disabled>
+      <Icon name="lucide:play" width="15" height="15" aria-hidden="true" />
+      <span data-run-label>Loading engine…</span>
+    </button>
+  </div>
+
+  <p class="demo-note" data-note hidden></p>
+
+  <div class="demo-results" data-results hidden>
+    <div class="bar-row">
+      <span class="bar-name" data-name-a>Bot A</span>
+      <div class="bar-track">
+        <span class="bar-fill bar-a" data-bar-a></span>
+      </div>
+      <span class="bar-value mono" data-pct-a>—</span>
+    </div>
+
+    <div class="bar-row">
+      <span class="bar-name" data-name-b>Bot B</span>
+      <div class="bar-track">
+        <span class="bar-fill bar-b" data-bar-b></span>
+      </div>
+      <span class="bar-value mono" data-pct-b>—</span>
+    </div>
+
+    <dl class="demo-stats">
+      <div><dt class="mono">Games</dt><dd class="mono" data-stat-games>0</dd></div>
+      <div><dt class="mono">Draws</dt><dd class="mono" data-stat-draws>0</dd></div>
+      <div><dt class="mono">Turns/game</dt><dd class="mono" data-stat-turns>—</dd></div>
+      <div><dt class="mono">Games/sec</dt><dd class="mono" data-stat-rate>—</dd></div>
+    </dl>
+  </div>
+
+  {/* Replay of game 1 of whichever tournament just ran. */}
+  <div class="replay" data-replay hidden>
+    <div class="replay-head">
+      <h4 class="replay-title mono">Game 1, move by move</h4>
+      <p class="replay-sub" data-replay-sub></p>
+    </div>
+
+    <div class="board-wrap">
+      <svg class="board" data-board viewBox="0 0 100 100" role="img" aria-label="Catan board replay">
+        <g data-board-base></g>
+        <g data-board-state></g>
+      </svg>
+    </div>
+
+    <div class="replay-scores">
+      <span class="score" data-score-a><i class="swatch swatch-a"></i><b data-score-a-name>A</b> <em data-score-a-vp>0</em></span>
+      <span class="move mono" data-move>—</span>
+      <span class="score" data-score-b><i class="swatch swatch-b"></i><b data-score-b-name>B</b> <em data-score-b-vp>0</em></span>
+    </div>
+
+    <div class="replay-controls">
+      <button class="rp-btn" type="button" data-rp-back aria-label="Previous move">
+        <Icon name="lucide:skip-back" width="15" height="15" aria-hidden="true" />
+      </button>
+      <button class="rp-btn rp-play" type="button" data-rp-play aria-label="Play replay">
+        <Icon name="lucide:play" width="15" height="15" aria-hidden="true" />
+      </button>
+      <button class="rp-btn" type="button" data-rp-fwd aria-label="Next move">
+        <Icon name="lucide:skip-forward" width="15" height="15" aria-hidden="true" />
+      </button>
+
+      <input class="rp-slider" type="range" min="0" max="0" value="0" data-rp-slider aria-label="Move position" />
+      <span class="rp-count mono" data-rp-count>0 / 0</span>
+
+      <label class="rp-speed">
+        <span class="visually-hidden">Playback speed</span>
+        <select data-rp-speed>
+          <option value="240">0.5×</option>
+          <option value="120" selected>1×</option>
+          <option value="50">2.5×</option>
+          <option value="16">Fast</option>
+        </select>
+      </label>
+    </div>
+  </div>
+
+  <p class="demo-status visually-hidden" role="status" aria-live="polite" data-live></p>
+
+  <noscript>
+    <p class="demo-note">
+      This demo runs the engine in your browser, so it needs JavaScript. The source and
+      the thesis are linked above.
+    </p>
+  </noscript>
+</div>
+
+<style>
+  .demo {
+    margin: var(--space-4) var(--space-5) var(--space-5);
+    padding: var(--space-4);
+    border: 1px solid color-mix(in srgb, var(--cat) 35%, var(--border));
+    border-radius: var(--r-md);
+    background: var(--bg-subtle);
+  }
+
+  .demo-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: 0.2em 0.6em;
+    border-radius: var(--r-sm);
+    background: var(--cat-soft);
+    color: var(--cat);
+    font-size: var(--text-2xs);
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .demo-intro {
+    margin-top: var(--space-3);
+    font-size: var(--text-sm);
+    line-height: var(--leading-normal);
+    color: var(--text-muted);
+  }
+
+  /* --- Controls --- */
+
+  .demo-controls {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    gap: var(--space-3);
+    margin-top: var(--space-4);
+  }
+
+  .field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    flex: 1 1 9rem;
+    min-width: 0;
+  }
+
+  .field-narrow {
+    flex: 0 1 6rem;
+  }
+
+  .field-label {
+    font-size: var(--text-2xs);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--text-faint);
+  }
+
+  select {
+    width: 100%;
+    padding: 0.45rem 0.6rem;
+    border: 1px solid var(--border);
+    border-radius: var(--r-sm);
+    background: var(--surface);
+    color: var(--text);
+    font-size: var(--text-sm);
+    cursor: pointer;
+  }
+
+  select:hover {
+    border-color: var(--border-strong);
+  }
+
+  .versus {
+    padding-bottom: 0.6rem;
+    font-size: var(--text-xs);
+    color: var(--text-faint);
+  }
+
+  .demo-run {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: 0.5rem 1rem;
+    border-radius: var(--r-sm);
+    background: var(--cat);
+    color: var(--bg);
+    font-size: var(--text-sm);
+    font-weight: 600;
+    white-space: nowrap;
+    transition:
+      opacity var(--dur-fast) var(--ease),
+      transform var(--dur-fast) var(--ease);
+  }
+
+  .demo-run:hover:not(:disabled) {
+    transform: translateY(-1px);
+  }
+
+  .demo-run:disabled {
+    opacity: 0.5;
+    cursor: progress;
+  }
+
+  .demo-note {
+    margin-top: var(--space-3);
+    font-size: var(--text-xs);
+    color: var(--text-faint);
+  }
+
+  /* --- Results --- */
+
+  .demo-results {
+    margin-top: var(--space-4);
+    padding-top: var(--space-4);
+    border-top: 1px solid var(--border);
+  }
+
+  .bar-row {
+    display: grid;
+    grid-template-columns: minmax(5rem, 8rem) 1fr 3.2rem;
+    align-items: center;
+    gap: var(--space-3);
+    margin-bottom: var(--space-2);
+  }
+
+  .bar-name {
+    font-size: var(--text-sm);
+    font-weight: 560;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .bar-track {
+    height: 0.6rem;
+    border-radius: var(--r-full);
+    background: var(--border);
+    overflow: hidden;
+  }
+
+  .bar-fill {
+    display: block;
+    height: 100%;
+    width: 0%;
+    border-radius: var(--r-full);
+    /* Short transition so the bar eases between chunk updates instead of
+       snapping; long enough to read, short enough to feel live. */
+    transition: width 180ms linear;
+  }
+
+  .bar-a {
+    background: var(--cat);
+  }
+
+  .bar-b {
+    background: var(--cat-education);
+  }
+
+  .bar-value {
+    font-size: var(--text-xs);
+    text-align: right;
+    color: var(--text-muted);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .demo-stats {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-4);
+    margin: var(--space-4) 0 0;
+  }
+
+  .demo-stats div {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+  }
+
+  .demo-stats dt {
+    font-size: var(--text-2xs);
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--text-faint);
+  }
+
+  .demo-stats dd {
+    margin: 0;
+    font-size: var(--text-sm);
+    font-weight: 560;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* --- Replay --- */
+
+  .replay {
+    margin-top: var(--space-4);
+    padding-top: var(--space-4);
+    border-top: 1px solid var(--border);
+  }
+
+  .replay-title {
+    font-size: var(--text-2xs);
+    font-weight: 600;
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--cat);
+  }
+
+  .replay-sub {
+    margin-top: 0.2rem;
+    font-size: var(--text-xs);
+    color: var(--text-faint);
+  }
+
+  .board-wrap {
+    margin-top: var(--space-3);
+    border: 1px solid var(--border);
+    border-radius: var(--r-md);
+    background: var(--bg);
+    padding: var(--space-2);
+  }
+
+  .board {
+    display: block;
+    width: 100%;
+    height: auto;
+    max-height: 60vh;
+    color: var(--text-muted);
+  }
+
+  .replay-scores {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-3);
+    margin-top: var(--space-3);
+    font-size: var(--text-sm);
+  }
+
+  .score {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+
+  .score b {
+    font-weight: 560;
+  }
+
+  .score em {
+    font-style: normal;
+    font-variant-numeric: tabular-nums;
+    font-weight: 700;
+    color: var(--text);
+  }
+
+  .swatch {
+    width: 0.7rem;
+    height: 0.7rem;
+    border-radius: 3px;
+    display: inline-block;
+  }
+
+  /* Literal values, matching COLOURS in the replay script. The board keeps its
+     own palette in both themes — a Catan board should look like a Catan board —
+     so theme tokens here would make the legend disagree with the pieces. */
+  .swatch-a {
+    background: #2dd4bf;
+  }
+
+  .swatch-b {
+    background: #f0b429;
+  }
+
+  .move {
+    flex: 1;
+    text-align: center;
+    font-size: var(--text-2xs);
+    color: var(--text-faint);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .replay-controls {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    margin-top: var(--space-3);
+  }
+
+  .rp-btn {
+    display: grid;
+    place-items: center;
+    width: 1.9rem;
+    height: 1.9rem;
+    flex-shrink: 0;
+    border: 1px solid var(--border);
+    border-radius: var(--r-sm);
+    background: var(--surface);
+    color: var(--text-muted);
+    transition:
+      color var(--dur-fast) var(--ease),
+      border-color var(--dur-fast) var(--ease);
+  }
+
+  .rp-btn:hover {
+    color: var(--cat);
+    border-color: var(--cat);
+  }
+
+  .rp-play {
+    background: var(--cat-soft);
+    color: var(--cat);
+    border-color: color-mix(in srgb, var(--cat) 45%, transparent);
+  }
+
+  .rp-slider {
+    flex: 1;
+    min-width: 0;
+    accent-color: var(--cat);
+    cursor: pointer;
+  }
+
+  .rp-count {
+    font-size: var(--text-2xs);
+    color: var(--text-faint);
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+
+  .rp-speed select {
+    padding: 0.25rem 0.4rem;
+    font-size: var(--text-2xs);
+  }
+
+  @media (max-width: 34rem) {
+    .replay-controls {
+      flex-wrap: wrap;
+    }
+
+    .rp-slider {
+      order: 10;
+      flex: 1 1 100%;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .bar-fill {
+      transition: none;
+    }
+  }
+
+  @media (max-width: 34rem) {
+    .demo {
+      margin-inline: var(--space-4);
+      padding: var(--space-3);
+    }
+
+    .versus {
+      display: none;
+    }
+
+    .demo-run {
+      flex: 1 1 100%;
+      justify-content: center;
+    }
+  }
+</style>
+
+<script>
+  import {
+    computeNodePositions,
+    materialise,
+    renderBoardBase,
+    renderBoardState,
+    viewBox,
+    type Replay,
+  } from '../scripts/catan-board';
+
+  const root = document.querySelector<HTMLElement>('[data-catan-demo]');
+  if (root) {
+    const $ = <T extends HTMLElement>(sel: string) => root.querySelector<T>(sel)!;
+
+    const selA = $<HTMLSelectElement>('[data-bot-a]');
+    const selB = $<HTMLSelectElement>('[data-bot-b]');
+    const selGames = $<HTMLSelectElement>('[data-games]');
+    const runBtn = $<HTMLButtonElement>('[data-run]');
+    const runLabel = $('[data-run-label]');
+    const note = $('[data-note]');
+    const results = $('[data-results]');
+    const live = $('[data-live]');
+
+    let bots: { flag: string; name: string; blurb: string; tier: string }[] = [];
+    let running = false;
+    let lastSeed = 0;
+
+    const worker = new Worker('/wasm/catan-worker.js', { type: 'module' });
+
+    /* ---------- Replay of game 1 ---------- */
+
+    const rp = {
+      wrap: $('[data-replay]'),
+      base: $('[data-board-base]'),
+      state: $('[data-board-state]'),
+      svg: $<SVGSVGElement>('[data-board]'),
+      slider: $<HTMLInputElement>('[data-rp-slider]'),
+      speed: $<HTMLSelectElement>('[data-rp-speed]'),
+      play: $<HTMLButtonElement>('[data-rp-play]'),
+    };
+
+    let replay: Replay | null = null;
+    let boards: { nodes: number[][]; edges: number[][] } | null = null;
+    let nodePos: [number, number][] = [];
+    let frame = 0;
+    let timer: number | null = null;
+
+    const COLOURS: [string, string] = ['#2dd4bf', '#f0b429']; // seat 0, seat 1
+
+    function drawFrame(i: number) {
+      if (!replay || !boards) return;
+      frame = Math.max(0, Math.min(i, replay.frames.length - 1));
+      const f = replay.frames[frame];
+
+      rp.state.innerHTML = renderBoardState(
+        replay,
+        nodePos,
+        boards.nodes[frame],
+        boards.edges[frame],
+        f.rb,
+        COLOURS,
+      );
+
+      $('[data-score-a-vp]').textContent = String(f.vp[0]);
+      $('[data-score-b-vp]').textContent = String(f.vp[1]);
+      $('[data-move]').textContent =
+        frame === 0 ? 'Start' : `Turn ${f.t} · ${f.a}${f.d ? ` (${f.d})` : ''}`;
+      $('[data-rp-count]').textContent = `${frame} / ${replay.frames.length - 1}`;
+      rp.slider.value = String(frame);
+    }
+
+    function stopPlayback() {
+      if (timer !== null) {
+        clearInterval(timer);
+        timer = null;
+      }
+      rp.play.setAttribute('aria-label', 'Play replay');
+      rp.play.classList.remove('is-playing');
+    }
+
+    function startPlayback() {
+      if (!replay) return;
+      if (frame >= replay.frames.length - 1) frame = 0;
+      stopPlayback();
+      rp.play.setAttribute('aria-label', 'Pause replay');
+      rp.play.classList.add('is-playing');
+      timer = window.setInterval(() => {
+        if (!replay || frame >= replay.frames.length - 1) {
+          stopPlayback();
+          return;
+        }
+        drawFrame(frame + 1);
+      }, Number(rp.speed.value));
+    }
+
+    function loadReplay(data: Replay) {
+      replay = data;
+      // Seat 0 is bot A in game 1: swapping only kicks in on even-numbered games.
+      nodePos = computeNodePositions(data.nodes.map((n) => n[0]));
+      boards = materialise(data);
+      frame = 0;
+
+      rp.svg.setAttribute('viewBox', viewBox());
+      rp.base.innerHTML = renderBoardBase(data, nodePos);
+      rp.slider.max = String(data.frames.length - 1);
+
+      const nameA = nameOf(selA.value);
+      const nameB = nameOf(selB.value);
+      $('[data-score-a-name]').textContent = nameA;
+      $('[data-score-b-name]').textContent = nameB;
+      const outcome =
+        data.winner === -1 ? 'ended in a draw' : `won by ${data.winner === 0 ? nameA : nameB}`;
+      $('[data-replay-sub]').textContent =
+        `${data.frames.length - 1} moves over ${data.turns} turns, ${outcome}. Seed ${data.seed}.`;
+
+      rp.wrap.hidden = false;
+      drawFrame(0);
+    }
+
+    rp.play.addEventListener('click', () => (timer === null ? startPlayback() : stopPlayback()));
+    $('[data-rp-back]').addEventListener('click', () => {
+      stopPlayback();
+      drawFrame(frame - 1);
+    });
+    $('[data-rp-fwd]').addEventListener('click', () => {
+      stopPlayback();
+      drawFrame(frame + 1);
+    });
+    rp.slider.addEventListener('input', () => {
+      stopPlayback();
+      drawFrame(Number(rp.slider.value));
+    });
+    rp.speed.addEventListener('change', () => {
+      if (timer !== null) startPlayback(); // restart at the new interval
+    });
+
+    const nameOf = (flag: string) => bots.find((b) => b.flag === flag)?.name ?? flag;
+
+    /** Alpha-beta searches the game tree and is ~25x slower than the heuristic
+     *  bots, so warn rather than let someone queue a two-minute run blind. */
+    function updateNote() {
+      const slow = selA.value === 'ab' || selB.value === 'ab';
+      const games = Number(selGames.value);
+      if (slow) {
+        note.hidden = false;
+        note.textContent = `Alpha-Beta searches the game tree — roughly 7 games/sec against a tuned bot, so ${games} games will take a while. Try 100 first.`;
+      } else {
+        note.hidden = true;
+      }
+    }
+
+    function render(totals: any, rate: number, done: boolean) {
+      const { games, winsA, winsB, draws, turns } = totals;
+      const pct = (n: number) => (games ? (n / games) * 100 : 0);
+
+      $('[data-name-a]').textContent = nameOf(selA.value);
+      $('[data-name-b]').textContent = nameOf(selB.value);
+      $('[data-bar-a]').style.width = `${pct(winsA)}%`;
+      $('[data-bar-b]').style.width = `${pct(winsB)}%`;
+      $('[data-pct-a]').textContent = `${pct(winsA).toFixed(1)}%`;
+      $('[data-pct-b]').textContent = `${pct(winsB).toFixed(1)}%`;
+      $('[data-stat-games]').textContent = String(games);
+      $('[data-stat-draws]').textContent = String(draws);
+      $('[data-stat-turns]').textContent = games ? (turns / games).toFixed(0) : '—';
+      $('[data-stat-rate]').textContent = rate ? rate.toFixed(0) : '—';
+
+      if (done) {
+        live.textContent =
+          `Finished ${games} games. ${nameOf(selA.value)} won ${pct(winsA).toFixed(1)}%, ` +
+          `${nameOf(selB.value)} won ${pct(winsB).toFixed(1)}%, ${draws} draws.`;
+      }
+    }
+
+    worker.addEventListener('message', (event) => {
+      const msg = event.data;
+
+      if (msg.type === 'ready') {
+        bots = msg.bots;
+        // Replace the server-rendered fallback with the engine's own roster.
+        for (const sel of [selA, selB]) {
+          const keep = sel.value;
+          sel.innerHTML = '';
+          for (const bot of bots) {
+            const opt = document.createElement('option');
+            opt.value = bot.flag;
+            opt.textContent = `${bot.name} — ${bot.blurb}`;
+            sel.appendChild(opt);
+          }
+          sel.value = keep;
+        }
+        runBtn.disabled = false;
+        runLabel.textContent = 'Run tournament';
+        updateNote();
+      }
+
+      if (msg.type === 'progress') render(msg.totals, msg.gamesPerSecond, false);
+
+      if (msg.type === 'done') {
+        render(msg.totals, msg.gamesPerSecond ?? 0, true);
+        running = false;
+        runBtn.disabled = false;
+        runLabel.textContent = 'Run again';
+        // Fetch game 1 of the tournament that just finished.
+        if (!msg.cancelled) {
+          worker.postMessage({ type: 'replay', a: selA.value, b: selB.value, seed: lastSeed + 1 });
+        }
+      }
+
+      if (msg.type === 'replay') loadReplay(msg.replay);
+
+      if (msg.type === 'error') {
+        running = false;
+        runBtn.disabled = false;
+        runLabel.textContent = 'Run tournament';
+        note.hidden = false;
+        note.textContent = `Engine error: ${msg.message}`;
+      }
+    });
+
+    runBtn.addEventListener('click', () => {
+      if (running) {
+        worker.postMessage({ type: 'stop' });
+        runLabel.textContent = 'Stopping…';
+        runBtn.disabled = true;
+        return;
+      }
+
+      running = true;
+      results.hidden = false;
+      stopPlayback();
+      rp.wrap.hidden = true;
+      runLabel.textContent = 'Stop';
+      live.textContent = 'Running tournament…';
+      render({ games: 0, winsA: 0, winsB: 0, draws: 0, turns: 0 }, 0, false);
+
+      lastSeed = Math.floor(Math.random() * 1_000_000);
+      worker.postMessage({
+        type: 'run',
+        a: selA.value,
+        b: selB.value,
+        games: Number(selGames.value),
+        seed: lastSeed,
+        swap: true, // alternate who moves first; first-player advantage is real
+      });
+    });
+
+    selA.addEventListener('change', updateNote);
+    selB.addEventListener('change', updateNote);
+    selGames.addEventListener('change', updateNote);
+  }
+</script>

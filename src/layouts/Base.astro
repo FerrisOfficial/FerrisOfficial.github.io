@@ -1,0 +1,112 @@
+---
+import '@fontsource-variable/inter/wght.css';
+import '@fontsource-variable/jetbrains-mono/wght.css';
+import '../styles/global.css';
+import { site } from '../site';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const { title = `${site.name} — ${site.role}`, description = site.description } = Astro.props;
+
+const canonical = new URL(Astro.url.pathname, Astro.site ?? site.url).toString();
+const ogImage = new URL('/og.png', Astro.site ?? site.url).toString();
+
+const personSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: site.name,
+  jobTitle: site.role,
+  email: `mailto:${site.email}`,
+  url: site.url,
+  description: site.description,
+  sameAs: [site.github, site.linkedin],
+  knowsLanguage: ['pl', 'en'],
+  alumniOf: {
+    '@type': 'CollegeOrUniversity',
+    name: 'University of Wrocław',
+  },
+};
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="canonical" href={canonical} />
+
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="author" content={site.name} />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:locale" content="en_GB" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+
+    {/*
+      Blocking and inline on purpose. This has to run before first paint,
+      otherwise a dark-mode visitor gets a white flash on every load.
+      Only a manual choice is stored; absent that, CSS handles the OS preference.
+    */}
+    <script is:inline>
+      (function () {
+        // Marks that JS is available, before paint. Timeline entries render
+        // expanded by default so they are readable without JS; this class is
+        // what lets CSS collapse them with no flash of open content.
+        document.documentElement.classList.add('js');
+
+        try {
+          var stored = localStorage.getItem('theme');
+          if (stored === 'light' || stored === 'dark') {
+            document.documentElement.dataset.theme = stored;
+          }
+        } catch (e) {
+          /* private mode — fall through to the CSS media query */
+        }
+      })();
+    </script>
+
+    <script type="application/ld+json" set:html={JSON.stringify(personSchema)} />
+  </head>
+
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <slot />
+
+    {/* For the portion of this audience that opens devtools on a portfolio. */}
+    <script is:inline>
+      (function () {
+        var accent = 'color:#2dd4bf;font-family:ui-monospace,monospace;font-size:12px';
+        var muted = 'color:#9d9daa;font-family:ui-monospace,monospace;font-size:12px';
+        console.log(
+          '%c' +
+            '  __  __ ____  \n' +
+            ' |  \\/  / ___| \n' +
+            ' | |\\/| \\___ \\ \n' +
+            ' | |  | |___) |\n' +
+            ' |_|  |_|____/ \n',
+          accent,
+        );
+        console.log(
+          '%cMaciej Stempniak — C++ & Systems Engineer\n' +
+            'github.com/FerrisOfficial\n\n' +
+            '%cStatic Astro. No trackers, no cookies, no analytics.\n' +
+            'The timeline is eleven markdown files: src/content/timeline/*.md',
+          accent,
+          muted,
+        );
+      })();
+    </script>
+  </body>
+</html>

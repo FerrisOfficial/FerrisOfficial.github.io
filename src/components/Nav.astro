@@ -1,0 +1,222 @@
+---
+import ThemeToggle from './ThemeToggle.astro';
+import { site } from '../site';
+
+const links = [
+  { label: 'Timeline', href: '#timeline' },
+  { label: 'Skills', href: '#skills' },
+  { label: 'Contact', href: '#contact' },
+];
+
+const initials = site.name
+  .split(' ')
+  .map((part) => part[0])
+  .join('');
+---
+
+<header class="nav" id="nav">
+  <div class="nav-inner container">
+    <a class="brand" href="#top">
+      <span class="brand-mark mono" aria-hidden="true">{initials}</span>
+      <span class="brand-name">{site.name}</span>
+    </a>
+
+    <nav class="nav-links" aria-label="Sections">
+      {
+        links.map((link) => (
+          <a class="nav-link" href={link.href} data-nav-link={link.href}>
+            {link.label}
+          </a>
+        ))
+      }
+    </nav>
+
+    <ThemeToggle />
+  </div>
+
+  {/* Scroll position, as a hairline under the bar. */}
+  <div class="scroll-progress" aria-hidden="true"><span id="scroll-progress-bar"></span></div>
+</header>
+
+<style>
+  .nav {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: color-mix(in srgb, var(--bg) 82%, transparent);
+    backdrop-filter: blur(12px) saturate(1.4);
+    -webkit-backdrop-filter: blur(12px) saturate(1.4);
+    border-bottom: 1px solid transparent;
+    transition:
+      border-color var(--dur) var(--ease),
+      background-color var(--dur) var(--ease);
+  }
+
+  /* The border only appears once the page has moved, so the hero stays clean. */
+  .nav.is-scrolled {
+    border-bottom-color: var(--border);
+  }
+
+  .nav-inner {
+    display: flex;
+    align-items: center;
+    gap: var(--space-5);
+    height: 4rem;
+  }
+
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    margin-right: auto;
+    font-weight: 600;
+    letter-spacing: var(--tracking-tight);
+  }
+
+  .brand-mark {
+    display: grid;
+    place-items: center;
+    width: 1.9rem;
+    height: 1.9rem;
+    border-radius: var(--r-sm);
+    background: var(--accent);
+    color: var(--accent-contrast);
+    font-size: var(--text-2xs);
+    font-weight: 700;
+    letter-spacing: 0;
+    transition: transform var(--dur) var(--ease);
+  }
+
+  .brand:hover .brand-mark {
+    transform: rotate(-8deg) scale(1.06);
+  }
+
+  .brand-name {
+    font-size: var(--text-sm);
+  }
+
+  .nav-links {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+  }
+
+  .nav-link {
+    position: relative;
+    padding: var(--space-2) var(--space-3);
+    border-radius: var(--r-sm);
+    color: var(--text-muted);
+    font-size: var(--text-sm);
+    font-weight: 500;
+    transition: color var(--dur-fast) var(--ease);
+  }
+
+  .nav-link:hover {
+    color: var(--text);
+  }
+
+  .nav-link::after {
+    content: '';
+    position: absolute;
+    left: var(--space-3);
+    right: var(--space-3);
+    bottom: 0.3rem;
+    height: 1.5px;
+    border-radius: var(--r-full);
+    background: var(--accent);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform var(--dur) var(--ease);
+  }
+
+  .nav-link.is-active {
+    color: var(--text);
+  }
+
+  .nav-link.is-active::after {
+    transform: scaleX(1);
+  }
+
+  .scroll-progress {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -1px;
+    height: 2px;
+    pointer-events: none;
+  }
+
+  .scroll-progress span {
+    display: block;
+    height: 100%;
+    background: var(--accent);
+    transform: scaleX(0);
+    transform-origin: left;
+    will-change: transform;
+  }
+
+  @media (max-width: 34rem) {
+    .brand-name {
+      display: none;
+    }
+
+    .nav-inner {
+      gap: var(--space-3);
+    }
+
+    .nav-link {
+      padding-inline: var(--space-2);
+    }
+  }
+</style>
+
+<script>
+  const nav = document.getElementById('nav');
+  const bar = document.getElementById('scroll-progress-bar');
+  const navLinks = Array.from(
+    document.querySelectorAll<HTMLAnchorElement>('[data-nav-link]'),
+  );
+
+  // --- Scroll progress + nav border ---
+  let ticking = false;
+
+  function onScroll() {
+    if (ticking) return;
+    ticking = true;
+
+    requestAnimationFrame(() => {
+      const scrollable = document.documentElement.scrollHeight - window.innerHeight;
+      const progress = scrollable > 0 ? window.scrollY / scrollable : 0;
+      if (bar) bar.style.transform = `scaleX(${Math.min(1, Math.max(0, progress))})`;
+      nav?.classList.toggle('is-scrolled', window.scrollY > 8);
+      ticking = false;
+    });
+  }
+
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  // --- Scroll spy ---
+  // Sections are tall, so track which one occupies the middle band of the
+  // viewport rather than whichever merely intersects it.
+  const sections = navLinks
+    .map((link) => document.querySelector(link.dataset.navLink ?? ''))
+    .filter((el): el is HTMLElement => el instanceof HTMLElement);
+
+  if (sections.length) {
+    const spy = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (!entry.isIntersecting) continue;
+          const id = `#${entry.target.id}`;
+          for (const link of navLinks) {
+            link.classList.toggle('is-active', link.dataset.navLink === id);
+          }
+        }
+      },
+      { rootMargin: '-45% 0px -50% 0px', threshold: 0 },
+    );
+
+    for (const section of sections) spy.observe(section);
+  }
+</script>

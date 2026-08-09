@@ -1,0 +1,461 @@
+---
+import { Icon } from 'astro-icon/components';
+
+/**
+ * `core` marks the handful of things Maciej actually specialises in, drawn from
+ * the CV's own wording ("specialising in C++20, Python and ML") plus the tools
+ * that recur across the timeline entries. Keeping it to one or two per group is
+ * the point — mark everything and the emphasis stops meaning anything.
+ *
+ * `tone` reuses the timeline's category colours so the two sections read as one
+ * system rather than two unrelated designs.
+ */
+type Card =
+  | {
+      kind: 'group';
+      label: string;
+      icon: string;
+      tone: 'work' | 'education' | 'project' | 'award';
+      span: 2 | 3;
+      items: { name: string; core?: boolean }[];
+    }
+  | { kind: 'spoken'; span: 2; tone: 'work' | 'education' | 'project' | 'award' };
+
+const cards: Card[] = [
+  {
+    kind: 'group',
+    label: 'Languages',
+    icon: 'lucide:braces',
+    tone: 'work',
+    span: 3,
+    items: [
+      { name: 'C++20', core: true },
+      { name: 'Python', core: true },
+      { name: 'C' },
+      { name: 'Java' },
+      { name: 'C#' },
+    ],
+  },
+  {
+    kind: 'group',
+    label: 'Machine Learning',
+    icon: 'lucide:brain-circuit',
+    tone: 'project',
+    span: 3,
+    items: [
+      { name: 'PyTorch', core: true },
+      { name: 'YOLOv8', core: true },
+      { name: 'TensorFlow' },
+      { name: 'scikit-learn' },
+    ],
+  },
+  {
+    kind: 'group',
+    label: 'Build & Tooling',
+    icon: 'lucide:wrench',
+    tone: 'education',
+    span: 2,
+    items: [
+      { name: 'CMake', core: true },
+      { name: 'Git', core: true },
+      { name: 'Make' },
+      { name: 'GitHub' },
+      { name: 'Jira' },
+    ],
+  },
+  {
+    kind: 'group',
+    label: 'Debugging & Testing',
+    icon: 'lucide:bug',
+    tone: 'award',
+    span: 2,
+    items: [
+      { name: 'GDB', core: true },
+      { name: 'Valgrind', core: true },
+      { name: 'GoogleTest' },
+      { name: 'pytest' },
+      { name: 'Profiling' },
+    ],
+  },
+  { kind: 'spoken', span: 2, tone: 'project' },
+  {
+    kind: 'group',
+    label: 'Core Concepts',
+    icon: 'lucide:cpu',
+    tone: 'work',
+    span: 3,
+    items: [
+      { name: 'Data Structures & Algorithms', core: true },
+      { name: 'Multithreading & Concurrency', core: true },
+      { name: 'Performance Optimisation' },
+      { name: 'Memory Management' },
+    ],
+  },
+  {
+    kind: 'group',
+    label: 'Mathematics',
+    icon: 'lucide:sigma',
+    tone: 'education',
+    span: 3,
+    items: [
+      { name: 'Probability & Statistics', core: true },
+      { name: 'Discrete Mathematics' },
+      { name: 'Time Series Analysis' },
+      { name: 'Numerical Analysis' },
+      { name: 'Logic' },
+    ],
+  },
+];
+
+const spoken = [
+  { language: 'Polish', level: 'Native' },
+  { language: 'English', level: 'C1 Advanced', note: 'Cambridge' },
+];
+---
+
+<section class="section" id="skills">
+  <div class="container">
+    <p class="section-label">Toolkit</p>
+
+    <h2 class="skills-heading">What I work with</h2>
+    <p class="skills-lede">
+      Grouped by what I reach for. The highlighted items are the ones I actually specialise
+      in, rather than have simply used.
+    </p>
+
+    <div class="skills-grid">
+      {
+        cards.map((card, index) =>
+          card.kind === 'spoken' ? (
+            <div
+              class="skill-group"
+              data-span={card.span}
+              data-tone={card.tone}
+              style={`--i: ${index}`}
+            >
+              <div class="skill-head">
+                <span class="skill-icon">
+                  <Icon name="lucide:languages" width="17" height="17" aria-hidden="true" />
+                </span>
+                <h3 class="skill-label mono">Spoken</h3>
+              </div>
+
+              <ul class="spoken-list" role="list">
+                {spoken.map((entry) => (
+                  <li class="spoken-row">
+                    <span class="spoken-language">{entry.language}</span>
+                    <span class="spoken-badges">
+                      <span class="chip" data-core>
+                        {entry.level}
+                      </span>
+                      {entry.note && <span class="spoken-note mono">{entry.note}</span>}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ) : (
+            <div
+              class="skill-group"
+              data-span={card.span}
+              data-tone={card.tone}
+              style={`--i: ${index}`}
+            >
+              <div class="skill-head">
+                <span class="skill-icon">
+                  <Icon name={card.icon} width="17" height="17" aria-hidden="true" />
+                </span>
+                <h3 class="skill-label mono">{card.label}</h3>
+                <span class="skill-count mono">{card.items.length}</span>
+              </div>
+
+              <ul class="skill-items" role="list">
+                {card.items.map((item) => (
+                  <li class="chip" data-core={item.core ? '' : undefined}>
+                    {item.name}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ),
+        )
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .skills-heading {
+    font-size: var(--text-2xl);
+  }
+
+  .skills-lede {
+    max-width: 52ch;
+    margin-top: var(--space-3);
+    margin-bottom: var(--space-6);
+    color: var(--text-muted);
+  }
+
+  /* --- Bento grid ---
+     Six columns divide cleanly into the 3+3 / 2+2+2 / 3+3 rhythm below, which
+     keeps the block from reading as a uniform wall of identical boxes. */
+  .skills-grid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: var(--space-4);
+  }
+
+  .skill-group[data-span='3'] {
+    grid-column: span 3;
+  }
+
+  .skill-group[data-span='2'] {
+    grid-column: span 2;
+  }
+
+  /* --- Card --- */
+
+  .skill-group {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    padding: var(--space-5);
+    border: 1px solid var(--border);
+    border-radius: var(--r-lg);
+    background: var(--surface);
+    overflow: hidden;
+    transition:
+      border-color var(--dur) var(--ease),
+      transform var(--dur) var(--ease),
+      box-shadow var(--dur) var(--ease);
+  }
+
+  .skill-group[data-tone='work'] {
+    --cat: var(--cat-work);
+    --cat-soft: var(--cat-work-soft);
+  }
+
+  .skill-group[data-tone='education'] {
+    --cat: var(--cat-education);
+    --cat-soft: var(--cat-education-soft);
+  }
+
+  .skill-group[data-tone='project'] {
+    --cat: var(--cat-project);
+    --cat-soft: var(--cat-project-soft);
+  }
+
+  .skill-group[data-tone='award'] {
+    --cat: var(--cat-award);
+    --cat-soft: var(--cat-award-soft);
+  }
+
+  /* Accent rule that wipes across the top edge on hover. */
+  .skill-group::before {
+    content: '';
+    position: absolute;
+    inset: 0 0 auto;
+    height: 2px;
+    background: var(--cat);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform var(--dur-slow) var(--ease);
+  }
+
+  .skill-group:hover {
+    border-color: color-mix(in srgb, var(--cat) 40%, var(--border));
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-md);
+  }
+
+  .skill-group:hover::before {
+    transform: scaleX(1);
+  }
+
+  .skill-head {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+  }
+
+  .skill-icon {
+    display: grid;
+    place-items: center;
+    width: 2.1rem;
+    height: 2.1rem;
+    flex-shrink: 0;
+    border-radius: var(--r-sm);
+    background: var(--cat-soft);
+    color: var(--cat);
+    transition: transform var(--dur) var(--ease);
+  }
+
+  .skill-group:hover .skill-icon {
+    transform: rotate(-6deg) scale(1.08);
+  }
+
+  .skill-label {
+    flex: 1;
+    font-size: var(--text-2xs);
+    font-weight: 600;
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+    color: var(--text);
+  }
+
+  .skill-count {
+    font-size: var(--text-2xs);
+    color: var(--text-faint);
+  }
+
+  /* --- Chips --- */
+
+  .skill-items {
+    display: flex;
+    flex-wrap: wrap;
+    align-content: flex-start;
+    gap: var(--space-2);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .chip {
+    padding: 0.32em 0.7em;
+    border: 1px solid var(--border);
+    border-radius: var(--r-sm);
+    background: var(--bg-subtle);
+    color: var(--text-muted);
+    font-family: var(--font-mono);
+    font-size: var(--text-2xs);
+    font-weight: 500;
+    line-height: 1.5;
+    transition:
+      color var(--dur-fast) var(--ease),
+      border-color var(--dur-fast) var(--ease),
+      transform var(--dur-fast) var(--ease);
+  }
+
+  /* The specialisms. Without this tier, C++20 looked exactly like Jira. */
+  .chip[data-core] {
+    border-color: color-mix(in srgb, var(--cat) 42%, transparent);
+    background: var(--cat-soft);
+    color: var(--cat);
+    font-weight: 620;
+  }
+
+  .chip:hover {
+    border-color: var(--cat);
+    color: var(--cat);
+    transform: translateY(-2px);
+  }
+
+  /* --- Spoken --- */
+
+  /* Deliberately quiet: two facts, presented in the same chip language as every
+     other card. An earlier version used CEFR progress bars, which made the
+     least important card the loudest thing in the section. */
+  .spoken-list {
+    display: grid;
+    gap: var(--space-3);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .spoken-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-3);
+  }
+
+  .spoken-language {
+    font-size: var(--text-sm);
+    font-weight: 580;
+  }
+
+  .spoken-badges {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+  }
+
+  .spoken-note {
+    font-size: var(--text-2xs);
+    color: var(--text-faint);
+  }
+
+  /* --- Responsive ---
+     Four columns keeps the 2+2 pairing; below that everything stacks. */
+  @media (max-width: 62rem) {
+    .skills-grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
+
+    .skills-grid .skill-group[data-span='3'],
+    .skills-grid .skill-group[data-span='2'] {
+      grid-column: span 2;
+    }
+  }
+
+  @media (max-width: 38rem) {
+    .skills-grid {
+      grid-template-columns: 1fr;
+      gap: var(--space-3);
+    }
+
+    .skills-grid .skill-group[data-span='3'],
+    .skills-grid .skill-group[data-span='2'] {
+      grid-column: auto;
+    }
+
+    .skill-group {
+      padding: var(--space-4);
+    }
+  }
+</style>
+
+<style is:global>
+  /* Same reveal contract as the timeline: hidden at first paint only when JS is
+     present, and forced visible under reduced motion. */
+  .js .skill-group {
+    opacity: 0;
+    transform: translateY(16px);
+    transition:
+      opacity 0.5s var(--ease),
+      transform 0.5s var(--ease);
+    transition-delay: calc(min(var(--i, 0), 5) * 55ms);
+  }
+
+  .js .skill-group.is-visible {
+    opacity: 1;
+    transform: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .js .skill-group {
+      opacity: 1;
+      transform: none;
+      transition-delay: 0ms;
+    }
+  }
+</style>
+
+<script>
+  const cards = document.querySelectorAll('.skill-group');
+
+  const reveal = new IntersectionObserver(
+    (entries) => {
+      for (const entry of entries) {
+        if (!entry.isIntersecting) continue;
+        entry.target.classList.add('is-visible');
+        reveal.unobserve(entry.target);
+      }
+    },
+    { rootMargin: '0px 0px -8% 0px', threshold: 0.1 },
+  );
+
+  for (const card of cards) reveal.observe(card);
+</script>
