@@ -25,6 +25,23 @@ const categoryLabel: Record<typeof data.category, string> = {
 };
 
 const dateText = formatRange(data.startDate, data.endDate, data.ongoing);
+
+/* The meter is the point: one segment per mark on the scale, each filled by
+   however much of that mark was earned, so 4.6/5 draws four full bars and a
+   partial fifth. That reads as "near the top" without knowing the scale at all,
+   which the bare number never did. */
+const { grade } = data;
+const gradeSegments = grade
+  ? Array.from({ length: grade.of }, (_, i) =>
+      Math.round(Math.min(1, Math.max(0, grade.value - i)) * 100),
+    )
+  : [];
+const gradeTip = 'Polish grading runs 2–5, where 5 is the top mark — read it as a GPA out of 5.';
+/* "out of 5" already carries the scale, so the spoken version stays short —
+   the tooltip's fuller wording would be read aloud on every single entry. */
+const gradeSr = grade
+  ? `Grade ${grade.value} out of ${grade.of}${grade.label ? ' (average)' : ''}.`
+  : '';
 ---
 
 <li
@@ -51,7 +68,29 @@ const dateText = formatRange(data.startDate, data.endDate, data.ongoing);
             {dateText}
           </time>
           <span class="entry-chip">{categoryLabel[data.category]}</span>
-          {data.grade && <span class="entry-grade mono">{data.grade}</span>}
+          {
+            grade && (
+              <span class="entry-grade" data-tip={gradeTip}>
+                <span class="grade-meter" aria-hidden="true">
+                  {gradeSegments.map((fill) => (
+                    <span class="grade-seg">
+                      <span class="grade-seg-fill" style={`--fill: ${fill}%`} />
+                    </span>
+                  ))}
+                </span>
+
+                <span class="grade-value mono" aria-hidden="true">
+                  {grade.value}
+                  <span class="grade-of">/{grade.of}</span>
+                  {grade.label && <span class="grade-of"> {grade.label}</span>}
+                </span>
+
+                {/* Hover can't reach a touch screen or a screen reader; the
+                    badge itself still reads without it. */}
+                <span class="visually-hidden">{gradeSr}</span>
+              </span>
+            )
+          }
         </span>
 
         <span class="entry-title">
@@ -214,6 +253,10 @@ const dateText = formatRange(data.startDate, data.endDate, data.ongoing);
 
   .entry-meta {
     grid-column: 1;
+    /* Positioned so the grade tooltip can anchor to the whole row rather than
+       to the badge. Anchored to the badge it ran past the card's right edge and
+       .entry-card's overflow clip cut it in half. */
+    position: relative;
     display: flex;
     flex-wrap: wrap;
     align-items: center;
@@ -247,13 +290,81 @@ const dateText = formatRange(data.startDate, data.endDate, data.ongoing);
   /* Neutral, not tied to category colour, so it reads as a fact rather than
      competing with the category chip for attention. */
   .entry-grade {
-    padding: 0.15em 0.55em;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.2em 0.5em;
     border: 1px solid var(--border);
     border-radius: var(--r-sm);
-    color: var(--text-muted);
+    cursor: help;
+  }
+
+  .grade-meter {
+    display: flex;
+    gap: 2px;
+  }
+
+  .grade-seg {
+    width: 0.5rem;
+    height: 0.3rem;
+    border-radius: 1px;
+    background: var(--border-strong);
+    overflow: hidden;
+  }
+
+  .grade-seg-fill {
+    display: block;
+    width: var(--fill);
+    height: 100%;
+    background: var(--cat);
+  }
+
+  .grade-value {
     font-size: var(--text-2xs);
     font-weight: 600;
-    letter-spacing: 0.02em;
+    color: var(--text);
+  }
+
+  .grade-of {
+    color: var(--text-faint);
+    font-weight: 500;
+  }
+
+  /* Below the row, never above it: .entry-card clips overflow and the row sits
+     at the card's top edge. Anchored to .entry-meta with left:0 + a 100% cap, so
+     it starts at the card's content edge and can never exceed its width. */
+  .entry-grade::after {
+    content: attr(data-tip);
+    position: absolute;
+    top: calc(100% + 0.45rem);
+    left: 0;
+    z-index: 5;
+    width: max-content;
+    max-width: min(22rem, 100%);
+    padding: 0.45rem 0.6rem;
+    border: 1px solid var(--border);
+    border-radius: var(--r-sm);
+    background: var(--bg-subtle);
+    box-shadow: var(--shadow-md);
+    color: var(--text-muted);
+    font-size: var(--text-2xs);
+    font-weight: 500;
+    line-height: var(--leading-normal);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-3px);
+    pointer-events: none;
+    transition:
+      opacity var(--dur-fast) var(--ease),
+      transform var(--dur-fast) var(--ease),
+      visibility 0s linear var(--dur-fast);
+  }
+
+  .entry-grade:hover::after {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+    transition-delay: 0s;
   }
 
   .entry-title {

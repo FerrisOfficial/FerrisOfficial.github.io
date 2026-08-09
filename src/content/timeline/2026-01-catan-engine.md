@@ -13,7 +13,8 @@ links:
     url: https://github.com/FerrisOfficial/CatanAPI/blob/main/Thesis.pdf
 featured: true
 demo: catan
-grade: 5/5
+grade:
+  value: 5
 ---
 
 Bachelor thesis: a high-performance game engine written in C++ with a custom AI
