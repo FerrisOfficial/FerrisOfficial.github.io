@@ -11,7 +11,6 @@ const github = project.data.links.find((link) => /github\.com/i.test(link.url));
 const thesis = project.data.links.find((link) => /thesis/i.test(link.label));
 const deepDive = github ? `${github.url}#design` : undefined;
 
-const tags = ['13 full-engine agents', '11 browser agents', 'C++20', 'WebAssembly'];
 ---
 
 <section
@@ -22,85 +21,77 @@ const tags = ['13 full-engine agents', '11 browser agents', 'C++20', 'WebAssembl
   <div class="container">
     <p class="section-label">Featured work</p>
 
-    <div class="featured-card">
-      <div class="featured-intro">
-        <h2 class="featured-title">{project.data.title.replace(' Simulation Platform', '')}</h2>
-        <p class="featured-subtitle">
-          Two-player Catan research engine + multi-agent benchmark platform
+    <article class="featured-project">
+      <div class="featured-heading">
+        <h2>Two-Player Catan Research Engine &amp; AI</h2>
+        <p class="authorship mono">
+          Co-authored with Yaryna Rachkevych{' '}<span aria-hidden="true">·</span>{' '}BSc thesis{' '}
+          <span aria-hidden="true">·</span>{' '}University of Wrocław
         </p>
-        <p class="featured-desc">
-          A deliberately modified 1v1 research variant: two players race to 15 victory points,
-          with bank and port trading but no player-to-player negotiation. The full native engine
-          contains 13 agents; 11 are available in the browser demo below.
-        </p>
+      </div>
 
-        <dl class="case-study">
-          <div>
-            <dt>Authorship</dt>
-            <dd>Co-authored as a BSc thesis with Yaryna Rachkevych at the University of Wrocław.</dd>
-          </div>
-          <div>
-            <dt>State model</dt>
-            <dd>Bit-packed objects keep the fixed board state under 800 bytes, with deterministic seeds and replay logs.</dd>
-          </div>
-          <div>
-            <dt>Engineering</dt>
-            <dd>C++20 was chosen for allocation control, profiling and fast apply/undo evaluation without copying boards.</dd>
-          </div>
-          <div>
-            <dt>Measured result</dt>
-            <dd>Profiling cut per-game cost by 59%; Clang 22 -O3 reaches 250–300 games/s for random vs random.</dd>
-          </div>
-          <div>
-            <dt>Agents</dt>
-            <dd>Random, iterative and specialised heuristics, chance-aware alpha-beta, and an evolutionarily tuned agent.</dd>
-          </div>
-          <div>
-            <dt>Verification</dt>
-            <dd>111 test definitions expand to 242 cases across six binaries, with GCC, MSVC, Clang and ASan CI.</dd>
-          </div>
-        </dl>
+      <p class="featured-summary">
+        A C++20 engine for a two-player, 15-point Catan research variant with reproducible
+        seeded tournaments. It compares deterministic heuristics, chance-aware alpha-beta
+        and evolutionarily tuned agents.
+      </p>
 
-        <ul class="featured-tags" role="list">
-          {tags.map((tag) => <li class="tag">{tag}</li>)}
+      <dl class="metric-highlights">
+        <div>
+          <dt>59%</dt>
+          <dd>
+            Lower per-game cost after profiling and optimization. The native Clang 22{' '}
+            <code>-O3</code> build reaches 250–300 random-vs-random games per second.
+          </dd>
+        </div>
+        <div>
+          <dt>&lt;800 B</dt>
+          <dd>
+            Fixed board state using bit-packed objects, with fast apply/undo evaluation and
+            no complete-board copies.
+          </dd>
+        </div>
+        <div>
+          <dt>242</dt>
+          <dd>
+            Test cases generated from 111 definitions across six binaries, with GCC, MSVC,
+            Clang and AddressSanitizer CI.
+          </dd>
+        </div>
+      </dl>
+
+      <div class="featured-footer">
+        <ul class="featured-tags" role="list" aria-label="Catan technologies">
+          <li class="tag">C++20</li>
+          <li class="tag">WebAssembly</li>
         </ul>
 
         <div class="featured-actions">
-          <a class="featured-link featured-link-primary" href="#catan-demo">
-            <Icon name="lucide:play" width="15" height="15" aria-hidden="true" />
-            Live Demo
-          </a>
-          {
-            github && (
-              <a class="featured-link" href={github.url} target="_blank" rel="noopener noreferrer">
-                <Icon name="lucide:github" width="15" height="15" aria-hidden="true" />
-                Repository
-              </a>
-            )
-          }
-          {
-            thesis && (
-              <a class="featured-link" href={thesis.url} target="_blank" rel="noopener noreferrer">
-                <Icon name="lucide:book-open" width="15" height="15" aria-hidden="true" />
-                Thesis
-              </a>
-            )
-          }
-          {
-            deepDive && (
-              <a class="featured-link" href={deepDive} target="_blank" rel="noopener noreferrer">
-                <Icon name="lucide:code-xml" width="15" height="15" aria-hidden="true" />
-                Engineering deep dive
-              </a>
-            )
-          }
+          <div class="button-actions">
+            <a class="featured-link featured-link-primary" href="#catan-demo">
+              <Icon name="lucide:play" width="15" height="15" aria-hidden="true" />
+              Run live demo
+            </a>
+            {
+              github && (
+                <a class="featured-link" href={github.url} target="_blank" rel="noopener noreferrer">
+                  <Icon name="lucide:github" width="15" height="15" aria-hidden="true" />
+                  Repository
+                </a>
+              )
+            }
+          </div>
+          <div class="text-actions">
+            {thesis && <a href={thesis.url} target="_blank" rel="noopener noreferrer">Thesis ↗</a>}
+            {deepDive && <a href={deepDive} target="_blank" rel="noopener noreferrer">Engineering deep dive ↗</a>}
+          </div>
         </div>
       </div>
 
       <div id="catan-demo">
         <CatanDemo />
       </div>
-    </div>
+    </article>
   </div>
 </section>
 
@@ -109,68 +100,84 @@ const tags = ['13 full-engine agents', '11 browser agents', 'C++20', 'WebAssembl
     padding-bottom: var(--space-7);
   }
 
-  .featured-card {
-    padding: var(--space-6);
-    border: 1px solid var(--border);
-    border-radius: var(--r-lg);
-    background: var(--surface);
-    box-shadow: var(--shadow-lg);
+  .featured-project {
+    margin-top: var(--space-5);
+    padding-top: var(--space-6);
+    border-top: 1px solid var(--border);
   }
 
-  .featured-title {
+  .featured-heading {
+    display: grid;
+    gap: var(--space-2);
+  }
+
+  .featured-heading h2 {
     font-size: var(--text-2xl);
   }
 
-  .featured-subtitle {
-    margin-top: var(--space-2);
-    font-size: var(--text-lg);
-    font-weight: 500;
-    color: var(--cat);
+  .authorship {
+    color: var(--text-faint);
+    font-size: var(--text-xs);
   }
 
-  .featured-desc {
-    max-width: var(--measure);
-    margin-top: var(--space-4);
-    font-size: var(--text-base);
-    line-height: var(--leading-relaxed);
-    color: var(--text-muted);
-  }
-
-  .case-study {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: var(--space-3);
+  .featured-summary {
+    max-width: 78ch;
     margin-top: var(--space-5);
+    color: var(--text-muted);
+    line-height: var(--leading-relaxed);
   }
 
-  .case-study > div {
-    padding: var(--space-4);
-    border: 1px solid var(--border);
-    border-radius: var(--r-md);
-    background: var(--bg-subtle);
+  .metric-highlights {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--space-5);
+    margin-top: var(--space-6);
   }
 
-  .case-study dt {
+  .metric-highlights > div {
+    padding-top: var(--space-4);
+    border-top: 2px solid color-mix(in srgb, var(--cat) 50%, var(--border));
+  }
+
+  .metric-highlights dt {
     color: var(--cat);
-    font-family: var(--font-mono);
-    font-size: var(--text-2xs);
-    font-weight: 650;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
+    font-size: var(--text-2xl);
+    font-weight: 720;
+    letter-spacing: -0.035em;
+    line-height: 1;
   }
 
-  .case-study dd {
-    margin: var(--space-2) 0 0;
+  .metric-highlights dd {
+    margin-top: var(--space-3);
     color: var(--text-muted);
     font-size: var(--text-sm);
     line-height: var(--leading-normal);
   }
 
-  .featured-tags {
+  .metric-highlights code {
+    color: var(--text);
+    font-size: 0.92em;
+  }
+
+  .featured-footer {
     display: flex;
-    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-5);
+    margin-top: var(--space-5);
+  }
+
+  .featured-tags,
+  .button-actions,
+  .text-actions,
+  .featured-actions {
+    display: flex;
+    align-items: center;
     gap: var(--space-2);
-    margin: var(--space-5) 0 0;
+  }
+
+  .featured-tags {
+    margin: 0;
     padding: 0;
     list-style: none;
   }
@@ -181,35 +188,29 @@ const tags = ['13 full-engine agents', '11 browser agents', 'C++20', 'WebAssembl
   }
 
   .featured-actions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-2);
-    margin-top: var(--space-6);
+    gap: var(--space-4);
   }
 
   .featured-link {
     display: inline-flex;
     align-items: center;
     gap: var(--space-2);
-    padding: 0.55rem 1.05rem;
+    padding: 0.5rem 0.9rem;
     border: 1px solid var(--border);
     border-radius: var(--r-md);
-    background: var(--bg-subtle);
     color: var(--text-muted);
     font-size: var(--text-sm);
-    font-weight: 550;
+    font-weight: 600;
     transition:
       color var(--dur-fast) var(--ease),
       border-color var(--dur-fast) var(--ease),
-      background-color var(--dur-fast) var(--ease),
-      transform var(--dur-fast) var(--ease);
+      background-color var(--dur-fast) var(--ease);
   }
 
   .featured-link:hover {
     color: var(--cat);
     border-color: var(--cat);
     background: var(--cat-soft);
-    transform: translateY(-2px);
   }
 
   .featured-link-primary {
@@ -220,8 +221,20 @@ const tags = ['13 full-engine agents', '11 browser agents', 'C++20', 'WebAssembl
 
   .featured-link-primary:hover {
     color: var(--bg);
-    background: var(--cat);
     opacity: 0.9;
+  }
+
+  .text-actions {
+    gap: var(--space-3);
+  }
+
+  .text-actions a {
+    color: var(--text-faint);
+    font-size: var(--text-xs);
+  }
+
+  .text-actions a:hover {
+    color: var(--cat);
   }
 
   #catan-demo {
@@ -230,47 +243,41 @@ const tags = ['13 full-engine agents', '11 browser agents', 'C++20', 'WebAssembl
     border-top: 1px solid var(--border);
   }
 
-  /* CatanDemo's own margins assume it's nested inside a narrower timeline
-     entry panel; here it already sits inside .featured-card's padding. */
   #catan-demo :global(.demo) {
     margin: 0;
   }
 
-  @media (max-width: 34rem) {
-    .featured {
-      padding-bottom: var(--space-6);
+  @media (max-width: 48rem) {
+    .featured-footer {
+      display: grid;
     }
 
-    .featured-card {
-      padding: var(--space-4);
-    }
-
-    .featured-subtitle {
-      font-size: var(--text-base);
-      line-height: var(--leading-snug);
-    }
-
-    .featured-desc {
-      margin-top: var(--space-3);
-      line-height: var(--leading-normal);
-    }
-
-    .case-study {
+    .metric-highlights {
       grid-template-columns: 1fr;
-      margin-top: var(--space-4);
-    }
-
-    .featured-tags {
-      margin-top: var(--space-4);
+      gap: var(--space-4);
     }
 
     .featured-actions {
-      margin-top: var(--space-5);
+      align-items: flex-start;
+      flex-direction: column;
+    }
+  }
+
+  @media (max-width: 34rem) {
+    .featured-heading h2 {
+      font-size: var(--text-xl);
     }
 
-    #catan-demo {
-      margin-top: var(--space-5);
-      padding-top: var(--space-5);
+    .featured-summary {
+      line-height: var(--leading-normal);
+    }
+
+    .featured-footer {
+      gap: var(--space-4);
+    }
+
+    .button-actions {
+      flex-wrap: wrap;
     }
   }
 </style>

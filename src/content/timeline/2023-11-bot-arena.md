@@ -4,19 +4,22 @@ org: Innovative Projects by Nokia
 category: project
 startDate: 2023-11-01
 endDate: 2024-06-30
-summary: Python simulation infrastructure for running user-written bots under layered timeouts and replaying logged matches.
-tech: ['Python', 'pygame', 'Simulation', 'Team Project']
+summary: A co-developed Python framework for reproducible programming-game tournaments, isolated bot execution and inspectable match replay.
+tech: ['Python', 'pygame', 'Process Management', 'Timeout Handling', 'Logging', 'Replay']
 links:
   - label: Repository
-    url: https://github.com/BartoszKruszewski/bot-arena
-featured: false
+    url: https://github.com/FerrisOfficial/bot-arena
+featured: true
 dateApproximate: true
 ---
 
-A group project built under **Innovative Projects by Nokia**, a university programme run
-with the company. The goal was an environment where people can write their own bots,
-run them against each other, and actually measure how well they perform.
+A Python framework for running reproducible programming-game tournaments, isolating
+submitted bots and recording matches for later inspection.
 
-- Built a simulation front end in Python and pygame, with map generation and bot selection
-- Ran batches of games between two bots under configurable timeouts — per-move, per-turn and per-game
-- Recorded every simulation to a log that can be replayed and inspected move by move
+- Co-developed the project and personally implemented the game logic, map generation,
+  bot package and interface, timeout enforcement, logging and move-by-move replay
+- Managed bot processes and enforced per-move and whole-game time limits so faulty or
+  unresponsive submissions could not block a tournament
+- Added reproducible match logs and replay functionality to make bot decisions and
+  game outcomes inspectable
+- Designed the bot interface and packaging flow used to execute competing submissions

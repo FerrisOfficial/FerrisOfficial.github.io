@@ -1,0 +1,99 @@
+---
+const coursework = [
+  'Advanced C++ and STL',
+  'Concurrent Programming in C++',
+  'Algorithms and Data Structures',
+  'Computer Architecture',
+  'Advanced Python',
+  'Machine Learning',
+];
+---
+
+<section class="section education" aria-labelledby="education-heading">
+  <div class="container education-inner">
+    <div class="education-heading-block">
+      <p class="section-label">Education</p>
+      <h2 id="education-heading">BSc in Computer Science</h2>
+      <p class="education-meta mono">University of Wrocław · 2022–2026</p>
+    </div>
+
+    <div class="education-details">
+      <p class="thesis">
+        Thesis: Implementation of the Catan board game and AI agents for one-versus-one
+        gameplay. Defended in March 2026.
+      </p>
+      <div class="coursework">
+        <p class="coursework-label mono">Selected coursework</p>
+        <ul role="list">
+          {coursework.map((course) => <li>{course}</li>)}
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .education {
+    padding-top: 0;
+  }
+
+  .education-inner {
+    display: grid;
+    grid-template-columns: minmax(14rem, 0.42fr) minmax(0, 1fr);
+    gap: var(--space-7);
+    padding-top: var(--space-6);
+    border-top: 1px solid var(--border);
+  }
+
+  .education h2 {
+    font-size: var(--text-xl);
+  }
+
+  .education-meta {
+    margin-top: var(--space-2);
+    color: var(--text-faint);
+    font-size: var(--text-xs);
+  }
+
+  .thesis {
+    max-width: 66ch;
+    color: var(--text-muted);
+    line-height: var(--leading-relaxed);
+  }
+
+  .coursework {
+    margin-top: var(--space-4);
+  }
+
+  .coursework-label {
+    color: var(--cat-education);
+    font-size: var(--text-2xs);
+    font-weight: 650;
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+  }
+
+  .coursework ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    margin: var(--space-3) 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .coursework li {
+    padding: 0.28rem 0.6rem;
+    border: 1px solid var(--border);
+    border-radius: var(--r-full);
+    color: var(--text-muted);
+    font-size: var(--text-xs);
+  }
+
+  @media (max-width: 46rem) {
+    .education-inner {
+      grid-template-columns: 1fr;
+      gap: var(--space-4);
+    }
+  }
+</style>

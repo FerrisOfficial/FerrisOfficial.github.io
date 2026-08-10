@@ -1,18 +1,20 @@
 ---
-title: C++ Software Developer
+title: C++ Software Engineering · Contract
 org: Nokia
 category: work
 startDate: 2025-10-01
 endDate: 2026-04-30
-summary: Optimised energy-efficiency logic in production C++ for 5G RAN software, profiling performance-sensitive code and validating changes with automated tests and telecom simulations.
-tech: ['C++20', 'Linux', 'GDB', 'Valgrind', 'GoogleTest', 'CMake', 'Git', 'Jira']
+summary: Continued with the team after the internship, developing and validating C++20 decision logic for energy management in 5G base stations.
+tech: ['C++20', 'Linux', 'Clang', 'GDB', 'Valgrind', 'Git', 'Gerrit']
 featured: true
 ---
 
-Worked on energy saving in 5G RAN, optimising power efficiency in critical
-infrastructure telecom systems.
+Selected to continue with the team after completing the summer internship.
 
-- Developed and optimised C++ components in the radio access network stack
-- Focused on power efficiency — reducing energy draw without giving up throughput or latency guarantees
-- Profiled and debugged with GDB and Valgrind, then validated production changes
-  with GoogleTest against throughput and latency constraints
+- Developed C++20 decision logic for temperature-aware cell activation, traffic
+  control and energy management in 5G base stations
+- Extended operator-configuration handling for Massive MIMO and beamforming functionality
+- Added automated tests for implemented behavior and validated changes using the
+  team's existing telecommunications simulation environment
+- Debugged C++ behavior with GDB and checked memory correctness with Valgrind
+- Worked with Clang, Git, Gerrit and the team's existing production development workflow

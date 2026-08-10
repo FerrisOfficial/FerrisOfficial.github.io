@@ -31,9 +31,11 @@ and exclude player-to-player trading so agent comparisons remain reproducible.
 - Verified the rules and engine with 111 test definitions expanding to 242 cases
   across six binaries, plus GCC, MSVC, Clang and AddressSanitizer CI
 
-Catan is a deceptively good testbed for game AI. It has hidden information, randomness
-from dice, and negotiation between players — which rules out the search techniques
-that solve chess outright. Agents have to reason under uncertainty instead.
+Even in the reduced two-player variant, dice and hidden development cards make the
+state stochastic and partially observable. Agent quality therefore has to be measured
+through repeated seeded play rather than inferred from search depth alone. The platform
+compares deterministic heuristics, chance-aware alpha-beta and evolutionarily tuned
+evaluation policies under the same reproducible conditions.
 
 The browser demo exposes 11 of the 13 agents and runs the same engine through
 WebAssembly. Native and browser throughput are reported separately because compiler,

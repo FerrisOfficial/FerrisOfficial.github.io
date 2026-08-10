@@ -1,99 +1,50 @@
 ---
 import { Icon } from 'astro-icon/components';
 
-type Card = {
-  label: string;
-  icon: string;
-  tone: 'work' | 'education' | 'project' | 'award';
-  span: 3;
-  items: { name: string; evidence: string }[];
-};
-
-const cards: Card[] = [
+const groups = [
   {
-    label: 'Core engineering',
-    icon: 'lucide:braces',
+    label: 'Core',
     tone: 'work',
-    span: 3,
-    items: [
-      { name: 'C++20', evidence: 'Nokia 5G RAN; Catan research engine' },
-      { name: 'C#/.NET', evidence: 'KSeF services; SpaceX integration API' },
-      { name: 'Python', evidence: 'ML experiments; simulation, tuning and replay tooling' },
-    ],
+    items: ['C++20', 'Python', 'C# / .NET'],
   },
   {
-    label: 'Backend & systems',
-    icon: 'lucide:server',
+    label: 'Backend',
     tone: 'project',
-    span: 3,
-    items: [
-      { name: 'ASP.NET Core & EF Core', evidence: 'KSeF services; SpaceX API' },
-      { name: 'Linux, GDB & Valgrind', evidence: 'Production C++ at Nokia' },
-      { name: 'CMake & GoogleTest', evidence: 'Catan engine; Nokia validation' },
-    ],
+    items: ['GraphQL', 'REST APIs', 'SQL', 'Hangfire', 'Dapr', 'OPA', 'KSeF'],
   },
   {
-    label: 'Applied ML',
-    icon: 'lucide:brain-circuit',
+    label: 'Systems and tooling',
     tone: 'education',
-    span: 3,
-    items: [
-      { name: 'PyTorch & YOLOv8', evidence: 'Medical-imaging experiments' },
-      { name: 'Experiment tooling', evidence: 'Evolutionary tuning, plotting and analysis' },
-      { name: 'Reproducible simulation', evidence: 'Deterministic seeds and benchmark automation' },
-    ],
+    items: ['Concurrency', 'Subprocess management', 'Linux', 'GDB', 'Valgrind', 'Git', 'Gerrit'],
   },
   {
-    label: 'Delivery & infrastructure',
-    icon: 'lucide:git-branch',
-    tone: 'work',
-    span: 3,
-    items: [
-      { name: 'Git & multi-compiler CI', evidence: 'GCC, MSVC, Clang and ASan' },
-      { name: 'Docker & SQL Server', evidence: '.NET production environment' },
-      { name: 'SQLite & xUnit', evidence: 'SpaceX persistence and 10 automated tests' },
-    ],
+    label: 'Testing and delivery',
+    tone: 'award',
+    items: ['Automated testing', 'GoogleTest', 'xUnit', 'CI', 'Docker', 'Kubernetes'],
   },
-];
-
-const spoken = [
-  { language: 'Polish', level: 'Native' },
-  { language: 'English', level: 'C1 Advanced', note: 'Cambridge' },
-];
+  {
+    label: 'AI / ML',
+    tone: 'ml',
+    wide: true,
+    items: ['PyTorch', 'YOLOv8', 'Game AI'],
+  },
+] as const;
 ---
 
-<section class="section" id="skills">
+<section class="section skills" id="skills" aria-labelledby="skills-heading">
   <div class="container">
     <p class="section-label">Toolkit</p>
-
-    <h2 class="skills-heading">Technical strengths</h2>
-    <p class="skills-lede">Core technologies paired with the work that demonstrates them.</p>
+    <h2 id="skills-heading">Technical strengths</h2>
 
     <div class="skills-grid">
       {
-        cards.map((card, index) => (
-          <div
-            class="skill-group"
-            data-span={card.span}
-            data-tone={card.tone}
-            style={`--i: ${index}`}
-          >
-            <div class="skill-head">
-              <span class="skill-icon">
-                <Icon name={card.icon} width="17" height="17" aria-hidden="true" />
-              </span>
-              <h3 class="skill-label mono">{card.label}</h3>
-            </div>
-
-            <ul class="skill-items" role="list">
-              {card.items.map((item) => (
-                <li class="skill-evidence">
-                  <strong>{item.name}</strong>
-                  <span>{item.evidence}</span>
-                </li>
-              ))}
+        groups.map((group) => (
+          <section class="skill-group" data-tone={group.tone} data-wide={'wide' in group ? true : undefined}>
+            <h3 class="mono">{group.label}</h3>
+            <ul role="list">
+              {group.items.map((item) => <li>{item}</li>)}
             </ul>
-          </div>
+          </section>
         ))
       }
     </div>
@@ -101,301 +52,124 @@ const spoken = [
     <div class="spoken-inline">
       <span class="spoken-title mono">
         <Icon name="lucide:languages" width="16" height="16" aria-hidden="true" />
-        Spoken languages
+        Languages
       </span>
-      <ul class="spoken-list" role="list">
-        {spoken.map((entry) => (
-          <li>
-            <strong>{entry.language}</strong>
-            <span>{entry.level}{entry.note && ` · ${entry.note}`}</span>
-          </li>
-        ))}
-      </ul>
+      <p><strong>Polish</strong> · Native</p>
+      <p><strong>English</strong> · Cambridge C1 Advanced, Grade B · 198/210</p>
     </div>
   </div>
 </section>
 
 <style>
-  .skills-heading {
+  .skills h2 {
     font-size: var(--text-2xl);
   }
 
-  .skills-lede {
-    max-width: 52ch;
-    margin-top: var(--space-3);
-    margin-bottom: var(--space-6);
-    color: var(--text-muted);
-  }
-
-  /* Four focused groups keep the section useful without turning it into an
-     exhaustive technology inventory. */
   .skills-grid {
     display: grid;
-    grid-template-columns: repeat(6, 1fr);
-    gap: var(--space-4);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-5) var(--space-7);
+    margin-top: var(--space-6);
   }
-
-  .skill-group[data-span='3'] {
-    grid-column: span 3;
-  }
-
-  .skill-group[data-span='2'] {
-    grid-column: span 2;
-  }
-
-  /* --- Card --- */
 
   .skill-group {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    gap: var(--space-4);
-    padding: var(--space-5);
-    border: 1px solid var(--border);
-    border-radius: var(--r-lg);
-    background: var(--surface);
-    overflow: hidden;
-    transition:
-      border-color var(--dur) var(--ease),
-      transform var(--dur) var(--ease),
-      box-shadow var(--dur) var(--ease);
+    padding-top: var(--space-4);
+    border-top: 2px solid var(--cat);
   }
 
   .skill-group[data-tone='work'] {
     --cat: var(--cat-work);
-    --cat-soft: var(--cat-work-soft);
-  }
-
-  .skill-group[data-tone='education'] {
-    --cat: var(--cat-education);
-    --cat-soft: var(--cat-education-soft);
   }
 
   .skill-group[data-tone='project'] {
     --cat: var(--cat-project);
-    --cat-soft: var(--cat-project-soft);
+  }
+
+  .skill-group[data-tone='education'] {
+    --cat: var(--cat-education);
   }
 
   .skill-group[data-tone='award'] {
     --cat: var(--cat-award);
-    --cat-soft: var(--cat-award-soft);
   }
 
-  /* Accent rule that wipes across the top edge on hover. */
-  .skill-group::before {
-    content: '';
-    position: absolute;
-    inset: 0 0 auto;
-    height: 2px;
-    background: var(--cat);
-    transform: scaleX(0);
-    transform-origin: left;
-    transition: transform var(--dur-slow) var(--ease);
+  .skill-group[data-tone='ml'] {
+    --cat: var(--cat-project);
   }
 
-  .skill-group:hover {
-    border-color: color-mix(in srgb, var(--cat) 40%, var(--border));
-    transform: translateY(-3px);
-    box-shadow: var(--shadow-md);
+  .skill-group[data-wide] {
+    grid-column: 1 / -1;
   }
 
-  .skill-group:hover::before {
-    transform: scaleX(1);
-  }
-
-  .skill-head {
-    display: flex;
-    align-items: center;
-    gap: var(--space-3);
-  }
-
-  .skill-icon {
-    display: grid;
-    place-items: center;
-    width: 2.1rem;
-    height: 2.1rem;
-    flex-shrink: 0;
-    border-radius: var(--r-sm);
-    background: var(--cat-soft);
+  .skill-group h3 {
     color: var(--cat);
-    transition: transform var(--dur) var(--ease);
-  }
-
-  .skill-group:hover .skill-icon {
-    transform: rotate(-6deg) scale(1.08);
-  }
-
-  .skill-label {
-    flex: 1;
-    font-size: var(--text-2xs);
-    font-weight: 600;
+    font-size: var(--text-xs);
+    font-weight: 650;
     letter-spacing: var(--tracking-wide);
     text-transform: uppercase;
-    color: var(--text);
   }
 
-  /* --- Evidence rows --- */
-
-  .skill-items {
-    display: grid;
-    gap: var(--space-3);
-    margin: 0;
+  .skill-group ul {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    margin: var(--space-3) 0 0;
     padding: 0;
     list-style: none;
   }
 
-  .skill-evidence {
-    display: grid;
-    gap: var(--space-1);
-    padding-top: var(--space-3);
-    border-top: 1px solid var(--border);
-  }
-
-  .skill-evidence:first-child {
-    padding-top: 0;
-    border-top: 0;
-  }
-
-  .skill-evidence strong {
-    color: var(--cat);
-    font-size: var(--text-sm);
-    font-weight: 600;
-  }
-
-  .skill-evidence span {
+  .skill-group li {
+    padding: 0.3rem 0.6rem;
+    border: 1px solid var(--border);
+    border-radius: var(--r-full);
     color: var(--text-muted);
-    font-size: var(--text-xs);
-    line-height: var(--leading-normal);
+    font-size: var(--text-sm);
   }
-
-  /* --- Spoken languages --- */
 
   .spoken-inline {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
-    justify-content: space-between;
-    gap: var(--space-5);
-    margin-top: var(--space-4);
-    padding: var(--space-4) var(--space-5);
-    border: 1px solid var(--border);
-    border-radius: var(--r-lg);
-    background: var(--surface);
+    gap: var(--space-3) var(--space-5);
+    margin-top: var(--space-6);
+    padding-top: var(--space-4);
+    border-top: 1px solid var(--border);
+    color: var(--text-muted);
+    font-size: var(--text-sm);
   }
 
   .spoken-title {
     display: inline-flex;
     align-items: center;
     gap: var(--space-2);
-    color: var(--text-muted);
-    font-size: var(--text-xs);
-    font-weight: 600;
+    color: var(--text-faint);
+    font-size: var(--text-2xs);
+    font-weight: 650;
     letter-spacing: var(--tracking-wide);
     text-transform: uppercase;
   }
 
-  .spoken-list {
-    display: flex;
-    flex-wrap: wrap;
-    gap: var(--space-5);
-    margin: 0;
-    padding: 0;
-    list-style: none;
+  .spoken-inline strong {
+    color: var(--text);
   }
 
-  .spoken-list li {
-    display: flex;
-    align-items: center;
-    gap: var(--space-2);
-    font-size: var(--text-sm);
-  }
-
-  .spoken-list span {
-    font-family: var(--font-mono);
-    font-size: var(--text-2xs);
-    color: var(--text-faint);
-  }
-
-  /* --- Responsive ---
-     Four columns keeps the 2+2 pairing; below that everything stacks. */
-  @media (max-width: 62rem) {
-    .skills-grid {
-      grid-template-columns: repeat(4, 1fr);
-    }
-
-    .skills-grid .skill-group[data-span='3'],
-    .skills-grid .skill-group[data-span='2'] {
-      grid-column: span 2;
-    }
-  }
-
-  @media (max-width: 38rem) {
+  @media (max-width: 42rem) {
     .skills-grid {
       grid-template-columns: 1fr;
-      gap: var(--space-3);
+      gap: var(--space-4);
     }
 
-    .skills-grid .skill-group[data-span='3'],
-    .skills-grid .skill-group[data-span='2'] {
+    .skill-group li {
+      font-size: var(--text-xs);
+    }
+
+    .skill-group[data-wide] {
       grid-column: auto;
     }
 
-    .skill-group {
-      padding: var(--space-4);
-    }
-
     .spoken-inline {
-      align-items: flex-start;
-      flex-direction: column;
-      gap: var(--space-3);
-      padding: var(--space-4);
-    }
-
-    .spoken-list {
       display: grid;
       gap: var(--space-2);
     }
   }
 </style>
-
-<style is:global>
-  /* Same reveal contract as the timeline: hidden at first paint only when JS is
-     present, and forced visible under reduced motion. */
-  .js .skill-group {
-    opacity: 0;
-    transform: translateY(16px);
-    transition:
-      opacity 0.5s var(--ease),
-      transform 0.5s var(--ease);
-    transition-delay: calc(min(var(--i, 0), 5) * 55ms);
-  }
-
-  .js .skill-group.is-visible {
-    opacity: 1;
-    transform: none;
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .js .skill-group {
-      opacity: 1;
-      transform: none;
-      transition-delay: 0ms;
-    }
-  }
-</style>
-
-<script>
-  const cards = document.querySelectorAll('.skill-group');
-
-  const reveal = new IntersectionObserver(
-    (entries) => {
-      for (const entry of entries) {
-        if (!entry.isIntersecting) continue;
-        entry.target.classList.add('is-visible');
-        reveal.unobserve(entry.target);
-      }
-    },
-    { rootMargin: '0px 0px -8% 0px', threshold: 0.1 },
-  );
-
-  for (const card of cards) reveal.observe(card);
-</script>

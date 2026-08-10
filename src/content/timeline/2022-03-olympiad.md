@@ -1,14 +1,15 @@
 ---
-title: Honorable Mention, Polish Olympiad in Informatics
+title: Honorable Mention — First Stage, 29th Polish Olympiad in Informatics
 org: Olimpiada Informatyczna
 category: award
 startDate: 2022-03-01
-summary: National-level distinction in Poland's principal competitive programming olympiad.
+summary: Honorable mention in the first stage of the 29th Polish Olympiad in Informatics.
 tech: ['C++', 'Algorithms', 'Data Structures']
 featured: true
 dateApproximate: true
+links:
+  - label: Official results
+    url: https://oi.edu.pl/l/29oi_1etap_wyroznieni/
 ---
 
-An honorable mention in Poland's principal national algorithmic competition for
-secondary-school students, evaluated through data structures, algorithms, complexity
-analysis and implementation correctness under contest constraints.
+Honorable mention in the first stage of the 29th Polish Olympiad in Informatics.
