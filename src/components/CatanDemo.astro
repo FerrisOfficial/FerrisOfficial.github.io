@@ -9,11 +9,11 @@ import { Icon } from 'astro-icon/components';
  * so the two can never drift apart.
  */
 const fallbackBots = [
-  ['it5', 'Iterative 5'],
-  ['cr', 'City Rush'],
-  ['dev', 'Dev Cards'],
-  ['it1', 'Iterative 1'],
-  ['rp', 'Random'],
+  ['it5', 'Iterative 5', 'Full handcrafted heuristic strategy.'],
+  ['cr', 'City Rush', 'Prioritises early city upgrades.'],
+  ['dev', 'Dev Cards', 'Builds around development cards.'],
+  ['it1', 'Iterative 1', 'Basic action-priority heuristic.'],
+  ['rp', 'Random', 'Uniform random legal-action baseline.'],
 ];
 ---
 
@@ -26,6 +26,7 @@ const fallbackBots = [
     <p class="demo-intro">
       The engine below is the thesis code itself, compiled to WebAssembly and running in
       your browser — not a recording. Pick two bots and watch the win rate converge.
+      The displayed throughput is browser- and device-specific, not the native release-build benchmark.
     </p>
   </div>
 
@@ -35,6 +36,7 @@ const fallbackBots = [
       <select data-bot-a>
         {fallbackBots.map(([flag, name]) => <option value={flag} selected={flag === 'it5'}>{name}</option>)}
       </select>
+      <span class="bot-help" data-bot-a-help>{fallbackBots[0][2]}</span>
     </label>
 
     <span class="versus mono" aria-hidden="true">vs</span>
@@ -44,6 +46,7 @@ const fallbackBots = [
       <select data-bot-b>
         {fallbackBots.map(([flag, name]) => <option value={flag} selected={flag === 'cr'}>{name}</option>)}
       </select>
+      <span class="bot-help" data-bot-b-help>{fallbackBots[1][2]}</span>
     </label>
 
     <label class="field field-narrow">
@@ -88,8 +91,15 @@ const fallbackBots = [
     </dl>
   </div>
 
-  {/* Replay of game 1 of whichever tournament just ran. */}
-  <div class="replay" data-replay hidden>
+  {/* Replay of game 1 of whichever tournament just ran. Collapsed by default
+      on small screens so the results remain the primary mobile evidence. */}
+  <details class="replay-disclosure" data-replay-disclosure hidden>
+    <summary class="replay-summary">
+      Inspect a sample game
+      <Icon name="lucide:chevron-down" width="16" height="16" aria-hidden="true" />
+    </summary>
+
+    <div class="replay" data-replay>
     <div class="replay-head">
       <h4 class="replay-title mono">Game 1, move by move</h4>
       <p class="replay-sub" data-replay-sub></p>
@@ -132,7 +142,8 @@ const fallbackBots = [
         </select>
       </label>
     </div>
-  </div>
+    </div>
+  </details>
 
   <p class="demo-status visually-hidden" role="status" aria-live="polite" data-live></p>
 
@@ -201,6 +212,13 @@ const fallbackBots = [
     letter-spacing: var(--tracking-wide);
     text-transform: uppercase;
     color: var(--text-faint);
+  }
+
+  .bot-help {
+    min-height: 2.4em;
+    color: var(--text-faint);
+    font-size: var(--text-xs);
+    line-height: var(--leading-normal);
   }
 
   select {
@@ -339,6 +357,10 @@ const fallbackBots = [
   }
 
   /* --- Replay --- */
+
+  .replay-summary {
+    display: none;
+  }
 
   .replay {
     margin-top: var(--space-4);
@@ -483,6 +505,46 @@ const fallbackBots = [
   }
 
   @media (max-width: 34rem) {
+    .replay-disclosure {
+      margin-top: var(--space-4);
+      padding-top: var(--space-4);
+      border-top: 1px solid var(--border);
+    }
+
+    .replay-summary {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-3);
+      padding: 0.65rem 0.8rem;
+      border: 1px solid var(--border);
+      border-radius: var(--r-sm);
+      background: var(--surface);
+      color: var(--text-muted);
+      font-size: var(--text-sm);
+      font-weight: 560;
+      cursor: pointer;
+      list-style: none;
+    }
+
+    .replay-summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .replay-summary [data-icon] {
+      transition: transform var(--dur-fast) var(--ease);
+    }
+
+    .replay-disclosure[open] .replay-summary [data-icon] {
+      transform: rotate(180deg);
+    }
+
+    .replay {
+      margin-top: var(--space-3);
+      padding-top: 0;
+      border-top: 0;
+    }
+
     .replay-controls {
       flex-wrap: wrap;
     }
@@ -548,7 +610,7 @@ const fallbackBots = [
     /* ---------- Replay of game 1 ---------- */
 
     const rp = {
-      wrap: $('[data-replay]'),
+      disclosure: $<HTMLDetailsElement>('[data-replay-disclosure]'),
       base: $('[data-board-base]'),
       state: $('[data-board-state]'),
       svg: $<SVGSVGElement>('[data-board]'),
@@ -631,7 +693,8 @@ const fallbackBots = [
       $('[data-replay-sub]').textContent =
         `${data.frames.length - 1} moves over ${data.turns} turns, ${outcome}. Seed ${data.seed}.`;
 
-      rp.wrap.hidden = false;
+      rp.disclosure.hidden = false;
+      rp.disclosure.open = !window.matchMedia('(max-width: 34rem)').matches;
       drawFrame(0);
     }
 
@@ -653,6 +716,12 @@ const fallbackBots = [
     });
 
     const nameOf = (flag: string) => bots.find((b) => b.flag === flag)?.name ?? flag;
+    const blurbOf = (flag: string) => bots.find((b) => b.flag === flag)?.blurb ?? '';
+
+    function updateBotHelp() {
+      $('[data-bot-a-help]').textContent = blurbOf(selA.value);
+      $('[data-bot-b-help]').textContent = blurbOf(selB.value);
+    }
 
     /** Alpha-beta searches the game tree and is ~25x slower than the heuristic
      *  bots, so warn rather than let someone queue a two-minute run blind. */
@@ -701,13 +770,14 @@ const fallbackBots = [
           for (const bot of bots) {
             const opt = document.createElement('option');
             opt.value = bot.flag;
-            opt.textContent = `${bot.name} — ${bot.blurb}`;
+            opt.textContent = bot.name;
             sel.appendChild(opt);
           }
           sel.value = keep;
         }
         runBtn.disabled = false;
         runLabel.textContent = 'Run tournament';
+        updateBotHelp();
         updateNote();
       }
 
@@ -746,7 +816,8 @@ const fallbackBots = [
       running = true;
       results.hidden = false;
       stopPlayback();
-      rp.wrap.hidden = true;
+      rp.disclosure.hidden = true;
+      rp.disclosure.open = false;
       runLabel.textContent = 'Stop';
       live.textContent = 'Running tournament…';
       render({ games: 0, winsA: 0, winsB: 0, draws: 0, turns: 0 }, 0, false);
@@ -762,8 +833,14 @@ const fallbackBots = [
       });
     });
 
-    selA.addEventListener('change', updateNote);
-    selB.addEventListener('change', updateNote);
+    selA.addEventListener('change', () => {
+      updateBotHelp();
+      updateNote();
+    });
+    selB.addEventListener('change', () => {
+      updateBotHelp();
+      updateNote();
+    });
     selGames.addEventListener('change', updateNote);
   }
 </script>

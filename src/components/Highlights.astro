@@ -1,6 +1,6 @@
 ---
 import { getCollection } from 'astro:content';
-import { formatYear } from '../utils/date';
+import { formatRange, formatYear } from '../utils/date';
 
 const featured = (await getCollection('timeline'))
   .filter((entry) => entry.data.featured)
@@ -8,6 +8,9 @@ const featured = (await getCollection('timeline'))
 
 const experience = featured.filter((entry) => entry.data.category === 'work');
 const education = featured.filter((entry) => entry.data.category === 'education');
+const homepageExperience = experience.filter((entry) => entry.data.org !== 'Nokia');
+const nokiaInternship = experience.find((entry) => entry.id === '2025-07-nokia-internship');
+const nokiaDeveloper = experience.find((entry) => entry.id === '2025-10-nokia-cpp-developer');
 
 function yearRange({ startDate, endDate, ongoing }: { startDate: Date; endDate?: Date; ongoing: boolean }) {
   const from = formatYear(startDate);
@@ -20,12 +23,12 @@ function yearRange({ startDate, endDate, ongoing }: { startDate: Date; endDate?:
 
 <section class="section highlights" id="experience">
   <div class="container">
-    <p class="section-label">Highlights</p>
+    <p class="section-label">Selected impact</p>
 
-    <h2 class="highlights-heading">Where I've been</h2>
+    <h2 class="highlights-heading">Production experience</h2>
     <p class="highlights-lede">
-      The short version. Everything else — the projects, the papers, the awards — is
-      in the full <a class="link" href="/timeline">Timeline</a>.
+      Recent production work across regulated .NET services and performance-sensitive
+      C++ systems, alongside a strong computer science foundation.
     </p>
 
     <div class="highlights-grid">
@@ -33,7 +36,7 @@ function yearRange({ startDate, endDate, ongoing }: { startDate: Date; endDate?:
         <h3 class="group-heading">Experience</h3>
         <ul class="highlight-list" role="list">
           {
-            experience.map((entry) => (
+            homepageExperience.map((entry) => (
               <li class="highlight-card" data-category="work">
                 <span class="highlight-date mono">{yearRange(entry.data)}</span>
                 <span class="highlight-title">
@@ -44,7 +47,24 @@ function yearRange({ startDate, endDate, ongoing }: { startDate: Date; endDate?:
               </li>
             ))
           }
+          {
+            nokiaInternship && nokiaDeveloper && (
+              <li class="highlight-card" data-category="work">
+                <span class="highlight-date mono">
+                  {formatRange(nokiaInternship.data.startDate, nokiaDeveloper.data.endDate)}
+                </span>
+                <span class="highlight-title">
+                  Nokia <span class="highlight-transition">— Summer Intern → C++ Software Developer</span>
+                </span>
+                <span class="highlight-summary">
+                  Developed and profiled production C++20 for 5G RAN energy-efficiency software
+                  on Linux, validating changes with GDB, Valgrind, GoogleTest, CMake and telecom simulations.
+                </span>
+              </li>
+            )
+          }
         </ul>
+
       </div>
 
       <div class="highlights-group">
@@ -72,6 +92,18 @@ function yearRange({ startDate, endDate, ongoing }: { startDate: Date; endDate?:
             ))
           }
         </ul>
+
+        <aside class="timeline-cta" aria-labelledby="timeline-cta-heading">
+          <h4 class="timeline-cta-heading" id="timeline-cta-heading">
+            View detailed experience and project history.
+          </h4>
+          <p class="timeline-cta-text">
+            Explore my complete timeline of work, education, projects and achievements.
+          </p>
+          <a class="timeline-cta-link" href="/timeline">
+            View full timeline <span aria-hidden="true">→</span>
+          </a>
+        </aside>
       </div>
     </div>
   </div>
@@ -155,6 +187,11 @@ function yearRange({ startDate, endDate, ongoing }: { startDate: Date; endDate?:
     font-weight: 500;
   }
 
+  .highlight-transition {
+    color: var(--text-muted);
+    font-weight: 500;
+  }
+
   .highlight-org::before {
     content: ' · ';
     color: var(--text-faint);
@@ -164,6 +201,50 @@ function yearRange({ startDate, endDate, ongoing }: { startDate: Date; endDate?:
     font-size: var(--text-sm);
     line-height: var(--leading-normal);
     color: var(--text-muted);
+  }
+
+  .timeline-cta {
+    margin-top: var(--space-5);
+    padding-top: var(--space-5);
+    border-top: 1px solid var(--border);
+  }
+
+  .timeline-cta-heading {
+    font-size: var(--text-sm);
+    font-weight: 620;
+    letter-spacing: var(--tracking-tight);
+  }
+
+  .timeline-cta-text {
+    max-width: 40ch;
+    margin-top: var(--space-2);
+    color: var(--text-muted);
+    font-size: var(--text-sm);
+    line-height: var(--leading-normal);
+  }
+
+  .timeline-cta-link {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    margin-top: var(--space-3);
+    border-radius: var(--r-sm);
+    color: var(--accent);
+    font-size: var(--text-sm);
+    font-weight: 600;
+    transition:
+      color var(--dur-fast) var(--ease),
+      transform var(--dur-fast) var(--ease);
+  }
+
+  .timeline-cta-link:hover {
+    color: var(--accent-hover);
+    transform: translateX(2px);
+  }
+
+  .timeline-cta-link:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 4px;
   }
 
   @media (max-width: 48rem) {

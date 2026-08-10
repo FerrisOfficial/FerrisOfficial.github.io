@@ -3,10 +3,10 @@ import { getCollection } from 'astro:content';
 import { Icon } from 'astro-icon/components';
 import TimelineEntry from './TimelineEntry.astro';
 import TimelineEnd from './TimelineEnd.astro';
+import { compareTimelineNewest } from '../utils/timeline-sort';
 
-const entries = (await getCollection('timeline')).sort(
-  (a, b) => a.data.startDate.getTime() - b.data.startDate.getTime(),
-);
+const unsortedEntries = await getCollection('timeline');
+const entries = unsortedEntries.sort(compareTimelineNewest);
 
 const count = (category: string) =>
   category === 'all'
@@ -14,10 +14,10 @@ const count = (category: string) =>
     : entries.filter((entry) => entry.data.category === category).length;
 
 const filters = [
-  { id: 'all', label: 'All' },
   { id: 'work', label: 'Work' },
-  { id: 'education', label: 'Education' },
+  { id: 'all', label: 'All' },
   { id: 'project', label: 'Projects' },
+  { id: 'education', label: 'Education' },
   { id: 'award', label: 'Awards' },
 ] as const;
 ---
@@ -26,10 +26,10 @@ const filters = [
   <div class="container">
     <p class="section-label">Timeline</p>
 
-    <h2 class="timeline-heading">How I got here</h2>
+    <h1 class="timeline-heading">Timeline: Experience, Education &amp; Projects</h1>
     <p class="timeline-lede">
-      Everything in order, oldest first — school, degree, the work at Nokia, the projects
-      and the papers. Open any entry for the detail.
+      Production work is shown first. Switch to All for education, projects and awards,
+      ordered by start date.
     </p>
 
     <div class="controls">
@@ -40,7 +40,7 @@ const filters = [
               class="filter"
               type="button"
               data-filter={filter.id}
-              aria-pressed={filter.id === 'all' ? 'true' : 'false'}
+              aria-pressed={filter.id === 'work' ? 'true' : 'false'}
             >
               {filter.label}
               <span class="filter-count mono">{count(filter.id)}</span>
@@ -49,11 +49,9 @@ const filters = [
         }
       </div>
 
-      {/* Oldest-first is the story; newest-first is what someone scanning for
-          recent experience actually wants. */}
-      <button class="sort-toggle" type="button" data-sort-toggle aria-pressed="false">
+      <button class="sort-toggle" type="button" data-sort-toggle aria-pressed="true">
         <Icon name="lucide:arrow-up-down" width="14" height="14" aria-hidden="true" />
-        Newest first
+        <span data-sort-label>Newest first</span>
       </button>
     </div>
 
@@ -258,7 +256,7 @@ const filters = [
   /* ---------- Accordion ---------- */
 
   for (const entry of entries) {
-    const header = entry.querySelector<HTMLButtonElement>('.entry-header');
+    const header = entry.querySelector<HTMLButtonElement>('.entry-toggle');
     if (!header) continue;
 
     header.addEventListener('click', () => {
@@ -287,7 +285,7 @@ const filters = [
       // Collapse anything being filtered out, so it does not reappear expanded.
       if (!matches && entry.classList.contains('is-open')) {
         entry.classList.remove('is-open');
-        entry.querySelector('.entry-header')?.setAttribute('aria-expanded', 'false');
+        entry.querySelector('.entry-toggle')?.setAttribute('aria-expanded', 'false');
       }
     }
 
@@ -317,26 +315,27 @@ const filters = [
   const terminus = document.querySelector<HTMLElement>('[data-terminus]');
   const sortToggle = document.querySelector<HTMLButtonElement>('[data-sort-toggle]');
 
-  // Authored order is oldest-first; keep a pristine copy to reverse from.
-  const oldestFirst = entries.slice();
+  // Authored order is newest-first; keep a pristine copy to reverse from.
+  const newestFirstOrder = entries.slice();
 
   function applyOrder(newestFirst: boolean) {
     if (!list || !timelineRoot || !entriesWrap || !terminus) return;
 
-    const ordered = newestFirst ? oldestFirst.slice().reverse() : oldestFirst;
+    const ordered = newestFirst ? newestFirstOrder : newestFirstOrder.slice().reverse();
     ordered.forEach((entry, position) => {
       entry.style.setProperty('--stagger', String(position));
       list.appendChild(entry); // appendChild moves the existing node
     });
     list.reversed = newestFirst;
 
-    // The terminus means "and it continues from here", so it has to sit at the
-    // present-day end of the rail — which flips with the order.
-    if (newestFirst) timelineRoot.insertBefore(terminus, entriesWrap);
-    else timelineRoot.appendChild(terminus);
-    terminus.dataset.order = newestFirst ? 'newest' : 'oldest';
+    // Keep the conversion prompt after the evidence in either sort direction.
+    // With newest-first as the default, current work must remain the first item.
+    timelineRoot.appendChild(terminus);
+    terminus.dataset.order = 'oldest';
 
     sortToggle?.setAttribute('aria-pressed', String(newestFirst));
+    const sortLabel = sortToggle?.querySelector<HTMLElement>('[data-sort-label]');
+    if (sortLabel) sortLabel.textContent = newestFirst ? 'Newest first' : 'Oldest first';
     if (status) {
       status.textContent = newestFirst
         ? 'Timeline sorted newest first.'
@@ -359,6 +358,9 @@ const filters = [
       block: 'start',
     });
   });
+
+  applyOrder(true);
+  applyFilter('work');
 
   /* ---------- Entry reveals ----------
      Plain IntersectionObserver toggling a class; the movement itself is a CSS
@@ -419,12 +421,12 @@ const filters = [
   /* Applied at first paint (.js is set by a blocking inline script), so entries
      never flash in at full opacity before the observer runs. */
   .js .entry {
-    opacity: 0;
-    transform: translateY(18px);
+    opacity: 0.55;
+    transform: translateY(10px);
     transition:
-      opacity 0.55s var(--ease),
-      transform 0.55s var(--ease);
-    transition-delay: calc(min(var(--stagger, 0), 3) * 60ms);
+      opacity 0.38s var(--ease),
+      transform 0.38s var(--ease);
+    transition-delay: calc(min(var(--stagger, 0), 3) * 25ms);
   }
 
   .js .entry.is-visible {

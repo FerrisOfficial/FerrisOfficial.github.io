@@ -12,6 +12,7 @@
     "wasm": "node scripts/build-wasm.mjs",
     "wasm:test": "node scripts/test-wasm.mjs",
     "engine:test": "node scripts/test-engine.mjs",
+    "timeline:test": "node --experimental-strip-types scripts/test-timeline-sort.mjs",
     "engine:bench": "node scripts/bench-engine.mjs"
   },
   "dependencies": {

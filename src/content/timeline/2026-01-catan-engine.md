@@ -1,32 +1,40 @@
 ---
-title: Catan Game Engine & AI Simulation Platform
+title: Two-Player Catan Research Engine & AI
 org: Bachelor Thesis
 category: project
 startDate: 2026-01-01
 endDate: 2026-06-30
-summary: A high-performance C++ game engine with a custom AI framework, benchmarking 11 autonomous agents.
+summary: A co-authored C++20 research engine for a two-player, 15-VP Catan variant, with 13 native agents and reproducible benchmarks.
 tech: ['C++20', 'CMake', 'GoogleTest', 'Game AI', 'Benchmarking']
 links:
-  - label: Source on GitHub
+  - label: Repository
     url: https://github.com/FerrisOfficial/CatanAPI
-  - label: Read the thesis
+  - label: Thesis
     url: https://github.com/FerrisOfficial/CatanAPI/blob/main/Thesis.pdf
 featured: true
 grade:
   value: 5
 ---
 
-Bachelor thesis: a high-performance game engine written in C++ with a custom AI
-framework for autonomous agents.
+Co-authored BSc thesis with **Yaryna Rachkevych**: a high-performance C++20 engine
+for a deliberate two-player Catan research variant. Games target 15 victory points
+and exclude player-to-player trading so agent comparisons remain reproducible.
 
-- Built the engine and a complete rules implementation of Catan from scratch in C++20
-- Designed a custom AI framework that lets agents be swapped in against a common interface
-- Designed and benchmarked **11 AI agents** across a range of strategic behaviours, from a random baseline to alpha-beta search
+- Bit-packed the fixed board state into under 800 bytes and used apply/undo transitions
+  so heuristic agents can evaluate candidates without copying the board
+- Implemented deterministic seeding, JSONL replay inspection and multi-agent benchmarking
+- Benchmarked **13 native agents** spanning random, iterative and specialised heuristics,
+  chance-aware alpha-beta and evolutionarily tuned parameters
+- Profiled the engine and cut per-game cost by **59%**; representative Clang 22
+  `-O3` throughput is 250–300 games/s for random vs random and about 145 games/s
+  for Iterative 5 mirror matches
+- Verified the rules and engine with 111 test definitions expanding to 242 cases
+  across six binaries, plus GCC, MSVC, Clang and AddressSanitizer CI
 
 Catan is a deceptively good testbed for game AI. It has hidden information, randomness
 from dice, and negotiation between players — which rules out the search techniques
 that solve chess outright. Agents have to reason under uncertainty instead.
 
-Engine throughput is what makes the research possible at all: drawing statistically
-meaningful conclusions about which strategy dominates requires tens of thousands of
-simulated games, so the performance work and the AI work are the same problem.
+The browser demo exposes 11 of the 13 agents and runs the same engine through
+WebAssembly. Native and browser throughput are reported separately because compiler,
+hardware and matchup materially affect games per second.

@@ -23,12 +23,8 @@ const contactHref = Astro.url.pathname === '/' ? '#contact' : '/#contact';
     <span class="terminus-pulse" aria-hidden="true"></span>
 
     <div class="terminus-copy">
-      {/* "The story continues" only parses once you have read the story. In
-          newest-first the terminus sits above everything, so it needs a label
-          that works as an opening rather than a closing. */}
       <p class="terminus-title mono">
-        <span data-label="oldest">The story continues</span>
-        <span data-label="newest">What's next</span>
+        Continue the conversation
       </p>
       <p class="terminus-text">
         Looking for the next problem worth solving — ideally one where performance,
@@ -50,15 +46,6 @@ const contactHref = Astro.url.pathname === '/' ? '#contact' : '/#contact';
     padding-top: var(--space-4);
   }
 
-  /* Newest-first puts the present at the top, so the terminus sits above the
-     entries and its two halves swap: marker first, then the trail descending
-     back toward recorded history. */
-  .terminus[data-order='newest'] {
-    flex-direction: column-reverse;
-    padding-top: 0;
-    padding-bottom: var(--space-4);
-  }
-
   /* --- Fading trail of dots down the rail --- */
 
   .terminus-trail {
@@ -76,18 +63,11 @@ const contactHref = Astro.url.pathname === '/' ? '#contact' : '/#contact';
        leftover punctuation. Each is fainter than the last. */
     background: var(--accent);
     top: calc(var(--d) * 1.7rem + 0.6rem);
-    /* Held in a variable so the keyframes and the reversed mode below can both
-       reference one base value instead of repeating the arithmetic. */
+    /* Held in a variable so the drift animation keeps its base opacity. */
     --o: calc(0.62 - var(--d) * 0.17);
     opacity: var(--o);
     animation: drift 3s var(--ease-inout) infinite;
     animation-delay: calc(var(--d) * 260ms);
-  }
-
-  /* Flipped: the strongest dot is the one nearest the entries, which is now the
-     bottom of the trail rather than the top. */
-  .terminus[data-order='newest'] .trail-dot {
-    --o: calc(0.62 - (2 - var(--d)) * 0.17);
   }
 
   @keyframes drift {
@@ -143,20 +123,6 @@ const contactHref = Astro.url.pathname === '/' ? '#contact' : '/#contact';
 
   .terminus-copy {
     max-width: 44ch;
-  }
-
-  /* Default (and no-JS) state is oldest-first, so the newest-first label stays
-     out of the document until the order actually flips. */
-  .terminus-title [data-label='newest'] {
-    display: none;
-  }
-
-  .terminus[data-order='newest'] .terminus-title [data-label='newest'] {
-    display: inline;
-  }
-
-  .terminus[data-order='newest'] .terminus-title [data-label='oldest'] {
-    display: none;
   }
 
   .terminus-title {
