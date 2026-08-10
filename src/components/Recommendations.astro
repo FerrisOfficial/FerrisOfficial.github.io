@@ -1,0 +1,140 @@
+---
+const recommendations = [
+  {
+    quote: 'Maciej demonstrated strong analytical skills as well as wide knowledge of modern C++.',
+    name: 'Krystian Pawlak',
+    role: 'Line Manager at Nokia Mobile Networks',
+    url: 'https://www.linkedin.com/in/krystian-pawlak-63089a4/',
+  },
+  {
+    quote:
+      'Very independent developer with no need of supervision, considering his first summer trainee position.',
+    name: 'Kuba Łukaszczyk',
+    role: 'Technical Leader at Nokia',
+    url: 'https://www.linkedin.com/in/kuba-%C5%82ukaszczyk-334886b9/',
+  },
+] as const;
+---
+
+<section class="section recommendations" aria-labelledby="recommendations-heading">
+  <div class="container recommendations-inner">
+    <div class="recommendations-intro">
+      <p class="section-label">Recommendations</p>
+      <h2 id="recommendations-heading">What colleagues say</h2>
+    </div>
+
+    <div class="recommendation-grid">
+      {
+        recommendations.map((recommendation) => (
+          <blockquote class="recommendation-card">
+            <p>“{recommendation.quote}”</p>
+            <footer>
+              <cite>
+                <a href={recommendation.url} target="_blank" rel="noopener noreferrer">
+                  {recommendation.name}
+                </a>
+                <span>{recommendation.role}</span>
+              </cite>
+            </footer>
+          </blockquote>
+        ))
+      }
+    </div>
+
+    <a
+      class="recommendations-link"
+      href="https://www.linkedin.com/in/stempniak-maciej/"
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      View LinkedIn profile <span aria-hidden="true">↗</span>
+    </a>
+  </div>
+</section>
+
+<style>
+  .recommendations {
+    padding-top: 0;
+  }
+
+  .recommendations-intro {
+    display: block;
+  }
+
+  .recommendations-intro h2 {
+    margin-top: var(--space-3);
+    font-size: var(--text-xl);
+  }
+
+  .recommendation-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-4);
+    margin-top: var(--space-5);
+  }
+
+  .recommendation-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: var(--space-4);
+    margin: 0;
+    padding: var(--space-5);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--cat-work);
+    border-radius: var(--r-md);
+    background: var(--surface);
+  }
+
+  .recommendation-card > p {
+    max-width: 48ch;
+    font-size: var(--text-base);
+    line-height: var(--leading-relaxed);
+    color: var(--text-muted);
+  }
+
+  .recommendation-card cite {
+    display: grid;
+    gap: var(--space-1);
+    font-style: normal;
+    font-size: var(--text-sm);
+  }
+
+  .recommendation-card cite a {
+    width: fit-content;
+    color: var(--text);
+    font-weight: 620;
+  }
+
+  .recommendation-card cite a:hover {
+    color: var(--accent);
+  }
+
+  .recommendation-card cite span {
+    color: var(--text-faint);
+    font-size: var(--text-xs);
+  }
+
+  .recommendations-link {
+    display: inline-flex;
+    gap: var(--space-2);
+    margin-top: var(--space-4);
+    color: var(--accent);
+    font-size: var(--text-sm);
+    font-weight: 600;
+  }
+
+  .recommendations-link:hover {
+    color: var(--accent-hover);
+  }
+
+  @media (max-width: 42rem) {
+    .recommendation-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .recommendation-card {
+      padding: var(--space-4);
+    }
+  }
+</style>

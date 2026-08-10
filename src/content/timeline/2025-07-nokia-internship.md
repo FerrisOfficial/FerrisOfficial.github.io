@@ -1,19 +1,22 @@
 ---
-title: Summer Internship
+title: C++ Summer Trainee · Internship
 org: Nokia
 category: work
 startDate: 2025-07-01
 endDate: 2025-10-31
-summary: Contributed production C++ to 5G RAN energy-efficiency software, working through professional review, build and test pipelines before converting to a developer role.
-tech: ['C++', 'Linux', 'Git', 'Jira']
+summary: Began contributing C++20 decision logic and tests for 5G base-station energy management before being selected to continue in a contract role.
+tech: ['C++20', 'Linux', 'Clang', 'GDB', 'Valgrind', 'Git', 'Gerrit']
 featured: true
 ---
 
-A summer internship at Nokia working on energy saving in 5G RAN — the radio access
-network layer of live mobile infrastructure.
+A summer internship at Nokia working on energy management in 5G RAN software.
 
-The step up from university C++ to a production telecom codebase was the substance
-of it: code review at a professional standard, a build and test pipeline of serious
-scale, and software where a regression reaches real network operators.
+- Developed C++20 decision logic for temperature-aware cell activation, traffic
+  control and energy management in 5G base stations
+- Extended operator-configuration handling for Massive MIMO and beamforming functionality
+- Added automated tests and validated changes using the team's existing
+  telecommunications simulation environment
+- Debugged with GDB, checked memory correctness with Valgrind, and worked with Clang,
+  Git and Gerrit in the team's production workflow
 
-The internship converted into a permanent developer role in October.
+Selected to continue with the team after completing the internship.

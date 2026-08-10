@@ -1,0 +1,157 @@
+---
+import { Icon } from 'astro-icon/components';
+
+const contributions = [
+  'Co-developed the project and personally implemented its game logic, map generation, bot interface and package, and timeout enforcement.',
+  'Built structured match logs and move-by-move replay so bot behavior and game outcomes could be inspected after execution.',
+] as const;
+
+const technologies = ['Python', 'Process management', 'Timeout enforcement', 'Logging and replay'];
+---
+
+<section class="section bot-arena" id="bot-arena" aria-labelledby="bot-arena-heading">
+  <div class="container">
+    <p class="section-label">Python engineering</p>
+    <article class="bot-arena-feature">
+      <figure class="bot-arena-visual">
+        <img
+          src="/images/bot-arena-analyzing.png"
+          alt="Bot Arena replay interface showing the move log, game state, bot statistics and playback controls."
+          width="1008"
+          height="568"
+          loading="lazy"
+        />
+      </figure>
+
+      <div class="bot-arena-copy">
+        <p class="project-kicker mono">Tournament infrastructure · Co-developed project</p>
+        <h2 id="bot-arena-heading">Bot Arena</h2>
+        <p class="bot-arena-summary">
+          A Python environment for running programming-game tournaments, enforcing
+          execution limits and replaying completed matches for inspection.
+        </p>
+
+        <ul class="contribution-list">
+          {contributions.map((contribution) => <li>{contribution}</li>)}
+        </ul>
+
+        <ul class="technology-list" role="list" aria-label="Bot Arena technologies">
+          {technologies.map((technology) => <li class="mono">{technology}</li>)}
+        </ul>
+
+        <a
+          class="repo-link"
+          href="https://github.com/FerrisOfficial/bot-arena"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <Icon name="lucide:github" width="17" height="17" aria-hidden="true" />
+          Repository <span aria-hidden="true">↗</span>
+        </a>
+      </div>
+    </article>
+  </div>
+</section>
+
+<style>
+  .bot-arena {
+    padding-top: 0;
+  }
+
+  .bot-arena-feature {
+    display: grid;
+    grid-template-columns: minmax(0, 1.4fr) minmax(18rem, 1fr);
+    align-items: center;
+    gap: var(--space-7);
+    margin-top: var(--space-5);
+    padding-top: var(--space-6);
+    border-top: 1px solid var(--border);
+  }
+
+  .bot-arena-visual {
+    margin: 0;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    border-radius: var(--r-lg);
+    background: var(--surface);
+    box-shadow: var(--shadow-md);
+  }
+
+  .bot-arena-visual img {
+    width: 100%;
+    height: auto;
+  }
+
+  .project-kicker {
+    margin-bottom: var(--space-2);
+    color: var(--cat-project);
+    font-size: var(--text-2xs);
+    font-weight: 600;
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+  }
+
+  .bot-arena-copy h2 {
+    font-size: var(--text-2xl);
+  }
+
+  .bot-arena-summary {
+    margin-top: var(--space-3);
+    color: var(--text-muted);
+    line-height: var(--leading-relaxed);
+  }
+
+  .contribution-list {
+    display: grid;
+    gap: var(--space-3);
+    margin: var(--space-4) 0 0;
+    padding-left: var(--space-5);
+    color: var(--text-muted);
+    font-size: var(--text-sm);
+    line-height: var(--leading-normal);
+  }
+
+  .contribution-list li::marker {
+    color: var(--cat-project);
+  }
+
+  .technology-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    margin-top: var(--space-4);
+  }
+
+  .technology-list li {
+    padding: 0.24rem 0.5rem;
+    border: 1px solid var(--border);
+    border-radius: var(--r-full);
+    color: var(--text-faint);
+    font-size: var(--text-2xs);
+  }
+
+  .repo-link {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    margin-top: var(--space-4);
+    color: var(--accent);
+    font-size: var(--text-sm);
+    font-weight: 600;
+  }
+
+  .repo-link:hover {
+    color: var(--accent-hover);
+  }
+
+  @media (max-width: 50rem) {
+    .bot-arena-feature {
+      grid-template-columns: 1fr;
+      gap: var(--space-5);
+    }
+
+    .bot-arena-copy {
+      max-width: 62ch;
+    }
+  }
+</style>

@@ -24,10 +24,10 @@ const fallbackBots = [
       Live · C++ via WebAssembly
     </span>
     <p class="demo-intro">
-      The engine below is the thesis code itself, compiled to WebAssembly and running in
-      your browser — not a recording. Pick two bots and watch the win rate converge.
-      The displayed throughput is browser- and device-specific, not the native release-build benchmark.
+      The thesis engine is compiled to WebAssembly and runs locally in your browser.
+      Choose two agents and run a reproducible tournament.
     </p>
+    <p class="demo-throughput">Browser throughput is device-specific and is not the native release-build benchmark.</p>
   </div>
 
   <div class="demo-controls">
@@ -183,6 +183,13 @@ const fallbackBots = [
     font-size: var(--text-sm);
     line-height: var(--leading-normal);
     color: var(--text-muted);
+  }
+
+  .demo-throughput {
+    margin-top: var(--space-1);
+    color: var(--text-faint);
+    font-size: var(--text-2xs);
+    line-height: var(--leading-normal);
   }
 
   /* --- Controls --- */
@@ -590,7 +597,7 @@ const fallbackBots = [
 
   const root = document.querySelector<HTMLElement>('[data-catan-demo]');
   if (root) {
-    const $ = <T extends HTMLElement>(sel: string) => root.querySelector<T>(sel)!;
+    const $ = <T extends Element = HTMLElement>(sel: string) => root.querySelector<T>(sel)!;
 
     const selA = $<HTMLSelectElement>('[data-bot-a]');
     const selB = $<HTMLSelectElement>('[data-bot-b]');

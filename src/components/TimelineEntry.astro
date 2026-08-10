@@ -100,7 +100,7 @@ const gradeSr = grade
           >
             <span class="entry-title">
               {data.title}
-              {data.org && <span class="entry-org">{data.org}</span>}
+              {data.org && <span class="entry-org">{' · '}{data.org}</span>}
             </span>
 
             <span class="entry-chevron" aria-hidden="true">
@@ -395,11 +395,6 @@ const gradeSr = grade
     font-weight: 500;
   }
 
-  .entry-org::before {
-    content: ' · ';
-    color: var(--text-faint);
-  }
-
   .entry-summary {
     grid-column: 1;
     display: block;
@@ -408,6 +403,10 @@ const gradeSr = grade
     font-size: var(--text-sm);
     line-height: var(--leading-normal);
     color: var(--text-muted);
+  }
+
+  .entry.is-open .entry-summary {
+    display: none;
   }
 
   .entry-chevron {

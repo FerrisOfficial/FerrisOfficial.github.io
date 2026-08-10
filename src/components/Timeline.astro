@@ -255,13 +255,26 @@ const filters = [
 
   /* ---------- Accordion ---------- */
 
+  function setEntryOpen(entry: HTMLElement, open: boolean) {
+    const header = entry.querySelector<HTMLButtonElement>('.entry-toggle');
+    if (!header) return;
+
+    entry.classList.toggle('is-open', open);
+    header.setAttribute('aria-expanded', String(open));
+
+    const meta = entry.querySelector<HTMLElement>('.entry-meta');
+    const summary = entry.querySelector<HTMLElement>('.entry-summary');
+    const describedBy = [meta?.id, open ? undefined : summary?.id].filter(Boolean).join(' ');
+    if (describedBy) header.setAttribute('aria-describedby', describedBy);
+    else header.removeAttribute('aria-describedby');
+  }
+
   for (const entry of entries) {
     const header = entry.querySelector<HTMLButtonElement>('.entry-toggle');
     if (!header) continue;
 
     header.addEventListener('click', () => {
-      const open = entry.classList.toggle('is-open');
-      header.setAttribute('aria-expanded', String(open));
+      setEntryOpen(entry, !entry.classList.contains('is-open'));
     });
   }
 
@@ -284,8 +297,7 @@ const filters = [
       entry.hidden = !matches;
       // Collapse anything being filtered out, so it does not reappear expanded.
       if (!matches && entry.classList.contains('is-open')) {
-        entry.classList.remove('is-open');
-        entry.querySelector('.entry-toggle')?.setAttribute('aria-expanded', 'false');
+        setEntryOpen(entry, false);
       }
     }
 

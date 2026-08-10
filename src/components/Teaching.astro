@@ -1,0 +1,84 @@
+---
+const roles = [
+  {
+    title: 'Mathematics & Computer Science Tutor',
+    meta: 'Paid one-to-one tutoring · Since 2020',
+    copy:
+      'Taught mathematics during the first two years and mathematics and computer science from 2022 onward, working with more than 20 students in total and preparing secondary-school students for Polish Matura examinations.',
+  },
+  {
+    title: 'Sailing Instructor',
+    meta: 'Certified by the Polish Yachting Association · 2023–2025',
+    copy:
+      'Taught adults and young people over three summer seasons, preparing participants for Poland’s yacht-sailing licence examination.',
+  },
+] as const;
+---
+
+<section class="section teaching" aria-labelledby="teaching-heading">
+  <div class="container">
+    <p class="section-label">Teaching &amp; leadership</p>
+    <h2 id="teaching-heading">Clear technical communication</h2>
+
+    <div class="teaching-grid">
+      {
+        roles.map((role) => (
+          <article class="teaching-item">
+            <p class="teaching-meta mono">{role.meta}</p>
+            <h3>{role.title}</h3>
+            <p>{role.copy}</p>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<style>
+  .teaching {
+    padding-top: 0;
+  }
+
+  .teaching h2 {
+    font-size: var(--text-xl);
+  }
+
+  .teaching-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-5);
+    margin-top: var(--space-5);
+  }
+
+  .teaching-item {
+    padding-top: var(--space-4);
+    border-top: 1px solid var(--border);
+  }
+
+  .teaching-meta {
+    color: var(--cat-education);
+    font-size: var(--text-2xs);
+    font-weight: 600;
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+  }
+
+  .teaching-item h3 {
+    margin-top: var(--space-2);
+    font-size: var(--text-base);
+  }
+
+  .teaching-item > p:last-child {
+    max-width: 54ch;
+    margin-top: var(--space-2);
+    color: var(--text-muted);
+    font-size: var(--text-sm);
+    line-height: var(--leading-relaxed);
+  }
+
+  @media (max-width: 42rem) {
+    .teaching-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
