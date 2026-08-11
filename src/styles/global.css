@@ -205,6 +205,14 @@ body::after {
   .section {
     padding-block: 3.5rem;
   }
+
+  main > .section + .section {
+    padding-top: var(--space-4);
+  }
+
+  main > .skills + .education {
+    padding-top: 0;
+  }
 }
 
 .section-label {

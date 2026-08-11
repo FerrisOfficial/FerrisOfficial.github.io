@@ -66,14 +66,14 @@
   --bg-subtle: #f3f3f6;
   --surface: #ffffff;
   --surface-hover: #f8f8fa;
-  --border: #e5e5ea;
+  --border: #dfdfe6;
   --border-strong: #cfcfd8;
 
   --text: #131316;
   --text-muted: #56565f;
   /* Carries real text (date pills, labels, footer), so it has to clear AA 4.5:1
      on --surface rather than merely look subdued. */
-  --text-faint: #6e6e79;
+  --text-faint: #64646f;
 
   --accent: #0f766e;
   --accent-hover: #0b5d56;
@@ -108,12 +108,12 @@
     --bg-subtle: #101014;
     --surface: #131317;
     --surface-hover: #1a1a21;
-    --border: #24242c;
+    --border: #292932;
     --border-strong: #34343e;
 
     --text: #f1f1f3;
     --text-muted: #9d9daa;
-    --text-faint: #8d8d9b;
+    --text-faint: #9696a3;
 
     --accent: #2dd4bf;
     --accent-hover: #5eead4;
@@ -147,12 +147,12 @@
   --bg-subtle: #101014;
   --surface: #131317;
   --surface-hover: #1a1a21;
-  --border: #24242c;
+  --border: #292932;
   --border-strong: #34343e;
 
   --text: #f1f1f3;
   --text-muted: #9d9daa;
-  --text-faint: #8d8d9b;
+  --text-faint: #9696a3;
 
   --accent: #2dd4bf;
   --accent-hover: #5eead4;

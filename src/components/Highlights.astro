@@ -57,14 +57,14 @@ const nokiaEvidence = [
                 {formatRange(symfonia.data.startDate, symfonia.data.endDate, symfonia.data.ongoing)}
               </p>
             </header>
-            <dl class="experience-evidence">
+            <div class="experience-evidence">
               {symfoniaEvidence.map((item) => (
-                <div class="evidence-row">
-                  <dt>{item.label}</dt>
-                  <dd>{item.copy}</dd>
-                </div>
+                <details class="evidence-row evidence-disclosure" data-mobile-collapse open>
+                  <summary>{item.label}</summary>
+                  <p>{item.copy}</p>
+                </details>
               ))}
-            </dl>
+            </div>
           </article>
         )
       }
@@ -85,14 +85,14 @@ const nokiaEvidence = [
                 </p>
               </div>
             </header>
-            <dl class="experience-evidence">
+            <div class="experience-evidence">
               {nokiaEvidence.map((item) => (
-                <div class="evidence-row">
-                  <dt>{item.label}</dt>
-                  <dd>{item.copy}</dd>
-                </div>
+                <details class="evidence-row evidence-disclosure" data-mobile-collapse open>
+                  <summary>{item.label}</summary>
+                  <p>{item.copy}</p>
+                </details>
               ))}
-            </dl>
+            </div>
           </article>
         )
       }
@@ -197,18 +197,31 @@ const nokiaEvidence = [
     border-bottom: 0;
   }
 
-  .evidence-row dt {
+  .evidence-row h4,
+  .evidence-disclosure summary {
     color: var(--text);
     font-size: var(--text-sm);
     font-weight: 680;
   }
 
-  .evidence-row dd {
+  .evidence-row > p {
     max-width: 64ch;
     margin-top: var(--space-1);
     color: var(--text-muted);
     font-size: var(--text-sm);
     line-height: var(--leading-normal);
+  }
+
+  .evidence-disclosure summary {
+    list-style: none;
+  }
+
+  .evidence-disclosure summary::marker {
+    content: '';
+  }
+
+  .evidence-disclosure summary::-webkit-details-marker {
+    display: none;
   }
 
   .timeline-link {
@@ -234,6 +247,27 @@ const nokiaEvidence = [
   }
 
   @media (max-width: 40rem) {
+    .evidence-disclosure summary {
+      display: flex;
+      min-height: 2.75rem;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-3);
+      cursor: pointer;
+    }
+
+    .evidence-disclosure summary::after {
+      content: '+';
+      color: var(--text-faint);
+      font-family: var(--font-mono);
+      font-size: var(--text-base);
+      font-weight: 500;
+    }
+
+    .evidence-disclosure[open] summary::after {
+      content: '−';
+    }
+
     .timeline-link {
       min-height: 2.75rem;
       align-items: center;
@@ -256,3 +290,15 @@ const nokiaEvidence = [
     }
   }
 </style>
+
+<script>
+  const mobileEvidence = window.matchMedia('(max-width: 40rem)');
+  const mobileDisclosures = document.querySelectorAll<HTMLDetailsElement>('[data-mobile-collapse]');
+
+  const syncMobileEvidence = () => {
+    for (const disclosure of mobileDisclosures) disclosure.open = !mobileEvidence.matches;
+  };
+
+  mobileEvidence.addEventListener('change', syncMobileEvidence);
+  syncMobileEvidence();
+</script>
