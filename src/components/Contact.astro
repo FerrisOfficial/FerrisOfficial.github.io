@@ -131,6 +131,12 @@ import Footer from './Footer.astro';
     transform: translateY(-2px);
   }
 
+  .contact-primary:active,
+  .contact-secondary:active {
+    opacity: 0.82;
+    transform: translateY(0);
+  }
+
   @media (max-width: 48rem) {
     .contact-inner {
       grid-template-columns: 1fr;

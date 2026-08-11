@@ -101,9 +101,7 @@ const deepDive = github ? `${github.url}#design` : undefined;
   }
 
   .featured-project {
-    margin-top: var(--space-5);
-    padding-top: var(--space-6);
-    border-top: 1px solid var(--border);
+    margin-top: 0;
   }
 
   .featured-heading {
@@ -224,6 +222,11 @@ const deepDive = github ? `${github.url}#design` : undefined;
     opacity: 0.9;
   }
 
+  .featured-link:active,
+  .text-actions a:active {
+    opacity: 0.78;
+  }
+
   .text-actions {
     gap: var(--space-3);
   }
@@ -278,6 +281,16 @@ const deepDive = github ? `${github.url}#design` : undefined;
 
     .button-actions {
       flex-wrap: wrap;
+    }
+
+    .featured-link,
+    .text-actions a {
+      min-height: 2.75rem;
+    }
+
+    .text-actions a {
+      display: inline-flex;
+      align-items: center;
     }
   }
 </style>

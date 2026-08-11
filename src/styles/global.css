@@ -18,18 +18,42 @@ html {
   /* Keeps anchored sections clear of the sticky nav. */
   scroll-padding-top: 5.5rem;
 
-  /* The native scrollbar is hidden: the timeline spine and the hairline under
-     the nav already show position, and the bar competed with them. Scrolling
-     itself is untouched — wheel, touch, keyboard and drag all still work. */
-  scrollbar-width: none; /* Firefox */
-  -ms-overflow-style: none; /* legacy Edge */
+  /* Keep this long page draggable and easy to orient within while matching
+     the existing low-contrast chrome. */
+  scrollbar-color: var(--border-strong) var(--bg);
 }
 
 /* Chromium and WebKit. */
 html::-webkit-scrollbar {
-  width: 0;
-  height: 0;
-  display: none;
+  width: 0.8rem;
+  height: 0.8rem;
+}
+
+html::-webkit-scrollbar-track {
+  background: var(--bg);
+}
+
+html::-webkit-scrollbar-thumb {
+  border: 0.2rem solid var(--bg);
+  border-radius: var(--r-full);
+  background: var(--border-strong);
+}
+
+html::-webkit-scrollbar-thumb:hover {
+  background: var(--text-faint);
+}
+
+@media (max-width: 40rem) {
+  html,
+  body {
+    scrollbar-width: none;
+  }
+
+  html::-webkit-scrollbar,
+  body::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+  }
 }
 
 body {

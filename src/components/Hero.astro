@@ -23,6 +23,10 @@ const socialLinks: HeroLink[] = [
   { label: 'GitHub', href: site.github, icon: 'lucide:github', external: true, kind: 'text' },
   { label: 'LinkedIn', href: site.linkedin, icon: 'lucide:linkedin', external: true, kind: 'text' },
 ];
+
+const roleBreakIndex = site.role.indexOf(' — ');
+const roleLead = roleBreakIndex >= 0 ? site.role.slice(0, roleBreakIndex) : site.role;
+const roleDetail = roleBreakIndex >= 0 ? site.role.slice(roleBreakIndex) : '';
 ---
 
 <section class="hero" id="top">
@@ -35,7 +39,11 @@ const socialLinks: HeroLink[] = [
       <p class="hero-role mono" style="--i: 2">
         <span class="visually-hidden">{site.role}</span>
         <span class="typing" data-typing-text={site.role} aria-hidden="true">
-          <span class="typing-output" data-typing-output>{site.role}</span><span
+          <span class="typing-output" data-typing-output>
+            <span data-typing-lead>{roleLead}</span><span class="typing-detail" data-typing-detail
+              >{roleDetail}</span
+            >
+          </span><span
             class="typing-cursor"
             aria-hidden="true"></span>
         </span>
@@ -309,6 +317,11 @@ const socialLinks: HeroLink[] = [
     box-shadow: var(--shadow-md);
   }
 
+  .hero-link:active {
+    opacity: 0.82;
+    transform: translateY(0);
+  }
+
   .hero-cue {
     display: inline-flex;
     align-items: center;
@@ -439,6 +452,10 @@ const socialLinks: HeroLink[] = [
       letter-spacing: -0.035em;
     }
 
+    .typing-detail {
+      display: block;
+    }
+
     .hero-blurb {
       margin-top: var(--space-4);
       line-height: var(--leading-normal);
@@ -461,6 +478,7 @@ const socialLinks: HeroLink[] = [
     }
 
     .hero-link {
+      min-height: 2.75rem;
       padding-inline: 0.75rem;
     }
 
@@ -492,14 +510,26 @@ const socialLinks: HeroLink[] = [
 
 <script>
   const typing = document.querySelector<HTMLElement>('[data-typing-text]');
-  const output = typing?.querySelector<HTMLElement>('[data-typing-output]');
+  const leadOutput = typing?.querySelector<HTMLElement>('[data-typing-lead]');
+  const detailOutput = typing?.querySelector<HTMLElement>('[data-typing-detail]');
   const motion = window.matchMedia('(prefers-reduced-motion: reduce)');
 
-  if (typing && output) {
+  if (typing && leadOutput && detailOutput) {
     const text = typing.dataset.typingText ?? '';
+    const splitAt = text.indexOf(' — ');
     let timer: number | undefined;
-    let index = text.length;
-    let deleting = false;
+    let index = 0;
+
+    const render = (value: string) => {
+      if (splitAt < 0) {
+        leadOutput.textContent = value;
+        detailOutput.textContent = '';
+        return;
+      }
+
+      leadOutput.textContent = value.slice(0, Math.min(value.length, splitAt));
+      detailOutput.textContent = value.length > splitAt + 1 ? value.slice(splitAt) : '';
+    };
 
     const schedule = (callback: () => void, delay: number) => {
       window.clearTimeout(timer);
@@ -508,48 +538,25 @@ const socialLinks: HeroLink[] = [
 
     const step = () => {
       if (motion.matches) {
-        output.textContent = text;
+        render(text);
         return;
       }
 
-      if (!deleting) {
-        index += 1;
-        output.textContent = text.slice(0, index);
-
-        if (index >= text.length) {
-          deleting = true;
-          schedule(step, 4500);
-          return;
-        }
-
-        schedule(step, 55);
-        return;
-      }
-
-      index -= 1;
-      output.textContent = text.slice(0, index);
-
-      if (index <= 0) {
-        deleting = false;
-        schedule(step, 350);
-        return;
-      }
-
-      schedule(step, 28);
+      index += 1;
+      render(text.slice(0, index));
+      if (index < text.length) schedule(step, 55);
     };
 
     const start = () => {
       window.clearTimeout(timer);
       if (motion.matches) {
         index = text.length;
-        deleting = false;
-        output.textContent = text;
+        render(text);
         return;
       }
 
       index = 0;
-      deleting = false;
-      output.textContent = '';
+      render('');
       schedule(step, 250);
     };
 

@@ -63,9 +63,7 @@ const technologies = ['Python', 'Process management', 'Timeout enforcement', 'Lo
     grid-template-columns: minmax(0, 1.4fr) minmax(18rem, 1fr);
     align-items: center;
     gap: var(--space-7);
-    margin-top: var(--space-5);
-    padding-top: var(--space-6);
-    border-top: 1px solid var(--border);
+    margin-top: 0;
   }
 
   .bot-arena-visual {
@@ -142,6 +140,16 @@ const technologies = ['Python', 'Process management', 'Timeout enforcement', 'Lo
 
   .repo-link:hover {
     color: var(--accent-hover);
+  }
+
+  .repo-link:active {
+    opacity: 0.72;
+  }
+
+  @media (max-width: 40rem) {
+    .repo-link {
+      min-height: 2.75rem;
+    }
   }
 
   @media (max-width: 50rem) {

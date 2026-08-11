@@ -269,6 +269,11 @@ const fallbackBots = [
     transform: translateY(-1px);
   }
 
+  .demo-run:active:not(:disabled) {
+    opacity: 0.82;
+    transform: translateY(0);
+  }
+
   .demo-run:disabled {
     opacity: 0.5;
     cursor: progress;
@@ -486,6 +491,11 @@ const fallbackBots = [
     border-color: var(--cat);
   }
 
+  .rp-btn:active {
+    background: var(--cat-soft);
+    transform: scale(0.96);
+  }
+
   .rp-play {
     background: var(--cat-soft);
     color: var(--cat);
@@ -581,6 +591,18 @@ const fallbackBots = [
     .demo-run {
       flex: 1 1 100%;
       justify-content: center;
+    }
+
+    .demo select,
+    .demo-run,
+    .replay-summary,
+    .rp-slider {
+      min-height: 2.75rem;
+    }
+
+    .rp-btn {
+      width: 2.75rem;
+      height: 2.75rem;
     }
   }
 </style>

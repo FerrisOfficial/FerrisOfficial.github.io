@@ -228,6 +228,18 @@ const nokiaEvidence = [
     transform: translateX(2px);
   }
 
+  .timeline-link:active {
+    opacity: 0.72;
+    transform: translateX(0);
+  }
+
+  @media (max-width: 40rem) {
+    .timeline-link {
+      min-height: 2.75rem;
+      align-items: center;
+    }
+  }
+
   @media (max-width: 46rem) {
     .experience-entry {
       grid-template-columns: 1fr;
