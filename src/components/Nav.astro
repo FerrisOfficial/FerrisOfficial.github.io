@@ -72,6 +72,8 @@ const initials = site.name
     <ThemeToggle />
   </div>
 
+  <div class="nav-backdrop" data-nav-backdrop aria-hidden="true"></div>
+
   {/* Scroll position, as a hairline under the bar. */}
   <div class="scroll-progress" aria-hidden="true"><span id="scroll-progress-bar"></span></div>
 </header>
@@ -209,9 +211,14 @@ const initials = site.name
     will-change: transform;
   }
 
+  .nav-backdrop {
+    display: none;
+  }
+
   @media (max-width: 48rem) {
     .nav-inner {
       position: relative;
+      z-index: 2;
     }
 
     .nav-menu-toggle {
@@ -231,8 +238,6 @@ const initials = site.name
       border-radius: var(--r-lg);
       background: var(--bg);
       box-shadow: var(--shadow-lg);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
       opacity: 0;
       visibility: hidden;
       transform: translateY(-0.5rem) scale(0.98);
@@ -241,6 +246,17 @@ const initials = site.name
         opacity var(--dur-fast) var(--ease),
         visibility var(--dur-fast) var(--ease),
         transform var(--dur-fast) var(--ease);
+    }
+
+    .nav-backdrop {
+      position: fixed;
+      inset: 4rem 0 0;
+      z-index: 1;
+      display: block;
+      background: rgb(0 0 0 / 0.3);
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
     }
 
     .nav-link {
@@ -257,6 +273,12 @@ const initials = site.name
       opacity: 1;
       visibility: visible;
       transform: none;
+    }
+
+    .nav.menu-open .nav-backdrop {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
     }
 
     .nav.menu-open .menu-icon-open {
@@ -294,6 +316,7 @@ const initials = site.name
   const nav = document.getElementById('nav');
   const bar = document.getElementById('scroll-progress-bar');
   const menuToggle = document.querySelector<HTMLButtonElement>('.nav-menu-toggle');
+  const menuBackdrop = document.querySelector<HTMLElement>('[data-nav-backdrop]');
   const navLinks = Array.from(
     document.querySelectorAll<HTMLAnchorElement>('[data-nav-link]'),
   );
@@ -345,6 +368,8 @@ const initials = site.name
     menuToggle.setAttribute('aria-expanded', String(open));
     menuToggle.setAttribute('aria-label', open ? 'Close navigation' : 'Open navigation');
   });
+
+  menuBackdrop?.addEventListener('click', closeMenu);
 
   for (const link of navLinks) link.addEventListener('click', closeMenu);
 

@@ -40,8 +40,8 @@ const roleDetail = roleBreakIndex >= 0 ? site.role.slice(roleBreakIndex) : '';
         <span class="visually-hidden">{site.role}</span>
         <span class="typing" data-typing-text={site.role} aria-hidden="true">
           <span class="typing-output" data-typing-output>
-            <span data-typing-lead>{roleLead}</span><span class="typing-detail" data-typing-detail
-              >{roleDetail}</span
+            <span data-typing-lead>{roleLead}</span><br class="typing-break" /><span
+              data-typing-detail>{roleDetail}</span
             >
           </span><span
             class="typing-cursor"
@@ -102,7 +102,12 @@ const roleDetail = roleBreakIndex >= 0 ? site.role.slice(roleBreakIndex) : '';
 
       <p class="hero-mobility mono" style="--i: 6">
         <Icon name="lucide:map-pin" width="14" height="14" aria-hidden="true" />
-        <span>{site.location} · EU citizen · Open to relocation across the EU</span>
+        <span class="hero-mobility-copy">
+          <span>{site.location} · EU citizen</span><span class="hero-relocation"
+            ><span class="hero-mobility-separator" aria-hidden="true"> · </span>Open to relocation
+            across the EU</span
+          >
+        </span>
       </p>
 
     </div>
@@ -175,6 +180,20 @@ const roleDetail = roleBreakIndex >= 0 ? site.role.slice(roleBreakIndex) : '';
     display: none;
   }
 
+  @media (min-width: 48.01rem) {
+    .hero-portrait-desktop {
+      height: min(21rem, 34vw);
+      overflow: clip;
+      mask-image: linear-gradient(to bottom, #000 0%, #000 86%, transparent 100%);
+      -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 86%, transparent 100%);
+    }
+
+    .hero-portrait-desktop .hero-portrait-img {
+      transform: translateY(-2rem) scale(1.04);
+      transform-origin: center top;
+    }
+  }
+
   .hero-mobility {
     display: inline-flex;
     align-items: center;
@@ -207,6 +226,10 @@ const roleDetail = roleBreakIndex >= 0 ? site.role.slice(roleBreakIndex) : '';
 
   .typing-output {
     white-space: normal;
+  }
+
+  .typing-break {
+    display: none;
   }
 
   .typing-cursor {
@@ -395,7 +418,7 @@ const roleDetail = roleBreakIndex >= 0 ? site.role.slice(roleBreakIndex) : '';
       isolation: isolate;
       width: clamp(10.5rem, 42vw, 11.75rem);
       height: clamp(10.25rem, 44vw, 10.75rem);
-      margin-top: var(--space-4);
+      margin-top: 0;
       margin-inline: auto;
     }
 
@@ -452,8 +475,8 @@ const roleDetail = roleBreakIndex >= 0 ? site.role.slice(roleBreakIndex) : '';
       letter-spacing: -0.035em;
     }
 
-    .typing-detail {
-      display: block;
+    .typing.has-detail .typing-break {
+      display: inline;
     }
 
     .hero-blurb {
@@ -473,6 +496,8 @@ const roleDetail = roleBreakIndex >= 0 ? site.role.slice(roleBreakIndex) : '';
     }
 
     .hero-social {
+      width: 100%;
+      justify-content: center;
       padding-left: 0;
       border-left: 0;
     }
@@ -488,6 +513,14 @@ const roleDetail = roleBreakIndex >= 0 ? site.role.slice(roleBreakIndex) : '';
       font-size: var(--text-2xs);
       letter-spacing: 0;
       line-height: var(--leading-normal);
+    }
+
+    .hero-mobility-copy {
+      display: grid;
+    }
+
+    .hero-mobility-separator {
+      display: none;
     }
   }
 
@@ -524,11 +557,14 @@ const roleDetail = roleBreakIndex >= 0 ? site.role.slice(roleBreakIndex) : '';
       if (splitAt < 0) {
         leadOutput.textContent = value;
         detailOutput.textContent = '';
+        typing.classList.remove('has-detail');
         return;
       }
 
       leadOutput.textContent = value.slice(0, Math.min(value.length, splitAt));
-      detailOutput.textContent = value.length > splitAt + 1 ? value.slice(splitAt) : '';
+      const detail = value.length > splitAt + 1 ? value.slice(splitAt) : '';
+      detailOutput.textContent = detail;
+      typing.classList.toggle('has-detail', detail.length > 0);
     };
 
     const schedule = (callback: () => void, delay: number) => {
