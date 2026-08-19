@@ -9,7 +9,7 @@ interface Props {
   description?: string;
 }
 
-const { title = `${site.name} — ${site.role}`, description = site.description } = Astro.props;
+const { title = `${site.name} - ${site.role}`, description = site.description } = Astro.props;
 
 const canonical = new URL(Astro.url.pathname, Astro.site ?? site.url).toString();
 const ogImage = new URL('/og.png', Astro.site ?? site.url).toString();
@@ -67,7 +67,7 @@ const personSchema = {
             document.documentElement.dataset.theme = stored;
           }
         } catch (e) {
-          /* private mode — fall through to the CSS media query */
+          /* private mode - fall through to the CSS media query */
         }
       })();
     </script>
@@ -94,7 +94,7 @@ const personSchema = {
           accent,
         );
         console.log(
-          '%cMaciej Stempniak — Backend & Systems Engineer\n' +
+          '%cMaciej Stempniak - Backend & Systems Engineer\n' +
             'github.com/FerrisOfficial\n\n' +
             '%cStatic Astro. No trackers, no cookies, no analytics.\n' +
             'Production experience and selected work, kept intentionally concise.',

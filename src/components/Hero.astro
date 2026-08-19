@@ -24,7 +24,7 @@ const socialLinks: HeroLink[] = [
   { label: 'LinkedIn', href: site.linkedin, icon: 'lucide:linkedin', external: true, kind: 'text' },
 ];
 
-const roleBreakIndex = site.role.indexOf(' — ');
+const roleBreakIndex = site.role.indexOf(' - ');
 const roleLead = roleBreakIndex >= 0 ? site.role.slice(0, roleBreakIndex) : site.role;
 const roleDetail = roleBreakIndex >= 0 ? site.role.slice(roleBreakIndex) : '';
 ---
@@ -489,7 +489,7 @@ const roleDetail = roleBreakIndex >= 0 ? site.role.slice(roleBreakIndex) : '';
 
   if (typing && leadOutput && detailOutput) {
     const text = typing.dataset.typingText ?? '';
-    const splitAt = text.indexOf(' — ');
+    const splitAt = text.indexOf(' - ');
     let timer: number | undefined;
     let index = 0;
 

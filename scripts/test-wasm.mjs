@@ -1,7 +1,7 @@
 // Headless sanity check for the compiled engine: npm run wasm:test
 //
 // Guards against the failure mode where the module loads and returns
-// well-formed JSON that is quietly wrong — every game a draw, a bot winning
+// well-formed JSON that is quietly wrong - every game a draw, a bot winning
 // 100%, seat swapping not actually swapping.
 
 import createModule from '../public/wasm/catan.js';
@@ -19,7 +19,7 @@ const run = (a, b, n, seed, swap) =>
 
 let failures = 0;
 const check = (name, ok, detail = '') => {
-  console.log(`${ok ? '  ok  ' : ' FAIL '} ${name}${detail ? ' — ' + detail : ''}`);
+  console.log(`${ok ? '  ok  ' : ' FAIL '} ${name}${detail ? ' - ' + detail : ''}`);
   if (!ok) failures++;
 };
 

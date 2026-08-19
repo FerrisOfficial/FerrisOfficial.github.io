@@ -26,7 +26,7 @@ and exclude player-to-player trading so agent comparisons remain reproducible.
 - Benchmarked **13 native agents** spanning random, iterative and specialised heuristics,
   chance-aware alpha-beta and evolutionarily tuned parameters
 - Profiled the engine and cut per-game cost by **59%**; representative Clang 22
-  `-O3` throughput is 250–300 games/s for random vs random and about 145 games/s
+  `-O3` throughput is 250-300 games/s for random vs random and about 145 games/s
   for Iterative 5 mirror matches
 - Verified the rules and engine with 111 test definitions expanding to 242 cases
   across six binaries, plus GCC, MSVC, Clang and AddressSanitizer CI
