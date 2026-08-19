@@ -16,10 +16,13 @@ const recommendations = [
 ] as const;
 ---
 
-<section class="section recommendations" aria-labelledby="recommendations-heading">
+<section
+  class="section recommendations"
+  id="recommendations"
+  aria-labelledby="recommendations-heading"
+>
   <div class="container recommendations-inner">
     <div class="recommendations-intro">
-      <p class="section-label">Recommendations</p>
       <h2 id="recommendations-heading">What colleagues say</h2>
     </div>
 
@@ -62,7 +65,6 @@ const recommendations = [
   }
 
   .recommendations-intro h2 {
-    margin-top: var(--space-3);
     font-size: var(--text-xl);
   }
 

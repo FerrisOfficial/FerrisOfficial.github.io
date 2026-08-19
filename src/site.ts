@@ -3,8 +3,7 @@ export const site = {
   name: 'Maciej Stempniak',
   role: 'Backend & Systems Engineer — C++ and .NET',
   tagline:
-    'I build backend and systems software across C++, Python and .NET. I have shipped production C++ for 5G RAN, contribute to KSeF backend services, and use Python for simulation tooling, engineering automation and ML research.',
-  stack: ['Production C++', 'Python Engineering', 'C#/.NET Backend'],
+    'I shipped production C++20 features for Nokia 5G RAN and now build KSeF backend services at Symfonia. My main public project is a bit-packed C++ research engine that runs 250–300 simulated games per second.',
   url: 'https://ferrisofficial.github.io',
   location: 'Warsaw, Poland',
   description:

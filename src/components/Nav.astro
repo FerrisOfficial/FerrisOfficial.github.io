@@ -3,9 +3,8 @@ import ThemeToggle from './ThemeToggle.astro';
 import { Icon } from 'astro-icon/components';
 import { site } from '../site';
 
-// Timeline now lives on its own page; everything else is a section of the
-// homepage. On any page other than the homepage, a same-page anchor needs a
-// leading "/" so it navigates back there instead of pointing at nothing.
+// The portfolio is a single page. The helper keeps section links useful if a
+// standalone route is added later.
 const isHome = Astro.url.pathname === '/';
 const homeAnchor = (hash: string) => (isHome ? hash : `/${hash}`);
 
@@ -14,7 +13,7 @@ const links = [
   { label: 'Projects', href: homeAnchor('#featured-work') },
   { label: 'Skills', href: homeAnchor('#skills') },
   { label: 'About', href: homeAnchor('#about') },
-  { label: 'Timeline', href: '/timeline' },
+  { label: 'Recommendations', href: homeAnchor('#recommendations') },
   { label: 'Contact', href: homeAnchor('#contact') },
 ];
 
@@ -40,9 +39,8 @@ const initials = site.name
     <nav class="nav-links" id="primary-navigation" aria-label="Sections">
       {
         links.map((link) => {
-          // Only same-page anchors get scroll-spied; a plain route like
-          // "/timeline" has no in-page section to observe — it's just current
-          // or not, decided once at build time from the URL.
+          // Only same-page anchors get scroll-spied. Plain routes are marked
+          // current once at build time.
           const hash = link.href.includes('#') ? link.href.slice(link.href.indexOf('#')) : undefined;
           const isCurrentPage = !hash && Astro.url.pathname === link.href;
           return (

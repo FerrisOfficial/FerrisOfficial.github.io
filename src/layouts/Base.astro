@@ -61,11 +61,6 @@ const personSchema = {
     */}
     <script is:inline>
       (function () {
-        // Marks that JS is available, before paint. Timeline entries render
-        // expanded by default so they are readable without JS; this class is
-        // what lets CSS collapse them with no flash of open content.
-        document.documentElement.classList.add('js');
-
         try {
           var stored = localStorage.getItem('theme');
           if (stored === 'light' || stored === 'dark') {
@@ -102,7 +97,7 @@ const personSchema = {
           '%cMaciej Stempniak — Backend & Systems Engineer\n' +
             'github.com/FerrisOfficial\n\n' +
             '%cStatic Astro. No trackers, no cookies, no analytics.\n' +
-            'The timeline is eleven markdown files: src/content/timeline/*.md',
+            'Production experience and selected work, kept intentionally concise.',
           accent,
           muted,
         );

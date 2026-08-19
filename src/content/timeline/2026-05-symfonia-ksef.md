@@ -21,7 +21,5 @@ e-Faktur), Poland's national e-invoicing platform.
   data models, authentication, persistence, GraphQL schemas, automated tests and
   Ministry of Finance integration logic
 - Investigate production failures and add automated tests for new and modified functionality
-- Created repository documentation, reusable agent plans, evaluation harnesses and
-  automated validation workflows for AI-assisted development
-- Set up a Graphify code knowledge graph used by the team with Claude, allowing coding
-  agents to retrieve targeted repository context for planning, implementation and verification
+- Created repository documentation and automated validation workflows to make implementation
+  context easier to retrieve and changes easier to verify

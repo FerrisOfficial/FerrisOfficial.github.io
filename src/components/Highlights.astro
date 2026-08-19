@@ -21,7 +21,7 @@ const symfoniaEvidence = [
   },
   {
     label: 'Production and tooling',
-    copy: 'Investigate production failures and created repository documentation, validation harnesses and a Graphify knowledge graph used by the team with Claude.',
+    copy: 'Investigate production failures and create repository documentation, test harnesses and automated validation workflows.',
   },
 ];
 
@@ -43,7 +43,6 @@ const nokiaEvidence = [
 
 <section class="section experience" id="experience" aria-labelledby="experience-heading">
   <div class="container experience-inner">
-    <p class="section-label">Experience</p>
     <h2 id="experience-heading">Production experience</h2>
 
     <div class="experience-list">
@@ -98,9 +97,6 @@ const nokiaEvidence = [
       }
     </div>
 
-    <a class="timeline-link" href="/timeline">
-      View full experience timeline <span aria-hidden="true">→</span>
-    </a>
   </div>
 </section>
 
@@ -224,28 +220,6 @@ const nokiaEvidence = [
     display: none;
   }
 
-  .timeline-link {
-    display: inline-flex;
-    gap: var(--space-2);
-    margin-top: var(--space-4);
-    color: var(--accent);
-    font-size: var(--text-sm);
-    font-weight: 600;
-    transition:
-      color var(--dur-fast) var(--ease),
-      transform var(--dur-fast) var(--ease);
-  }
-
-  .timeline-link:hover {
-    color: var(--accent-hover);
-    transform: translateX(2px);
-  }
-
-  .timeline-link:active {
-    opacity: 0.72;
-    transform: translateX(0);
-  }
-
   @media (max-width: 40rem) {
     .evidence-disclosure summary {
       display: flex;
@@ -268,10 +242,6 @@ const nokiaEvidence = [
       content: '−';
     }
 
-    .timeline-link {
-      min-height: 2.75rem;
-      align-items: center;
-    }
   }
 
   @media (max-width: 46rem) {

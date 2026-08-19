@@ -6,13 +6,11 @@ import Footer from './Footer.astro';
 
 <section class="section contact" id="contact">
   <div class="container contact-inner">
-    <p class="section-label">Contact</p>
-
     <div class="contact-copy">
-      <h2 class="contact-heading">Hiring for a technically demanding software role?</h2>
+      <h2 class="contact-heading">Open to backend and systems opportunities</h2>
       <p class="contact-text">
-        I'm interested in backend, systems and applied-ML roles where performance,
-        reliability or correctness are first-class constraints.
+        I'm interested in roles involving C++, .NET or performance-sensitive backend
+        services, in Warsaw or elsewhere in the EU.
       </p>
       <a class="contact-email mono" href={`mailto:${site.email}`}>{site.email}</a>
     </div>
@@ -54,11 +52,6 @@ import Footer from './Footer.astro';
     grid-template-columns: minmax(0, 1fr) auto;
     align-items: end;
     gap: var(--space-6) var(--space-8);
-  }
-
-  .contact-inner .section-label {
-    grid-column: 1 / -1;
-    margin-bottom: 0;
   }
 
   .contact-text {
@@ -142,10 +135,6 @@ import Footer from './Footer.astro';
       grid-template-columns: 1fr;
       align-items: start;
       gap: var(--space-5);
-    }
-
-    .contact-inner .section-label {
-      grid-column: auto;
     }
 
     .contact-actions {

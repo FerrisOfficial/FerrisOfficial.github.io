@@ -4,10 +4,30 @@ import { Icon } from 'astro-icon/components';
 
 <section class="section recognition" aria-labelledby="recognition-heading">
   <div class="container">
-    <p class="section-label">Recognition</p>
     <h2 id="recognition-heading">Selected achievements</h2>
 
     <div class="recognition-list">
+      <article class="recognition-item">
+        <Icon name="lucide:badge-check" width="19" height="19" aria-hidden="true" />
+        <div>
+          <h3>
+            <a
+              href="https://pl.linkedin.com/posts/10xdevs-pl_zapisy-na-10xdevs-30-oficjalnie-otwarte-activity-7416735807404855296-yDfO"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              10xDevs 3.0 — AI-Native Software Engineering · 2026
+              <span aria-hidden="true">↗</span>
+            </a>
+          </h3>
+          <p>
+            Completed a practical software-engineering programme focused on AI-native
+            development, including agent-assisted research, planning, implementation,
+            testing, context management and workflow automation.
+          </p>
+        </div>
+      </article>
+
       <article class="recognition-item">
         <Icon name="lucide:award" width="19" height="19" aria-hidden="true" />
         <div>
@@ -49,7 +69,7 @@ import { Icon } from 'astro-icon/components';
 
   .recognition-list {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: var(--space-4);
     margin-top: var(--space-5);
   }
@@ -81,6 +101,12 @@ import { Icon } from 'astro-icon/components';
     color: var(--text-muted);
     font-size: var(--text-sm);
     line-height: var(--leading-normal);
+  }
+
+  @media (max-width: 64rem) {
+    .recognition-list {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
   }
 
   @media (max-width: 42rem) {
