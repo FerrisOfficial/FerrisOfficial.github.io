@@ -1,5 +1,5 @@
 ---
-title: Two-Player Catan Research Engine & AI
+title: Two-Player Catan Simulation Engine & Game AI
 org: Bachelor Thesis
 category: project
 startDate: 2026-01-01

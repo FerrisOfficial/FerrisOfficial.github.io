@@ -8,29 +8,11 @@ import { Icon } from 'astro-icon/components';
 
     <div class="recognition-list">
       <article class="recognition-item">
-        <Icon name="lucide:badge-check" width="19" height="19" aria-hidden="true" />
-        <div>
-          <h3>
-            <a
-              href="https://pl.linkedin.com/posts/10xdevs-pl_zapisy-na-10xdevs-30-oficjalnie-otwarte-activity-7416735807404855296-yDfO"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              10xDevs 3.0 — AI-Native Software Engineering · 2026
-              <span aria-hidden="true">↗</span>
-            </a>
-          </h3>
-          <p>
-            Completed a practical software-engineering programme focused on AI-native
-            development, including agent-assisted research, planning, implementation,
-            testing, context management and workflow automation.
-          </p>
-        </div>
-      </article>
-
-      <article class="recognition-item">
-        <Icon name="lucide:award" width="19" height="19" aria-hidden="true" />
-        <div>
+        <span class="recognition-icon" aria-hidden="true">
+          <Icon name="lucide:award" width="19" height="19" />
+        </span>
+        <div class="recognition-copy">
+          <p class="recognition-kicker mono">Academic distinction</p>
           <h3>Rector’s Scholarship for Academic Achievement · 2023/24</h3>
           <p>
             Awarded for academic results achieved in 2022/23. GPA 4.74/5.00;
@@ -40,8 +22,11 @@ import { Icon } from 'astro-icon/components';
       </article>
 
       <article class="recognition-item">
-        <Icon name="lucide:code-xml" width="19" height="19" aria-hidden="true" />
-        <div>
+        <span class="recognition-icon" aria-hidden="true">
+          <Icon name="lucide:code-xml" width="19" height="19" />
+        </span>
+        <div class="recognition-copy">
+          <p class="recognition-kicker mono">Programming competition</p>
           <h3>
             <a
               href="https://oi.edu.pl/l/29oi_1etap_wyroznieni/"
@@ -52,8 +37,33 @@ import { Icon } from 'astro-icon/components';
               <span aria-hidden="true">↗</span>
             </a>
           </h3>
+          <p>
+            Recognised in the first stage of Poland’s national informatics competition.
+          </p>
         </div>
       </article>
+    </div>
+
+    <div class="additional-training">
+      <span class="training-icon" aria-hidden="true">
+        <Icon name="lucide:badge-check" width="18" height="18" />
+      </span>
+      <div class="additional-training-copy">
+        <p class="additional-training-label mono">Additional training</p>
+        <h3>
+          <a
+            href="https://pl.linkedin.com/posts/10xdevs-pl_zapisy-na-10xdevs-30-oficjalnie-otwarte-activity-7416735807404855296-yDfO"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            10xDevs 3.0 · 2026 <span aria-hidden="true">↗</span>
+          </a>
+        </h3>
+        <p>
+          Practical programme covering agent-assisted software development, testing and
+          workflow automation.
+        </p>
+      </div>
     </div>
   </div>
 </section>
@@ -69,26 +79,53 @@ import { Icon } from 'astro-icon/components';
 
   .recognition-list {
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: var(--space-4);
     margin-top: var(--space-5);
   }
 
   .recognition-item {
-    display: flex;
-    align-items: flex-start;
-    gap: var(--space-3);
-    padding-top: var(--space-4);
-    border-top: 1px solid var(--border);
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    align-items: start;
+    gap: var(--space-4);
+    padding: var(--space-5);
+    border: 1px solid var(--border);
+    border-radius: var(--r-md);
+    background: var(--surface);
+    box-shadow: var(--shadow-sm);
   }
 
-  .recognition-item > [data-icon] {
-    flex-shrink: 0;
+  .recognition-icon,
+  .training-icon {
+    display: grid;
+    place-items: center;
+    width: 2.35rem;
+    height: 2.35rem;
+    border-radius: var(--r-md);
+  }
+
+  .recognition-icon {
+    background: var(--cat-award-soft);
+    color: var(--cat-award);
+  }
+
+  .recognition-kicker,
+  .additional-training-label {
+    font-size: var(--text-2xs);
+    font-weight: 650;
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+  }
+
+  .recognition-kicker {
     color: var(--cat-award);
   }
 
   .recognition-item h3 {
+    margin-top: var(--space-2);
     font-size: var(--text-base);
+    line-height: var(--leading-snug);
   }
 
   .recognition-item h3 a:hover {
@@ -103,15 +140,53 @@ import { Icon } from 'astro-icon/components';
     line-height: var(--leading-normal);
   }
 
-  @media (max-width: 64rem) {
-    .recognition-list {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
+  .additional-training {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    align-items: start;
+    gap: var(--space-4);
+    margin-top: var(--space-4);
+    padding: var(--space-4) var(--space-5);
+    border: 1px solid var(--border);
+    border-radius: var(--r-md);
+    background: var(--bg-subtle);
+  }
+
+  .training-icon {
+    background: var(--accent-soft);
+    color: var(--accent);
+  }
+
+  .additional-training-label {
+    color: var(--accent);
+  }
+
+  .additional-training-copy h3 {
+    margin-top: var(--space-1);
+    font-size: var(--text-base);
+    line-height: var(--leading-snug);
+  }
+
+  .additional-training-copy h3 a:hover {
+    color: var(--accent);
+  }
+
+  .additional-training-copy p {
+    max-width: 64ch;
+    margin-top: var(--space-2);
+    color: var(--text-muted);
+    font-size: var(--text-sm);
+    line-height: var(--leading-normal);
   }
 
   @media (max-width: 42rem) {
     .recognition-list {
       grid-template-columns: 1fr;
+    }
+
+    .recognition-item,
+    .additional-training {
+      padding: var(--space-4);
     }
   }
 </style>

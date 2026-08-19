@@ -3,37 +3,14 @@ import { Icon } from 'astro-icon/components';
 
 const groups = [
   {
-    label: 'Core',
+    label: 'Production',
     tone: 'work',
-    items: ['C++20', 'Python', 'C# / .NET'],
+    items: ['C++20', 'C# / .NET', 'GraphQL', 'SQL', 'Dapr', 'Kubernetes', 'OPA'],
   },
   {
-    label: 'Backend',
-    tone: 'project',
-    items: ['GraphQL', 'REST APIs', 'SQL', 'Hangfire', 'Dapr', 'OPA'],
-  },
-  {
-    label: 'Systems and tooling',
-    tone: 'education',
-    items: ['Concurrency', 'Subprocess management', 'Linux', 'GDB', 'Valgrind', 'Git', 'Gerrit'],
-  },
-  {
-    label: 'Testing and delivery',
-    tone: 'award',
-    items: ['Automated testing', 'GoogleTest', 'xUnit', 'CI', 'Docker', 'Kubernetes'],
-  },
-  {
-    label: 'AI-native & ML',
-    tone: 'ml',
-    wide: true,
-    items: [
-      'PyTorch',
-      'Game AI',
-      'AI-native development',
-      'Coding agents',
-      'Context engineering',
-      'LLM evaluation',
-    ],
+    label: 'Projects & tooling',
+    tone: 'work',
+    items: ['Python', 'WebAssembly', 'Linux', 'GDB', 'Valgrind', 'GoogleTest', 'xUnit', 'CI'],
   },
 ] as const;
 ---
@@ -91,26 +68,6 @@ const groups = [
 
   .skill-group[data-tone='work'] {
     --cat: var(--cat-work);
-  }
-
-  .skill-group[data-tone='project'] {
-    --cat: var(--cat-project);
-  }
-
-  .skill-group[data-tone='education'] {
-    --cat: var(--cat-education);
-  }
-
-  .skill-group[data-tone='award'] {
-    --cat: var(--cat-award);
-  }
-
-  .skill-group[data-tone='ml'] {
-    --cat: var(--cat-project);
-  }
-
-  .skill-group[data-wide] {
-    grid-column: 1 / -1;
   }
 
   .skill-group h3 {
@@ -173,10 +130,6 @@ const groups = [
 
     .skill-group li {
       font-size: var(--text-xs);
-    }
-
-    .skill-group[data-wide] {
-      grid-column: auto;
     }
 
     .spoken-inline {
