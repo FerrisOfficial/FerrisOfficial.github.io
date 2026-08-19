@@ -57,7 +57,7 @@
   --dur-fast: 140ms;
   --dur: 260ms;
   --dur-slow: 520ms;
-  /* Decelerating curve — fast start, soft landing. Reads as "physical". */
+  /* Decelerating curve - fast start, soft landing. Reads as "physical". */
   --ease: cubic-bezier(0.16, 1, 0.3, 1);
   --ease-inout: cubic-bezier(0.65, 0, 0.35, 1);
 
@@ -135,7 +135,7 @@
   }
 }
 
-/* Manual override — must repeat the values rather than @extend, since custom
+/* Manual override - must repeat the values rather than @extend, since custom
    properties cannot be aliased across a media query boundary. */
 :root[data-theme='dark'] {
   color-scheme: dark;

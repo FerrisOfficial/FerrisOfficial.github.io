@@ -42,7 +42,7 @@ if (!existsSync(engineDir)) {
   try {
     execSync('git pull --ff-only', { cwd: engineDir, stdio: 'inherit' });
   } catch {
-    console.warn('  (pull failed — building against the existing checkout)');
+    console.warn('  (pull failed - building against the existing checkout)');
   }
 }
 
@@ -73,7 +73,7 @@ const sources = [
 
 const missing = sources.filter((s) => !existsSync(s));
 if (missing.length) {
-  console.error('Missing engine sources — has the layout changed upstream?');
+  console.error('Missing engine sources - has the layout changed upstream?');
   for (const m of missing) console.error('  ' + m);
   process.exit(1);
 }

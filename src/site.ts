@@ -1,9 +1,9 @@
 /** Single source of truth for personal details, reused by the layout, hero and contact. */
 export const site = {
   name: 'Maciej Stempniak',
-  role: 'Software Engineer — C++20 and .NET',
+  role: 'Software Engineer - C++20 and .NET',
   tagline:
-    'I shipped 5G RAN control features at Nokia and now build backend services for Poland’s national e-invoicing platform at Symfonia. My C++ simulation engine runs 250–300 games per second and is available as a live WebAssembly demo.',
+    'I shipped 5G RAN control features at Nokia and now build backend services for Poland’s national e-invoicing platform at Symfonia. My C++ simulation engine runs 250-300 games per second and is available as a live WebAssembly demo.',
   url: 'https://maciejstempniak.com',
   location: 'Warsaw, Poland',
   description:
