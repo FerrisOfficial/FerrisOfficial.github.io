@@ -10,19 +10,14 @@ const homeAnchor = (hash: string) => (isHome ? hash : `/${hash}`);
 
 const links = [
   { label: 'Experience', href: homeAnchor('#experience') },
+  { label: 'Recommendations', href: homeAnchor('#recommendations') },
   { label: 'Projects', href: homeAnchor('#featured-work') },
   { label: 'Skills', href: homeAnchor('#skills') },
   { label: 'About', href: homeAnchor('#about') },
-  { label: 'Recommendations', href: homeAnchor('#recommendations') },
   { label: 'Contact', href: homeAnchor('#contact') },
 ];
 
 const brandHref = isHome ? '#top' : '/';
-
-const initials = site.name
-  .split(' ')
-  .map((part) => part[0])
-  .join('');
 ---
 
 <header class="nav" id="nav">
@@ -32,7 +27,10 @@ const initials = site.name
       href={brandHref}
       aria-label={isHome ? `${site.name} — back to top` : `${site.name} — home`}
     >
-      <span class="brand-mark mono" aria-hidden="true">{initials}</span>
+      <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true">
+        <path class="brand-mark-stroke" d="M6.5 25V7.5L16 17.25 25.5 7.5V25" />
+        <path class="brand-mark-accent" d="M6.5 7.5 10 11.1" />
+      </svg>
       <span class="brand-name">{site.name}</span>
     </a>
 
@@ -112,21 +110,32 @@ const initials = site.name
   }
 
   .brand-mark {
-    display: grid;
-    place-items: center;
-    width: 1.9rem;
-    height: 1.9rem;
-    border-radius: var(--r-sm);
-    background: var(--accent);
-    color: var(--accent-contrast);
-    font-size: var(--text-2xs);
-    font-weight: 700;
-    letter-spacing: 0;
+    width: 1.8rem;
+    height: 1.8rem;
+    flex: 0 0 auto;
+    overflow: visible;
     transition: transform var(--dur) var(--ease);
   }
 
+  .brand-mark-stroke,
+  .brand-mark-accent {
+    fill: none;
+    stroke-linecap: square;
+    stroke-linejoin: miter;
+  }
+
+  .brand-mark-stroke {
+    stroke: var(--text);
+    stroke-width: 2.65;
+  }
+
+  .brand-mark-accent {
+    stroke: var(--accent);
+    stroke-width: 2.65;
+  }
+
   .brand:hover .brand-mark {
-    transform: rotate(-8deg) scale(1.06);
+    transform: translateY(-1px);
   }
 
   .brand-name {

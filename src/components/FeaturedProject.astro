@@ -21,7 +21,7 @@ const deepDive = github ? `${github.url}#design` : undefined;
   <div class="container">
     <article class="featured-project">
       <div class="featured-heading">
-        <h2>Two-Player Catan Research Engine &amp; AI</h2>
+        <h2>Two-Player Catan Simulation Engine &amp; Game AI</h2>
         <p class="authorship mono">
           Co-authored with Yaryna Rachkevych{' '}<span aria-hidden="true">·</span>{' '}BSc thesis{' '}
           <span aria-hidden="true">·</span>{' '}University of Wrocław
@@ -29,17 +29,26 @@ const deepDive = github ? `${github.url}#design` : undefined;
       </div>
 
       <p class="featured-summary">
-        A C++20 engine for a two-player, 15-point Catan research variant with reproducible
-        seeded tournaments. It compares deterministic heuristics, chance-aware alpha-beta
-        and evolutionarily tuned agents.
+        A C++20 simulation platform for a reproducible two-player Catan variant. It runs
+        seeded tournaments between deterministic heuristics, chance-aware alpha-beta and
+        agents tuned through evolutionary search.
       </p>
+
+      <div class="engineering-scope">
+        <p class="engineering-scope-label mono">My engineering contribution</p>
+        <ul>
+          <li>Designed the bit-packed board state and fast apply/undo transitions.</li>
+          <li>Implemented deterministic seeding, replay inspection and multi-agent benchmarks.</li>
+          <li>Profiled and optimized the engine, then built cross-compiler tests and CI.</li>
+        </ul>
+      </div>
 
       <dl class="metric-highlights">
         <div>
           <dt>59%</dt>
           <dd>
-            Lower per-game cost after profiling and optimization. The native Clang 22{' '}
-            <code>-O3</code> build reaches 250–300 random-vs-random games per second.
+            Lower per-game cost after profiling and optimization. A representative native
+            Clang 22 <code>-O3</code> build reaches 250–300 random-vs-random games per second.
           </dd>
         </div>
         <div>
@@ -50,10 +59,10 @@ const deepDive = github ? `${github.url}#design` : undefined;
           </dd>
         </div>
         <div>
-          <dt>242</dt>
+          <dt>3 compilers</dt>
           <dd>
-            Test cases generated from 111 definitions across six binaries, with GCC, MSVC,
-            Clang and AddressSanitizer CI.
+            242 generated test cases across six binaries, verified with GCC, MSVC, Clang
+            and AddressSanitizer CI.
           </dd>
         </div>
       </dl>
@@ -121,6 +130,38 @@ const deepDive = github ? `${github.url}#design` : undefined;
     margin-top: var(--space-5);
     color: var(--text-muted);
     line-height: var(--leading-relaxed);
+  }
+
+  .engineering-scope {
+    display: grid;
+    grid-template-columns: minmax(10rem, 0.28fr) minmax(0, 1fr);
+    gap: var(--space-5);
+    margin-top: var(--space-5);
+    padding: var(--space-4) var(--space-5);
+    border-left: 2px solid var(--cat);
+    background: color-mix(in srgb, var(--cat-soft) 42%, transparent);
+  }
+
+  .engineering-scope-label {
+    color: var(--cat);
+    font-size: var(--text-2xs);
+    font-weight: 650;
+    letter-spacing: var(--tracking-wide);
+    text-transform: uppercase;
+  }
+
+  .engineering-scope ul {
+    display: grid;
+    gap: var(--space-2);
+    margin: 0;
+    padding-left: var(--space-5);
+    color: var(--text-muted);
+    font-size: var(--text-sm);
+    line-height: var(--leading-normal);
+  }
+
+  .engineering-scope li::marker {
+    color: var(--cat);
   }
 
   .metric-highlights {
@@ -256,6 +297,11 @@ const deepDive = github ? `${github.url}#design` : undefined;
     .metric-highlights {
       grid-template-columns: 1fr;
       gap: var(--space-4);
+    }
+
+    .engineering-scope {
+      grid-template-columns: 1fr;
+      gap: var(--space-3);
     }
 
     .featured-actions {

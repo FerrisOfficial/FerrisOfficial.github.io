@@ -13,8 +13,8 @@ const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" 
     <linearGradient id="spine" x1="0" y1="0" x2="0" y2="1">
       <stop offset="0%" stop-color="#2dd4bf" stop-opacity="0"/>
       <stop offset="18%" stop-color="#2dd4bf" stop-opacity="1"/>
-      <stop offset="78%" stop-color="#8b7bf7" stop-opacity="1"/>
-      <stop offset="100%" stop-color="#8b7bf7" stop-opacity="0"/>
+      <stop offset="78%" stop-color="#2dd4bf" stop-opacity="0.45"/>
+      <stop offset="100%" stop-color="#2dd4bf" stop-opacity="0"/>
     </linearGradient>
     <radialGradient id="glow" cx="0.28" cy="0.12" r="0.75">
       <stop offset="0%" stop-color="#2dd4bf" stop-opacity="0.20"/>
@@ -25,31 +25,31 @@ const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" 
   <rect width="${W}" height="${H}" fill="#08080a"/>
   <rect width="${W}" height="${H}" fill="url(#glow)"/>
 
-  <!-- timeline spine motif -->
+  <!-- A restrained timeline motif from the site. -->
   <rect x="96" y="70" width="3" height="490" rx="1.5" fill="url(#spine)"/>
   <circle cx="97.5" cy="188" r="8" fill="#08080a" stroke="#2dd4bf" stroke-width="3"/>
   <circle cx="97.5" cy="300" r="11" fill="#2dd4bf"/>
-  <circle cx="97.5" cy="404" r="8" fill="#08080a" stroke="#8b7bf7" stroke-width="3"/>
-  <circle cx="97.5" cy="486" r="5" fill="#8b7bf7" opacity="0.55"/>
+  <circle cx="97.5" cy="404" r="8" fill="#08080a" stroke="#2dd4bf" stroke-width="3"/>
+  <circle cx="97.5" cy="486" r="5" fill="#2dd4bf" opacity="0.45"/>
 
   <text x="152" y="200" font-family="Consolas, 'Courier New', monospace" font-size="21"
-        letter-spacing="3" fill="#8d8d9b">C++ · PYTHON · BACKEND · ML</text>
+        letter-spacing="3" fill="#8d8d9b">C++20 · .NET · BACKEND SYSTEMS</text>
 
   <text x="150" y="300" font-family="'Segoe UI Semibold', 'Segoe UI', Arial, sans-serif"
         font-size="82" font-weight="600" letter-spacing="-2" fill="#f1f1f3">Maciej Stempniak</text>
 
   <text x="152" y="362" font-family="Consolas, 'Courier New', monospace" font-size="30"
-        fill="#2dd4bf">Backend &amp; Systems Engineer</text>
+        fill="#2dd4bf">Software Engineer</text>
 
   <text x="152" y="437" font-family="'Segoe UI', Arial, sans-serif" font-size="25" fill="#9d9daa">
-    5G RAN energy efficiency at Nokia · production backend
+    Shipped 5G RAN features at Nokia · now building
   </text>
   <text x="152" y="474" font-family="'Segoe UI', Arial, sans-serif" font-size="25" fill="#9d9daa">
-    systems · machine learning for medical imaging
+    KSeF backend services at Symfonia
   </text>
 
   <text x="152" y="546" font-family="Consolas, 'Courier New', monospace" font-size="21" fill="#6b6b78">
-    github.com/FerrisOfficial
+    maciejstempniak.com · live C++ WebAssembly demo
   </text>
 </svg>`;
 

@@ -12,16 +12,16 @@ const nokiaContract = featured.find((entry) => entry.id === '2025-10-nokia-cpp-d
 
 const symfoniaEvidence = [
   {
-    label: 'Backend services',
-    copy: 'Develop and debug C#/.NET and GraphQL services using SQL, Hangfire, Dapr, Kubernetes and OPA-based authorization.',
+    label: 'KSeF backend services',
+    copy: 'Build and debug C#/.NET and GraphQL services for KSeF, Poland’s national e-invoicing platform, using SQL, Hangfire, Dapr, Kubernetes and OPA-based authorization.',
   },
   {
-    label: 'KSeF migration',
-    copy: 'Contributed to the KSeF API 1.0-to-2.0 migration across endpoints, data models, authentication, persistence, GraphQL and automated tests.',
+    label: 'API 2.0 migration',
+    copy: 'Contributed across endpoints, data models, authentication, persistence, GraphQL schemas, Ministry of Finance integration logic and automated tests.',
   },
   {
-    label: 'Production and tooling',
-    copy: 'Investigate production failures and create repository documentation, test harnesses and automated validation workflows.',
+    label: 'Production investigation',
+    copy: 'Trace production failures across service layers and build test harnesses, repository documentation and automated validation workflows.',
   },
 ];
 
@@ -36,7 +36,7 @@ const nokiaEvidence = [
   },
   {
     label: 'Verification',
-    copy: 'Added automated tests, validated changes in simulation, and debugged with GDB and Valgrind before being selected to continue after the internship.',
+    copy: 'Added automated tests, validated changes in simulation, and debugged with GDB and Valgrind in the team’s production workflow.',
   },
 ];
 ---
@@ -55,10 +55,16 @@ const nokiaEvidence = [
               <p class="date mono">
                 {formatRange(symfonia.data.startDate, symfonia.data.endDate, symfonia.data.ongoing)}
               </p>
+              <p class="experience-lead">Backend services for Poland’s national e-invoicing platform.</p>
             </header>
             <div class="experience-evidence">
-              {symfoniaEvidence.map((item) => (
-                <details class="evidence-row evidence-disclosure" data-mobile-collapse open>
+              {symfoniaEvidence.map((item, index) => (
+                <details
+                  class="evidence-row evidence-disclosure"
+                  data-mobile-collapse
+                  data-mobile-featured={index === 0 ? true : undefined}
+                  open
+                >
                   <summary>{item.label}</summary>
                   <p>{item.copy}</p>
                 </details>
@@ -74,8 +80,11 @@ const nokiaEvidence = [
             <header class="experience-meta">
               <p class="company">Nokia · 5G RAN</p>
               <div class="role-history">
+                <p class="experience-lead experience-lead-highlight">
+                  Internship → extended C++ contract after three months
+                </p>
                 <p>
-                  <strong>C++ Software Engineering</strong>
+                  <strong>C++ Software Engineer</strong>
                   <span>Contract · October 2025–April 2026</span>
                 </p>
                 <p>
@@ -85,8 +94,13 @@ const nokiaEvidence = [
               </div>
             </header>
             <div class="experience-evidence">
-              {nokiaEvidence.map((item) => (
-                <details class="evidence-row evidence-disclosure" data-mobile-collapse open>
+              {nokiaEvidence.map((item, index) => (
+                <details
+                  class="evidence-row evidence-disclosure"
+                  data-mobile-collapse
+                  data-mobile-featured={index === 0 ? true : undefined}
+                  open
+                >
                   <summary>{item.label}</summary>
                   <p>{item.copy}</p>
                 </details>
@@ -149,6 +163,20 @@ const nokiaEvidence = [
     margin-top: var(--space-3);
     color: var(--text-faint);
     font-size: var(--text-xs);
+  }
+
+  .experience-lead {
+    max-width: 31ch;
+    margin-top: var(--space-3);
+    color: var(--text-muted);
+    font-size: var(--text-sm);
+    line-height: var(--leading-normal);
+  }
+
+  .experience-lead-highlight {
+    margin-top: 0;
+    color: var(--accent);
+    font-weight: 650;
   }
 
   .role-history {
@@ -266,7 +294,9 @@ const nokiaEvidence = [
   const mobileDisclosures = document.querySelectorAll<HTMLDetailsElement>('[data-mobile-collapse]');
 
   const syncMobileEvidence = () => {
-    for (const disclosure of mobileDisclosures) disclosure.open = !mobileEvidence.matches;
+    for (const disclosure of mobileDisclosures) {
+      disclosure.open = !mobileEvidence.matches || disclosure.hasAttribute('data-mobile-featured');
+    }
   };
 
   mobileEvidence.addEventListener('change', syncMobileEvidence);

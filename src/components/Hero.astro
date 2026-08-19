@@ -14,8 +14,8 @@ type HeroLink = {
 };
 
 const primaryLinks: HeroLink[] = [
-  { label: 'View experience', href: '#experience', icon: 'lucide:briefcase-business', kind: 'primary' },
-  { label: 'Projects', href: '#featured-work', icon: 'lucide:arrow-right', kind: 'secondary' },
+  { label: 'Run C++ demo', href: '#catan-demo', icon: 'lucide:play', kind: 'primary' },
+  { label: 'Experience', href: '#experience', icon: 'lucide:briefcase-business', kind: 'secondary' },
   { label: 'CV', href: '/cv.pdf', icon: 'lucide:download', download: true, kind: 'secondary' },
 ];
 
@@ -117,8 +117,8 @@ const roleDetail = roleBreakIndex >= 0 ? site.role.slice(roleBreakIndex) : '';
     position: relative;
     display: flex;
     align-items: center;
-    min-height: min(76svh, 44rem);
-    padding-block: var(--space-9) var(--space-8);
+    min-height: min(68svh, 38rem);
+    padding-block: var(--space-8) var(--space-7);
     overflow: hidden;
   }
 
@@ -135,14 +135,15 @@ const roleDetail = roleBreakIndex >= 0 ? site.role.slice(roleBreakIndex) : '';
   }
 
   .hero-portrait {
+    position: relative;
     justify-self: end;
-    width: min(17rem, 38vw);
+    width: min(16rem, 36vw);
   }
 
   .hero-portrait-img {
     width: 100%;
     height: auto;
-    filter: drop-shadow(0 20px 40px rgb(16 16 24 / 0.22));
+    filter: none;
   }
 
   .hero-portrait-mobile {
@@ -151,15 +152,22 @@ const roleDetail = roleBreakIndex >= 0 ? site.role.slice(roleBreakIndex) : '';
 
   @media (min-width: 48.01rem) {
     .hero-portrait-desktop {
-      height: min(21rem, 34vw);
+      display: grid;
+      align-items: end;
+      height: min(20rem, 31vw);
       overflow: clip;
-      mask-image: linear-gradient(to bottom, #000 0%, #000 86%, transparent 100%);
-      -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 86%, transparent 100%);
+      border: 1px solid color-mix(in srgb, var(--accent) 14%, var(--border));
+      border-radius: 1.5rem 1.5rem var(--r-md) var(--r-md);
+      background:
+        radial-gradient(circle at 50% 22%, color-mix(in srgb, var(--surface) 70%, transparent), transparent 42%),
+        color-mix(in srgb, var(--accent-soft) 42%, var(--surface));
+      box-shadow: var(--shadow-md);
     }
 
     .hero-portrait-desktop .hero-portrait-img {
-      transform: translateY(-2rem) scale(1.04);
-      transform-origin: center top;
+      align-self: end;
+      transform: translateY(0.45rem) scale(1.035);
+      transform-origin: center bottom;
     }
   }
 
