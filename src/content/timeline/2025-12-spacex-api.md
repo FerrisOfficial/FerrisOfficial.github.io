@@ -22,7 +22,7 @@ them through EF Core and SQLite.
 - Covered the service with **nine unit tests** and one hosted end-to-end test using
   a test SQLite database
 
-The bounded 0–100 `WatchScore` uses implemented inputs only: webcast availability,
+The bounded 0-100 `WatchScore` uses implemented inputs only: webcast availability,
 time until launch, mission-name categories (`Crew`, `Transporter`, `Starlink`) and
 missing launchpad/date penalties. This is an API integration and persistence project,
 not a full recommendation platform or visual dashboard.

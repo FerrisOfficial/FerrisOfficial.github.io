@@ -1,5 +1,5 @@
 ---
-title: AI Histopathology Analysis — Melanoma Detection
+title: AI Histopathology Analysis - Melanoma Detection
 org: MIARP Research Group
 category: project
 startDate: 2024-10-01

@@ -9,7 +9,7 @@ import createModule from './catan.js';
 let mod = null;
 let cancelled = false;
 
-/** Target milliseconds of work per chunk — small enough to stay responsive to
+/** Target milliseconds of work per chunk - small enough to stay responsive to
  *  stop requests, large enough that call overhead stays irrelevant. */
 const CHUNK_TARGET_MS = 120;
 

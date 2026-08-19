@@ -3,7 +3,7 @@
  *
  * The engine stores adjacency, not coordinates, so positions have to be
  * derived. This is a port of the layout in the project's own
- * utils/replay_viewer.py, including its four manual node swaps — those correct
+ * utils/replay_viewer.py, including its four manual node swaps - those correct
  * cases where a corner is shared by hexes in an order that does not match the
  * engine's node numbering, and they are load-bearing.
  */
@@ -114,7 +114,7 @@ export interface Replay {
   hexes: [number, number][];
   nodes: [number[], number][];
   edges: [number, number][];
-  /** [nodeA, nodeB, portType] — nine harbours, from the engine's constants. */
+  /** [nodeA, nodeB, portType] - nine harbours, from the engine's constants. */
   ports: [number, number, number][];
   frames: {
     t: number;

@@ -18,7 +18,7 @@ const timeline = defineCollection({
     startDate: z.coerce.date(),
     /** Omit for a point-in-time event such as an award. */
     endDate: z.coerce.date().optional(),
-    /** Renders as "— Present". Takes precedence over endDate. */
+    /** Renders as "- Present". Takes precedence over endDate. */
     ongoing: z.boolean().default(false),
     /** One-line teaser shown while the entry is collapsed. */
     summary: z.string(),

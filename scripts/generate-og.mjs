@@ -1,4 +1,4 @@
-// Regenerates public/og.png — the social preview card.
+// Regenerates public/og.png - the social preview card.
 // Run with: npm run og
 import sharp from 'sharp';
 import { writeFileSync } from 'node:fs';

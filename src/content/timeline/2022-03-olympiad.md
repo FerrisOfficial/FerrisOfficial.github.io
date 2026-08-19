@@ -1,5 +1,5 @@
 ---
-title: Honorable Mention — First Stage, 29th Polish Olympiad in Informatics
+title: Honorable Mention - First Stage, 29th Polish Olympiad in Informatics
 org: Olimpiada Informatyczna
 category: award
 startDate: 2022-03-01

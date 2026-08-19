@@ -72,7 +72,7 @@ const fallbackBots = [
       <div class="bar-track">
         <span class="bar-fill bar-a" data-bar-a></span>
       </div>
-      <span class="bar-value mono" data-pct-a>—</span>
+      <span class="bar-value mono" data-pct-a>-</span>
     </div>
 
     <div class="bar-row">
@@ -80,14 +80,14 @@ const fallbackBots = [
       <div class="bar-track">
         <span class="bar-fill bar-b" data-bar-b></span>
       </div>
-      <span class="bar-value mono" data-pct-b>—</span>
+      <span class="bar-value mono" data-pct-b>-</span>
     </div>
 
     <dl class="demo-stats">
       <div><dt class="mono">Games</dt><dd class="mono" data-stat-games>0</dd></div>
       <div><dt class="mono">Draws</dt><dd class="mono" data-stat-draws>0</dd></div>
-      <div><dt class="mono">Turns/game</dt><dd class="mono" data-stat-turns>—</dd></div>
-      <div><dt class="mono">Games/sec</dt><dd class="mono" data-stat-rate>—</dd></div>
+      <div><dt class="mono">Turns/game</dt><dd class="mono" data-stat-turns>-</dd></div>
+      <div><dt class="mono">Games/sec</dt><dd class="mono" data-stat-rate>-</dd></div>
     </dl>
   </div>
 
@@ -114,7 +114,7 @@ const fallbackBots = [
 
     <div class="replay-scores">
       <span class="score" data-score-a><i class="swatch swatch-a"></i><b data-score-a-name>A</b> <em data-score-a-vp>0</em></span>
-      <span class="move mono" data-move>—</span>
+      <span class="move mono" data-move>-</span>
       <span class="score" data-score-b><i class="swatch swatch-b"></i><b data-score-b-name>B</b> <em data-score-b-vp>0</em></span>
     </div>
 
@@ -444,7 +444,7 @@ const fallbackBots = [
   }
 
   /* Literal values, matching COLOURS in the replay script. The board keeps its
-     own palette in both themes — a Catan board should look like a Catan board —
+     own palette in both themes - a Catan board should look like a Catan board -
      so theme tokens here would make the legend disagree with the pieces. */
   .swatch-a {
     background: #2dd4bf;
@@ -759,7 +759,7 @@ const fallbackBots = [
       const games = Number(selGames.value);
       if (slow) {
         note.hidden = false;
-        note.textContent = `Alpha-Beta searches the game tree — roughly 7 games/sec against a tuned bot, so ${games} games will take a while. Try 100 first.`;
+        note.textContent = `Alpha-Beta searches the game tree - roughly 7 games/sec against a tuned bot, so ${games} games will take a while. Try 100 first.`;
       } else {
         note.hidden = true;
       }
@@ -777,8 +777,8 @@ const fallbackBots = [
       $('[data-pct-b]').textContent = `${pct(winsB).toFixed(1)}%`;
       $('[data-stat-games]').textContent = String(games);
       $('[data-stat-draws]').textContent = String(draws);
-      $('[data-stat-turns]').textContent = games ? (turns / games).toFixed(0) : '—';
-      $('[data-stat-rate]').textContent = rate ? rate.toFixed(0) : '—';
+      $('[data-stat-turns]').textContent = games ? (turns / games).toFixed(0) : '-';
+      $('[data-stat-rate]').textContent = rate ? rate.toFixed(0) : '-';
 
       if (done) {
         live.textContent =
