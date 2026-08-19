@@ -96,8 +96,6 @@
   --shadow-md: 0 4px 16px -4px rgb(16 16 24 / 0.1), 0 2px 6px -2px rgb(16 16 24 / 0.05);
   --shadow-lg: 0 16px 40px -12px rgb(16 16 24 / 0.16);
 
-  /* Fades the timeline spine out at the top and bottom of the rail. */
-  --spine-fade: var(--bg);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -134,7 +132,6 @@
     --shadow-md: 0 4px 16px -4px rgb(0 0 0 / 0.5), 0 2px 6px -2px rgb(0 0 0 / 0.4);
     --shadow-lg: 0 16px 40px -12px rgb(0 0 0 / 0.7);
 
-    --spine-fade: var(--bg);
   }
 }
 
@@ -173,5 +170,4 @@
   --shadow-md: 0 4px 16px -4px rgb(0 0 0 / 0.5), 0 2px 6px -2px rgb(0 0 0 / 0.4);
   --shadow-lg: 0 16px 40px -12px rgb(0 0 0 / 0.7);
 
-  --spine-fade: var(--bg);
 }

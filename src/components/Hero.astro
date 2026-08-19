@@ -30,8 +30,6 @@ const roleDetail = roleBreakIndex >= 0 ? site.role.slice(roleBreakIndex) : '';
 ---
 
 <section class="hero" id="top">
-  <div class="hero-glow" aria-hidden="true"></div>
-
   <div class="container hero-inner">
     <div class="hero-text">
       <h1 class="hero-name" style="--i: 1">{site.name}</h1>
@@ -56,10 +54,6 @@ const roleDetail = roleBreakIndex >= 0 ? site.role.slice(roleBreakIndex) : '';
       </div>
 
       <p class="hero-blurb" style="--i: 3">{site.tagline}</p>
-
-      <p class="hero-stack mono" style="--i: 4">
-        {site.stack.join(' · ')}
-      </p>
 
       <div class="hero-actions" style="--i: 5">
         <ul class="hero-links hero-primary" role="list" aria-label="Portfolio actions">
@@ -126,31 +120,6 @@ const roleDetail = roleBreakIndex >= 0 ? site.role.slice(roleBreakIndex) : '';
     min-height: min(76svh, 44rem);
     padding-block: var(--space-9) var(--space-8);
     overflow: hidden;
-  }
-
-  /* Static wash of accent behind the name. No animation — it is scenery.
-     Centred on the text column rather than the viewport: the content is
-     left-aligned, so a viewport-centred glow drifts off to one side of the
-     name. The max() mirrors .container's centring, so it tracks the content
-     at every width. */
-  .hero-glow {
-    position: absolute;
-    /* translate -50% on both axes means top/left place the glow's *centre*,
-       not its corner — so the bright core lands on a known point instead of
-       depending on the circle's size. A rem offset also keeps it put when the
-       hero's height changes; the old percentage made it drift. */
-    top: 22em;
-    left: calc(max(0px, (100% - var(--container)) / 2) + 13rem);
-    width: min(46rem, 130%);
-    aspect-ratio: 1;
-    translate: -50% -50%;
-    border-radius: 50%;
-    background: radial-gradient(
-      circle,
-      color-mix(in srgb, var(--accent) 14%, transparent) 0%,
-      transparent 60%
-    );
-    pointer-events: none;
   }
 
   .hero-inner {
@@ -260,13 +229,6 @@ const roleDetail = roleBreakIndex >= 0 ? site.role.slice(roleBreakIndex) : '';
     font-size: var(--text-lg);
     line-height: var(--leading-relaxed);
     color: var(--text-muted);
-  }
-
-  .hero-stack {
-    margin-top: var(--space-3);
-    font-size: var(--text-sm);
-    letter-spacing: var(--tracking-wide);
-    color: var(--text-faint);
   }
 
   .hero-actions {
@@ -406,7 +368,6 @@ const roleDetail = roleBreakIndex >= 0 ? site.role.slice(roleBreakIndex) : '';
       padding-bottom: var(--space-6);
     }
 
-    .hero-glow,
     .hero-portrait-desktop {
       display: none;
     }
@@ -415,31 +376,10 @@ const roleDetail = roleBreakIndex >= 0 ? site.role.slice(roleBreakIndex) : '';
       display: block;
       justify-self: auto;
       position: relative;
-      isolation: isolate;
       width: clamp(10.5rem, 42vw, 11.75rem);
       height: clamp(10.25rem, 44vw, 10.75rem);
       margin-top: 0;
       margin-inline: auto;
-    }
-
-    .hero-portrait-mobile::before {
-      position: absolute;
-      z-index: -1;
-      left: 50%;
-      bottom: 0;
-      width: calc(100% + var(--space-8) + var(--space-3));
-      aspect-ratio: 1;
-      border-radius: 50%;
-      background: radial-gradient(
-        circle,
-        color-mix(in srgb, var(--accent) 22%, transparent) 0%,
-        color-mix(in srgb, var(--accent) 8%, transparent) 48%,
-        transparent 72%
-      );
-      clip-path: inset(0 0 20%);
-      content: '';
-      pointer-events: none;
-      translate: -50% 20%;
     }
 
     .hero-portrait-frame {
